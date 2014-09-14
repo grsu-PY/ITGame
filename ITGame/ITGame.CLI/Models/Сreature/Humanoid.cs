@@ -1,4 +1,5 @@
 ﻿using ITGame.CLI.Models.Equipment;
+using ITGame.CLI.Models.Magic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace ITGame.CLI.Models.Creature
     {
         protected Dictionary<string, Weapon> weapons;
         protected Dictionary<string, Armor> armors;
+        protected Dictionary<string, Spell> spells;
 
         protected Helmet helmet;
         protected Body body;
@@ -18,6 +20,8 @@ namespace ITGame.CLI.Models.Creature
         protected Boots boots;
 
         protected Weapon weapon;
+
+        protected Spell spell;
 
 
         public void Equip(ITGame.CLI.Models.Equipment.Equipment equipment)
@@ -46,6 +50,9 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
+        public void SelectSpell(Spell selectedSpell) {
+            spell = selectedSpell;
+        }
         public override int PhysicalAttack
         {
             get
@@ -58,7 +65,7 @@ namespace ITGame.CLI.Models.Creature
         {
             get
             {
-                return base.MagicalAttack + (weapon != null ? weapon.MagicalAttack : 0);
+                return base.MagicalAttack + (weapon != null ? weapon.MagicalAttack : spell.TotalMagicalAttack);
             }
         }
 

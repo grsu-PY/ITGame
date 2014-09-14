@@ -7,6 +7,7 @@ namespace ITGame.CLI.Models.Creature.Actions
 {
     public interface ICanAttack
     {
-        void Attack();
+        void WeaponAttack();
+        void SpellAttack();
     }
 }

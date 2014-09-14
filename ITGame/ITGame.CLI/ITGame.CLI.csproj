@@ -52,6 +52,8 @@
     <Compile Include="Models\Equipment\Gloves.cs" />
     <Compile Include="Models\Equipment\Helmet.cs" />
     <Compile Include="Models\Equipment\Equipment.cs" />
+    <Compile Include="Models\Magic\Spell.cs" />
+    <Compile Include="Models\Magic\SpellType.cs" />
     <Compile Include="Models\Сreature\Actions\ICanAttack.cs" />
     <Compile Include="Models\Сreature\Actions\IRecieveDamage.cs" />
     <Compile Include="Models\Сreature\Dwarf.cs" />
