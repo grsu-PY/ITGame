@@ -21,8 +21,6 @@ namespace ITGame.CLI.Models.Creature
 
         protected Weapon weapon;
 
-        protected Spell spell;
-
 
         public void Equip(ITGame.CLI.Models.Equipment.Equipment equipment)
         {
@@ -50,8 +48,9 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public void SelectSpell(Spell selectedSpell) {
-            spell = selectedSpell;
+        public void SelectSpell(AttackSpell selectedAttackSpell, DefensiveSpell selectedDefensiveSpell) {
+            attackSpell = selectedAttackSpell;
+            defensiveSpell = selectedDefensiveSpell;
         }
         public override int PhysicalAttack
         {
@@ -65,7 +64,7 @@ namespace ITGame.CLI.Models.Creature
         {
             get
             {
-                return base.MagicalAttack + (weapon != null ? weapon.MagicalAttack : spell.TotalMagicalAttack);
+                return base.MagicalAttack + (weapon != null ? weapon.MagicalAttack : attackSpell.TotalMagicalAttack);
             }
         }
 
@@ -95,6 +94,7 @@ namespace ITGame.CLI.Models.Creature
             mDef += gloves != null ? gloves.MagicalDef : 0;
             mDef += boots != null ? boots.MagicalDef : 0;
             mDef += body != null ? body.MagicalDef : 0;
+            mDef += (defensiveSpell != null && defensiveSpell.SpellType == _target.AttackSpellType) ? defensiveSpell.TotalMagicalAttack : 0;
             return mDef;
         }
     }

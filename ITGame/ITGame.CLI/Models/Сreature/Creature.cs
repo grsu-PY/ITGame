@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ITGame.CLI.Models.Creature.Actions;
+using ITGame.CLI.Models.Magic;
 
 namespace ITGame.CLI.Models.Creature
 {
@@ -20,6 +21,8 @@ namespace ITGame.CLI.Models.Creature
         private readonly int maxHP = 20;
         private int currentMP;
         private int currentHP;
+        protected AttackSpell attackSpell;
+        protected DefensiveSpell defensiveSpell;
 
         public Creature()
         {
@@ -101,6 +104,16 @@ namespace ITGame.CLI.Models.Creature
             set
             {
             }
+        }
+
+        public SpellType AttackSpellType
+        {
+            get { return attackSpell.SpellType; }
+        }
+
+        public SpellType DefensiveSpellType
+        {
+            get { return defensiveSpell.SpellType; }
         }
 
         public virtual int PhysicalAttack
