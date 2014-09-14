@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Magic
 {
-    class Spell
+    public class Spell
     {
         /*
          * Fields
@@ -21,7 +21,11 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Methods
          */
-        public void Spell(string spellName, SpellType spellType, uint baseMagicalAttack, uint bonusMagicalAttack) {
+        public Spell()
+        {
+
+        }
+        public Spell(string spellName, SpellType spellType, uint baseMagicalAttack, uint bonusMagicalAttack) {
             this.spellName = spellName;
             this.baseMagicalAttack = baseMagicalAttack;
             this.bonusMagicalAttack = bonusMagicalAttack;
@@ -57,12 +61,12 @@ namespace ITGame.CLI.Models.Magic
 
         public float BaseSpeedCast  // Этот параметр пусть пока повисит, мало ли, решим реализовать
         {
-            get;
+            get { throw new NotImplementedException(); }
         }
 
         public uint ManaCost
         {
-            get;
+            get { throw new NotImplementedException(); }
         }
 
     }

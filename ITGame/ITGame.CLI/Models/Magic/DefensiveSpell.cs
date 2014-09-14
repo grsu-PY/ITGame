@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Magic
 {
-    class DefensiveSpell : Spell
+    public class DefensiveSpell : Spell
     {
     }
 }
