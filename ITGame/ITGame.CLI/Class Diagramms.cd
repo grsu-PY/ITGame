@@ -8,128 +8,128 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Creature">
-    <Position X="3.75" Y="6.5" Width="1.5" />
+    <Position X="3.75" Y="10.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAIAAAAABAAAAAQSBwrBAAQA4QAAACAAACAI=</HashCode>
+      <HashCode>AAgCACChAIABAAAFAAKAEQShQhBAAQA4QAAACgAACIY=</HashCode>
       <FileName>Models\Сreature\Creature.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.576" />
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Humanoid" Collapsed="true">
-    <Position X="3.75" Y="13.75" Width="1.5" />
+    <Position X="3.75" Y="19.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAgAAACAAAAEAAAABAAAACQAAAAAgAAAAEBABCAA=</HashCode>
+      <HashCode>AAgEAgAAACAQAAEAgAgBAAAACQAAAAAgAAGAEBAACAA=</HashCode>
       <FileName>Models\Сreature\Humanoid.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Orc" Collapsed="true">
-    <Position X="7.25" Y="15.25" Width="1.5" />
+    <Position X="7.25" Y="21.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Orc.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Elf" Collapsed="true">
-    <Position X="2.75" Y="15.25" Width="1.5" />
+    <Position X="2.75" Y="21.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Elf.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Dwarf" Collapsed="true">
-    <Position X="0.5" Y="15.25" Width="1.5" />
+    <Position X="0.5" Y="21.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Dwarf.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Human" Collapsed="true">
-    <Position X="5" Y="15.25" Width="1.5" />
+    <Position X="5" Y="21.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Human.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ITGame.CLI.Models.Equipment.Equipment" Collapsed="true">
-    <Position X="10" Y="0.5" Width="1.5" />
+  <Class Name="ITGame.CLI.Models.Equipment.Equipment">
+    <Position X="10" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAAAAABQAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Equipment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Helmet" Collapsed="true">
-    <Position X="12.25" Y="3.25" Width="1.5" />
+    <Position X="12.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Helmet.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Gloves" Collapsed="true">
-    <Position X="14.5" Y="3.25" Width="1.5" />
+    <Position X="14.5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Gloves.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Boots" Collapsed="true">
-    <Position X="16.75" Y="3.25" Width="1.5" />
+    <Position X="16.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Boots.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Body" Collapsed="true">
-    <Position X="19" Y="3.25" Width="1.5" />
+    <Position X="19" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Body.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Weapon">
-    <Position X="5.5" Y="1.75" Width="1.5" />
+    <Position X="5.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAIgAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Weapon.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Armor" Collapsed="true">
-    <Position X="15.75" Y="1.75" Width="1.5" />
+    <Position X="15.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Armor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Hummer">
-    <Position X="3.25" Y="4.75" Width="1.5" />
+    <Position X="3.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Hummer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Sword">
-    <Position X="7.75" Y="4.75" Width="1.5" />
+    <Position X="7.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Sword.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Staff">
-    <Position X="5.5" Y="4.75" Width="1.5" />
+    <Position X="5.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Staff.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Bow">
-    <Position X="10" Y="4.75" Width="1.5" />
+    <Position X="10" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Bow.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Dagger">
-    <Position X="1" Y="4.75" Width="1.5" />
+    <Position X="1" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Dagger.cs</FileName>
@@ -142,8 +142,16 @@
       <FileName>Models\Damage.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="ITGame.CLI.Models.Items.Item">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAACAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Items\Item.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="ITGame.CLI.Models.Creature.Actions.IMoveable" Collapsed="true">
-    <Position X="21.5" Y="2.5" Width="1.5" />
+    <Position X="23.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Actions\IMoveable.cs</FileName>
@@ -152,12 +160,12 @@
   <Interface Name="ITGame.CLI.Models.Creature.Actions.ICanTake" Collapsed="true">
     <Position X="25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Actions\ICanTake.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="ITGame.CLI.Models.Equipment.ITakeable" Collapsed="true">
-    <Position X="25" Y="2.5" Width="1.5" />
+    <Position X="21.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\ITakeable.cs</FileName>
@@ -166,26 +174,33 @@
   <Interface Name="ITGame.CLI.Models.Creature.Actions.ICanEquip" Collapsed="true">
     <Position X="23.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Actions\ICanEquip.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="ITGame.CLI.Models.Creature.Actions.ICanAttack" Collapsed="true">
     <Position X="21.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Сreature\Actions\ICanAttack.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="ITGame.CLI.Models.Creature.Actions.IRecieveDamage" Collapsed="true">
-    <Position X="23.25" Y="2.5" Width="1.5" />
+    <Position X="25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
       <FileName>Models\Сreature\Actions\IRecieveDamage.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="ITGame.CLI.Models.Identity" Collapsed="true">
+    <Position X="21.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Identity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="ITGame.CLI.Models.Equipment.EquipmentType" Collapsed="true">
-    <Position X="21.5" Y="3.5" Width="1.5" />
+    <Position X="21.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAQAAAAgAAAAAAAEAAAI=</HashCode>
       <FileName>Models\Equipment\EquipmentType.cs</FileName>

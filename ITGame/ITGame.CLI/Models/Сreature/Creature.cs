@@ -8,26 +8,40 @@ using ITGame.CLI.Models.Magic;
 namespace ITGame.CLI.Models.Creature
 {
 
-    public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable
+    public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, ITGame.CLI.Models.Identity
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+
         protected Creature _target;
+
         private readonly int strength = 2;
         private readonly int wisdom = 1;
-        private readonly int weight = 10;
         private readonly int agility = 1;
-        private readonly int constitution = 20;
-        private readonly int speed = 10;
-        private readonly int maxMP = 5;
-        private readonly int maxHP = 20;
+        private readonly int constitution = 5;
+        
+        private readonly int initialMP = 5;
+        private readonly int initialHP = 20;
+
+        protected int pDef;
+        protected int mDef;
+
+        protected int weight = 10;
+        protected int speed = 10;
+
         private int currentMP;
         private int currentHP;
+
         protected AttackSpell attackSpell;
         protected DefensiveSpell defensiveSpell;
 
         public Creature()
         {
-            currentHP = maxHP;
-            currentMP = maxMP;
+            currentHP = MaxHP;
+            currentMP = MaxMP;
+            pDef = constitution;
+            mDef = wisdom;
+
             Name = "Creature";
         }
 
@@ -63,11 +77,11 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public int Weight
+        public int MaxWeight
         {
             get
             {
-                return weight + Constitution;
+                return Constitution * 20;
             }
         }
 
@@ -79,10 +93,10 @@ namespace ITGame.CLI.Models.Creature
             }
             protected set
             {
+                speed = value;
             }
         }
 
-        public string Name { get; set; }
 
         public int HP
         {
@@ -92,6 +106,9 @@ namespace ITGame.CLI.Models.Creature
             }
             set
             {
+                currentHP = value > 0
+                    ? value > MaxHP ? MaxHP : value
+                    : 0;
             }
         }
 
@@ -103,6 +120,9 @@ namespace ITGame.CLI.Models.Creature
             }
             set
             {
+                currentMP = value > 0
+                    ? value > MaxMP ? MaxMP : value
+                    : 0;
             }
         }
 
@@ -132,6 +152,22 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
+        public virtual int PhysicalDefence
+        {
+            get
+            {
+                return pDef;
+            }
+        }
+
+        public virtual int MagicalDefence
+        {
+            get
+            {
+                return mDef;
+            }
+        }
+
         public virtual void RecieveDamage(Damage damage)
         {
             int pDmg = damage.PhysicalDamage > 0 ? damage.PhysicalDamage : 0;
@@ -141,7 +177,7 @@ namespace ITGame.CLI.Models.Creature
             HP -= mDmg;
         }
 
-        public virtual void Attack()
+        public virtual void WeaponAttack()
         {
             if (_target == null) return;
 
@@ -158,6 +194,18 @@ namespace ITGame.CLI.Models.Creature
         }
 
         public void Move()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int MaxHP { get { return initialHP + constitution * 5; } }
+
+        public int MaxMP { get { return initialMP + wisdom * 10; } }
+
+
+
+
+        public void SpellAttack()
         {
             throw new NotImplementedException();
         }

@@ -1,15 +1,17 @@
-﻿using ITGame.CLI.Models.Equipment;
+﻿using ITGame.CLI.Models.Creature.Actions;
+using ITGame.CLI.Models.Equipment;
+using ITGame.CLI.Models.Items;
 using ITGame.CLI.Models.Magic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ITGame.CLI.Models.Creature.Actions;
 
 namespace ITGame.CLI.Models.Creature
 {
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
+        protected Dictionary<string, Item> items;
         protected Dictionary<string, Weapon> weapons;
         protected Dictionary<string, Armor> armors;
         protected Dictionary<string, Spell> spells;
@@ -31,21 +33,82 @@ namespace ITGame.CLI.Models.Creature
                     break;
                 case EquipmentType.Helmet:
                     helmet = equipment as Helmet;
+                    pDef += helmet.PhysicalDef;
+                    mDef += helmet.MagicalDef;
                     break;
                 case EquipmentType.Body:
                     body = equipment as Body;
+                    pDef += body.PhysicalDef;
+                    mDef += body.MagicalDef;
                     break;
                 case EquipmentType.Gloves:
                     gloves = equipment as Gloves;
+                    pDef += gloves.PhysicalDef;
+                    mDef += gloves.MagicalDef;
                     break;
                 case EquipmentType.Boots:
                     boots = equipment as Boots;
+                    pDef += boots.PhysicalDef;
+                    mDef += boots.MagicalDef;
                     break;
                 case EquipmentType.None:
                     break;
                 default:
                     break;
             }
+        }
+
+        public void RemoveEquipment(EquipmentType equipType)
+        {
+            switch (equipType)
+            {
+                case EquipmentType.Weapon:
+                    weapon = null;
+                    break;
+                case EquipmentType.Helmet:
+                    helmet = null;
+                    pDef -= helmet.PhysicalDef;
+                    mDef -= helmet.MagicalDef;
+                    break;
+                case EquipmentType.Body:
+                    body = null;
+                    pDef -= body.PhysicalDef;
+                    mDef -= body.MagicalDef;
+                    break;
+                case EquipmentType.Gloves:
+                    gloves = null;
+                    pDef -= gloves.PhysicalDef;
+                    mDef -= gloves.MagicalDef;
+                    break;
+                case EquipmentType.Boots:
+                    boots = null;
+                    pDef -= boots.PhysicalDef;
+                    mDef -= boots.MagicalDef;
+                    break;
+                case EquipmentType.None:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void Take(Item item)
+        {
+            weight += item.Weight;
+            if (weight > MaxWeight)
+            {
+                weight -= item.Weight;
+                return;
+            }
+
+            items.Add(item.Name, item);
+        }
+
+        public void Drop(Item item)
+        {
+            items.Remove(item.Name);
+
+            weight -= item.Weight;
         }
 
         public void SelectSpell(AttackSpell selectedAttackSpell, DefensiveSpell selectedDefensiveSpell) {
@@ -70,32 +133,20 @@ namespace ITGame.CLI.Models.Creature
 
         public override void RecieveDamage(Damage damage)
         {
-            var pDef = GetPDef();
             var mDef = GetMDef();
 
-            damage.PhysicalDamage -= pDef;
-            damage.MagicalDamage -= mDef;
+            damage.PhysicalDamage -= PhysicalDefence;
+            damage.MagicalDamage -= mDef + this.mDef;
 
             base.RecieveDamage(damage);
         }
-
-        public virtual int GetPDef()
-        {
-            var pDef = helmet != null ? helmet.PhysicalDef : 0;
-            pDef += gloves != null ? gloves.PhysicalDef : 0;
-            pDef += boots != null ? boots.PhysicalDef : 0;
-            pDef += body != null ? body.PhysicalDef : 0;
-            return pDef;
-        }
+                
 
         public virtual int GetMDef()
         {
-            var mDef = helmet != null ? helmet.MagicalDef : 0;
-            mDef += gloves != null ? gloves.MagicalDef : 0;
-            mDef += boots != null ? boots.MagicalDef : 0;
-            mDef += body != null ? body.MagicalDef : 0;
             mDef += (defensiveSpell != null && defensiveSpell.SpellType == _target.AttackSpellType) ? defensiveSpell.TotalMagicalAttack : 0;
             return mDef;
         }
+
     }
 }

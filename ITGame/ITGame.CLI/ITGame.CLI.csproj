@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Identity.cs" />
+    <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Equipment\EquipmentType.cs" />
     <Compile Include="Models\Damage.cs" />
     <Compile Include="Models\Equipment\Armor.cs" />
@@ -80,7 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Environment\" />
-    <Folder Include="Models\Items\" />
     <Folder Include="Story\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
