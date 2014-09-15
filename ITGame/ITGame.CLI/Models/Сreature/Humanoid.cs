@@ -146,6 +146,9 @@ namespace ITGame.CLI.Models.Creature
                 mDef += (defensiveSpell != null &&
                         (defensiveSpell.Duration != 0 && defensiveSpell.SpellType == spellType)) ? defensiveSpell.MagicalPower : 0;
 
+            if (defensiveSpell != null)
+                defensiveSpell.Duration -= defensiveSpell.Duration != 0 ? 1 : 0;
+
             damage.PhysicalDamage -= pDef;
             damage.MagicalDamage -= mDef;
 
@@ -183,9 +186,10 @@ namespace ITGame.CLI.Models.Creature
             _target.RecieveDamage(new Damage
             {
                 PhysicalDamage = 0,
-                MagicalDamage = MagicalAttack + attackSpell.MagicalPower
+                MagicalDamage = MagicalAttack
             }, attackSpell.SpellType);
 
+            ManaConsumption(attackSpell.ManaCost);
             attackSpell.IsAttack = false;
         }
 
