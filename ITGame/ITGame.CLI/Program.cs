@@ -11,6 +11,7 @@ namespace ITGame.CLI
 {
     class Program
     {
+        private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
             Elf legolas = new Elf { Name = "Legolas" };
@@ -36,7 +37,37 @@ namespace ITGame.CLI
 
         static void ActionPerformed(object sender, ActionPerformedEventArgs e)
         {
+
+            ChangeConsoleColor(e.actionType);
             Console.WriteLine(e.message);
+            ResetConsoleColor();
+        }
+
+        static void ChangeConsoleColor(ActionType type)
+        {
+            switch (type)
+            {
+                case ActionType.Fight:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case ActionType.Take:
+                    break;
+                case ActionType.Voice:
+                    break;
+                case ActionType.Equip:
+                    break;
+                case ActionType.Info:
+                    break;
+                case ActionType.SystemInfo:
+                    break;
+                default:
+                    Console.ForegroundColor = defaultColor;
+                    break;
+            }
+        }
+        static void ResetConsoleColor()
+        {
+            Console.ForegroundColor = defaultColor;
         }
     }
 }
