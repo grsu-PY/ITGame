@@ -7,15 +7,26 @@ namespace ITGame.CLI.Models.Equipment
 {
     public class Weapon : Equipment
     {
+        private int itemId;
+        private int physicalAttack;
+        private int magicalAttack;
+        private bool isAttack;
+
         public Weapon()
         {
             equipmentType = EquipmentType.Weapon;
         }
 
+        public int ItemID
+        {
+            get { return itemId; }
+            set { itemId = value; }
+        }
+
         public bool IsAttack
         {
-            get { throw new System.NotImplementedException(); }
-            set { }
+            get { return isAttack; }
+            set { isAttack = value; }
         }
 
         public int AttackSpeed
@@ -33,10 +44,11 @@ namespace ITGame.CLI.Models.Equipment
         {
             get
             {
-                throw new System.NotImplementedException();
+                return physicalAttack;
             }
             set
             {
+                physicalAttack = value;
             }
         }
 
@@ -44,10 +56,11 @@ namespace ITGame.CLI.Models.Equipment
         {
             get
             {
-                throw new System.NotImplementedException();
+                return magicalAttack;
             }
             set
             {
+                magicalAttack = value;
             }
         }
     }

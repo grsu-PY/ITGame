@@ -11,9 +11,8 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Fields
          */
-        private int baseMagicalAttack;
-        private int bonusMagicalAttack;
-        private int totalMagicalAttack;
+        private int spellId;
+        private int magicalPower;
         private int manaCost;
         private string spellName;
         private bool isAttack;
@@ -27,14 +26,6 @@ namespace ITGame.CLI.Models.Magic
         {
 
         }
-        public Spell(string spellName, SpellType spellType, int baseMagicalAttack, int bonusMagicalAttack, int manaCost) {
-            this.spellName = spellName;
-            this.baseMagicalAttack = baseMagicalAttack;
-            this.bonusMagicalAttack = bonusMagicalAttack;
-            this.manaCost = manaCost;
-            this.spellType = spellType;
-            this.totalMagicalAttack = baseMagicalAttack + bonusMagicalAttack;
-        }
 
         /*
          * Properties
@@ -46,22 +37,13 @@ namespace ITGame.CLI.Models.Magic
         public string SpellName
         {
             get { return spellName; }
+            set { spellName = value; }
         }
 
-        public int BaseMagicalAttack
+        public int MagicalPower
         {
-            get { return baseMagicalAttack; }
-        }
-
-        public int BonusMagicalAttack
-        {
-            get { return bonusMagicalAttack; }
-            set { bonusMagicalAttack = value; }
-        }
-        public int TotalMagicalAttack
-        {
-            get { return totalMagicalAttack; }
-            set { totalMagicalAttack = value; }
+            get { return magicalPower; }
+            set { magicalPower = value; }
         }
 
         public bool IsAttack {
@@ -77,6 +59,7 @@ namespace ITGame.CLI.Models.Magic
         public int ManaCost
         {
             get { return manaCost; }
+            set { manaCost = value; }
         }
 
 

@@ -155,6 +155,13 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
+        public void ManaConsumption(int manaCost)
+        {
+            int mCost = manaCost < currentMP ? manaCost : 0;
+
+            MP -= mCost;
+        }
+
         public virtual void RecieveDamage(Damage damage, SpellType spellType = SpellType.None)
         {
             var message = string.Format("You {0} have recieved {1} damage",
@@ -195,6 +202,10 @@ namespace ITGame.CLI.Models.Creature
 
         public virtual void SpellAttack()
         {
+            throw new NotImplementedException();
+        }
+
+        public virtual void SpellDefense() {
             throw new NotImplementedException();
         }
 

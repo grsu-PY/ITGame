@@ -124,11 +124,7 @@ namespace ITGame.CLI.Models.Creature
         public override int PhysicalAttack
         {
             get
-            {   // Предположительно, перед боем игроку будет дана возможность выбрать оружие и заклинание.
-                // IsAttack - будет меняться на протяжении боя. Хотим ударить оружием меняем IsAttack на true. Ударили - возвращаем в false;
-                // Аналогично с заклинаниями.
-                // Данная модификация больше нужна для MagicalAttack.
-                // В руке посох(маг урон) и заклинание.
+            {   
                 return base.PhysicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.PhysicalAttack : 0);
             }
         }
@@ -138,7 +134,7 @@ namespace ITGame.CLI.Models.Creature
             get
             {
                 return base.MagicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.MagicalAttack : 
-                                                             ((attackSpell != null && attackSpell.IsAttack != false) ? attackSpell.TotalMagicalAttack : 0));
+                                                             ((attackSpell != null && attackSpell.IsAttack != false) ? attackSpell.MagicalPower : 0));
             }
         }
 
@@ -148,9 +144,9 @@ namespace ITGame.CLI.Models.Creature
 
             if (spellType != SpellType.None)
                 mDef += (defensiveSpell != null &&
-                        (defensiveSpell.IsAttack != false && defensiveSpell.SpellType == spellType)) ? defensiveSpell.TotalMagicalAttack : 0;
+                        (defensiveSpell.Duration != 0 && defensiveSpell.SpellType == spellType)) ? defensiveSpell.MagicalPower : 0;
 
-            damage.PhysicalDamage -= PhysicalDefence;
+            damage.PhysicalDamage -= pDef;
             damage.MagicalDamage -= mDef;
 
             base.RecieveDamage(damage);
@@ -158,7 +154,7 @@ namespace ITGame.CLI.Models.Creature
 
         public override void WeaponAttack()
         {
-            if (_target == null) return;
+            if (_target == null || weapon == null) return;
 
             weapon.IsAttack = true;
 
@@ -169,7 +165,7 @@ namespace ITGame.CLI.Models.Creature
             _target.RecieveDamage(new Damage
             {
                 PhysicalDamage = PhysicalAttack,
-                MagicalDamage = 0
+                MagicalDamage = MagicalAttack
             });
 
             weapon.IsAttack = false;
@@ -177,21 +173,32 @@ namespace ITGame.CLI.Models.Creature
 
         public override void SpellAttack()
         {
-            if (_target == null) return;
+            if (_target == null || attackSpell == null) return;
 
             attackSpell.IsAttack = true;
-            var message = string.Format("Your potential damage is {0}", MagicalAttack + attackSpell.TotalMagicalAttack);
+            var message = string.Format("Your potential damage is {0}", MagicalAttack + attackSpell.MagicalPower);
             
             OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));            
 
             _target.RecieveDamage(new Damage
             {
                 PhysicalDamage = 0,
-                MagicalDamage = MagicalAttack + attackSpell.TotalMagicalAttack
+                MagicalDamage = MagicalAttack + attackSpell.MagicalPower
             }, attackSpell.SpellType);
 
             attackSpell.IsAttack = false;
         }
+
+        public override void SpellDefense()
+        {
+            if (defensiveSpell == null) return;
+
+            defensiveSpell.Duration = defensiveSpell.TotalDuration;
+        }
+
+        public Weapon Weapon { get { return weapon; } }
+        public AttackSpell AttackSpell { get { return attackSpell; } }
+        public DefensiveSpell DefensiveSpell { get { return defensiveSpell; } }
 
         protected override void OnActionPerformed(ActionPerformedEventArgs e)
         {
