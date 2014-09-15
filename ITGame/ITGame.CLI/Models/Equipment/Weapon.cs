@@ -12,6 +12,12 @@ namespace ITGame.CLI.Models.Equipment
             equipmentType = EquipmentType.Weapon;
         }
 
+        public bool IsAttack
+        {
+            get { throw new System.NotImplementedException(); }
+            set { }
+        }
+
         public int AttackSpeed
         {
             get

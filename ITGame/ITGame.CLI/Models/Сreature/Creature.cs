@@ -32,9 +32,6 @@ namespace ITGame.CLI.Models.Creature
         private int currentMP;
         private int currentHP;
 
-        protected AttackSpell attackSpell;
-        protected DefensiveSpell defensiveSpell;
-
         public Creature()
         {
             currentHP = MaxHP;
@@ -126,16 +123,6 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public SpellType AttackSpellType
-        {
-            get { return attackSpell.SpellType; }
-        }
-
-        public SpellType DefensiveSpellType
-        {
-            get { return defensiveSpell.SpellType; }
-        }
-
         public virtual int PhysicalAttack
         {
             get
@@ -205,7 +192,7 @@ namespace ITGame.CLI.Models.Creature
 
 
 
-        public void SpellAttack()
+        public virtual void SpellAttack()
         {
             throw new NotImplementedException();
         }

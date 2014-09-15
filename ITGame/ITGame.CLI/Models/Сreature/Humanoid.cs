@@ -23,6 +23,8 @@ namespace ITGame.CLI.Models.Creature
 
         protected Weapon weapon;
 
+        protected AttackSpell attackSpell;
+        protected DefensiveSpell defensiveSpell;
 
         public void Equip(ITGame.CLI.Models.Equipment.Equipment equipment)
         {
@@ -57,7 +59,7 @@ namespace ITGame.CLI.Models.Creature
                     break;
             }
         }
-
+        
         public void RemoveEquipment(EquipmentType equipType)
         {
             switch (equipType)
@@ -112,14 +114,18 @@ namespace ITGame.CLI.Models.Creature
         }
 
         public void SelectSpell(AttackSpell selectedAttackSpell, DefensiveSpell selectedDefensiveSpell) {
-            attackSpell = selectedAttackSpell;
-            defensiveSpell = selectedDefensiveSpell;
+            this.attackSpell = selectedAttackSpell;
+            this.defensiveSpell = selectedDefensiveSpell;
         }
         public override int PhysicalAttack
         {
             get
-            {
-                return base.PhysicalAttack + (weapon != null ? weapon.PhysicalAttack : 0);
+            {   // Предположительно, перед боем игроку будет дана возможность выбрать оружие и заклинание.
+                // IsAttack - будет меняться на протяжении боя. Хотим ударить оружием меняем IsAttack на true. Ударили - возвращаем в false;
+                // Аналогично с заклинаниями.
+                // Данная модификация больше нужна для MagicalAttack.
+                // В руке посох(маг урон) и заклинание.
+                return base.PhysicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.PhysicalAttack : 0);
             }
         }
 
@@ -127,24 +133,55 @@ namespace ITGame.CLI.Models.Creature
         {
             get
             {
-                return base.MagicalAttack + (weapon != null ? weapon.MagicalAttack : attackSpell.TotalMagicalAttack);
+                return base.MagicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.MagicalAttack : 
+                                                             ((attackSpell != null && attackSpell.IsAttack != false) ? attackSpell.TotalMagicalAttack : 0));
             }
         }
 
-        public override void RecieveDamage(Damage damage)
+        public override void RecieveDamage(Damage damage, AttackSpell targetAttackSpell = null)
         {
             var mDef = GetMDef();
+
+            if (targetAttackSpell != null) 
+                mDef += (defensiveSpell.IsAttack != false && defensiveSpell.SpellType == targetAttackSpell.SpellType) ? defensiveSpell.TotalMagicalAttack : 0;
 
             damage.PhysicalDamage -= PhysicalDefence;
             damage.MagicalDamage -= mDef + this.mDef;
 
             base.RecieveDamage(damage);
         }
-                
+
+        public override void WeaponAttack()
+        {
+            if (_target == null) return;
+
+            weapon.IsAttack = true;
+
+            _target.RecieveDamage(new Damage
+            {
+                PhysicalDamage = PhysicalAttack,
+                MagicalDamage = MagicalAttack
+            });
+
+            weapon.IsAttack = false;
+        }
+
+        public override void SpellAttack()
+        {
+            if (_target == null) return;
+
+            attackSpell.IsAttack = true;
+
+            _target.RecieveDamage(new Damage{
+                PhysicalDamage = 0,
+                MagicalDamage = MagicalAttack
+            });
+
+            attackSpell.IsAttack = false;
+        }
 
         public virtual int GetMDef()
         {
-            mDef += (defensiveSpell != null && defensiveSpell.SpellType == _target.AttackSpellType) ? defensiveSpell.TotalMagicalAttack : 0;
             return mDef;
         }
 

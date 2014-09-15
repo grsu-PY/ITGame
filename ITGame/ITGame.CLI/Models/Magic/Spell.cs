@@ -11,9 +11,11 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Fields
          */
-        private uint baseMagicalAttack;
-        private uint bonusMagicalAttack;
+        private int spellId;
+        private int baseMagicalAttack;
+        private int bonusMagicalAttack;
         private int totalMagicalAttack;
+        private int manaCost;
         private string spellName;
 
         protected SpellType spellType;
@@ -25,12 +27,14 @@ namespace ITGame.CLI.Models.Magic
         {
 
         }
-        public Spell(string spellName, SpellType spellType, uint baseMagicalAttack, uint bonusMagicalAttack) {
+        public Spell(int spellId, string spellName, SpellType spellType, int baseMagicalAttack, int bonusMagicalAttack, int manaCost) {
+            this.spellId = spellId;
             this.spellName = spellName;
             this.baseMagicalAttack = baseMagicalAttack;
             this.bonusMagicalAttack = bonusMagicalAttack;
+            this.manaCost = manaCost;
             this.spellType = spellType;
-            this.totalMagicalAttack = (int)baseMagicalAttack + (int)bonusMagicalAttack; // Временно, пока не решим вопрос, который я задал в VK
+            this.totalMagicalAttack = baseMagicalAttack + bonusMagicalAttack;
         }
 
         /*
@@ -38,17 +42,21 @@ namespace ITGame.CLI.Models.Magic
          */
         public SpellType SpellType { get { return spellType; } }
 
+        public int SpellID {
+            get { return spellId; }
+        }
+
         public string SpellName
         {
             get { return spellName; }
         }
 
-        public uint BaseMagicalAttack
+        public int BaseMagicalAttack
         {
             get { return baseMagicalAttack; }
         }
 
-        public uint BonusMagicalAttack
+        public int BonusMagicalAttack
         {
             get { return bonusMagicalAttack; }
             set { bonusMagicalAttack = value; }
@@ -59,14 +67,19 @@ namespace ITGame.CLI.Models.Magic
             set { totalMagicalAttack = value; }
         }
 
+        public bool IsAttack {
+            get { throw new System.NotImplementedException(); }
+            set { }
+        }
+
         public float BaseSpeedCast  // Этот параметр пусть пока повисит, мало ли, решим реализовать
         {
             get { throw new NotImplementedException(); }
         }
 
-        public uint ManaCost
+        public int ManaCost
         {
-            get { throw new NotImplementedException(); }
+            get { return manaCost; }
         }
 
     }
