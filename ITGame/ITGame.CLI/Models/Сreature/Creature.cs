@@ -157,7 +157,7 @@ namespace ITGame.CLI.Models.Creature
 
         public void ManaConsumption(int manaCost)
         {
-            int mCost = manaCost < currentMP ? manaCost : 0;
+            int mCost = manaCost <= currentMP ? manaCost : 0;
 
             MP -= mCost;
         }

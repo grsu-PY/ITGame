@@ -178,8 +178,16 @@ namespace ITGame.CLI.Models.Creature
         {
             if (_target == null || attackSpell == null) return;
 
+            var message = "";
+            if (attackSpell.ManaCost > MP)
+            {
+                message = "You have not a mana point";
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));  
+                return;
+            }
+
             attackSpell.IsAttack = true;
-            var message = string.Format("Your potential damage is {0}", MagicalAttack + attackSpell.MagicalPower);
+            message = string.Format("Your potential damage is {0}", MagicalAttack);
             
             OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));            
 
@@ -197,7 +205,15 @@ namespace ITGame.CLI.Models.Creature
         {
             if (defensiveSpell == null) return;
 
+            if (defensiveSpell.ManaCost > MP)
+            {
+                var message = "You have not a mana point";
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));  
+                return;
+            }
+
             defensiveSpell.Duration = defensiveSpell.TotalDuration;
+            ManaConsumption(defensiveSpell.ManaCost);
         }
 
         public Weapon Weapon { get { return weapon; } }
