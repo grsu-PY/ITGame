@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ITGame.CLI.Models.Creature.Actions
 {
-    public interface ICanEquip
+    public interface ICanEquip : ITGame.CLI.IAction
     {
         void Equip(ITGame.CLI.Models.Equipment.Equipment equipment);
         void RemoveEquipment(Equipment.EquipmentType equipType);

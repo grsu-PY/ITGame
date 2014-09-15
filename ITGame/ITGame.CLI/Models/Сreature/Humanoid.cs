@@ -11,7 +11,7 @@ namespace ITGame.CLI.Models.Creature
 {
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
-        protected Dictionary<string, Item> items;
+        protected Dictionary<Guid, Item> items;
         protected Dictionary<string, Weapon> weapons;
         protected Dictionary<string, Armor> armors;
         protected Dictionary<string, Spell> spells;
@@ -25,7 +25,7 @@ namespace ITGame.CLI.Models.Creature
 
         protected AttackSpell attackSpell;
         protected DefensiveSpell defensiveSpell;
-
+        
         public void Equip(ITGame.CLI.Models.Equipment.Equipment equipment)
         {
             switch (equipment.EquipmentType)
@@ -103,14 +103,18 @@ namespace ITGame.CLI.Models.Creature
                 return;
             }
 
-            items.Add(item.Name, item);
+            items.Add(item.Id, item);
         }
 
-        public void Drop(Item item)
+        public void Drop(Guid itemId)
         {
-            items.Remove(item.Name);
-
-            weight -= item.Weight;
+            Item item;
+            var exist = items.TryGetValue(itemId, out item);
+            if (exist)
+            {
+                weight -= item.Weight;
+                items.Remove(itemId);
+            }            
         }
 
         public void SelectSpell(AttackSpell selectedAttackSpell = null, DefensiveSpell selectedDefensiveSpell = null) {
@@ -138,16 +142,16 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public override void RecieveDamage(Damage damage, AttackSpell targetAttackSpell = null)
+        public override void RecieveDamage(Damage damage, SpellType spellType = SpellType.None)
         {
-            var mDef = GetMDef();
+            var mDef = MagicalDefence;
 
-            if (targetAttackSpell != null) 
-                mDef += (defensiveSpell != null && 
-                        (defensiveSpell.IsAttack != false && defensiveSpell.SpellType == targetAttackSpell.SpellType)) ? defensiveSpell.TotalMagicalAttack : 0;
+            if (spellType != SpellType.None)
+                mDef += (defensiveSpell != null &&
+                        (defensiveSpell.IsAttack != false && defensiveSpell.SpellType == spellType)) ? defensiveSpell.TotalMagicalAttack : 0;
 
             damage.PhysicalDamage -= PhysicalDefence;
-            damage.MagicalDamage -= mDef + this.mDef;
+            damage.MagicalDamage -= mDef;
 
             base.RecieveDamage(damage);
         }
@@ -158,10 +162,14 @@ namespace ITGame.CLI.Models.Creature
 
             weapon.IsAttack = true;
 
+            var message = string.Format("Your potential damage is {0}", PhysicalAttack);
+
+            OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));
+
             _target.RecieveDamage(new Damage
             {
                 PhysicalDamage = PhysicalAttack,
-                MagicalDamage = MagicalAttack
+                MagicalDamage = 0
             });
 
             weapon.IsAttack = false;
@@ -172,19 +180,23 @@ namespace ITGame.CLI.Models.Creature
             if (_target == null) return;
 
             attackSpell.IsAttack = true;
+            var message = string.Format("Your potential damage is {0}", MagicalAttack + attackSpell.TotalMagicalAttack);
+            
+            OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));            
 
-            _target.RecieveDamage(new Damage{
+            _target.RecieveDamage(new Damage
+            {
                 PhysicalDamage = 0,
-                MagicalDamage = MagicalAttack
-            }, attackSpell);
+                MagicalDamage = MagicalAttack + attackSpell.TotalMagicalAttack
+            }, attackSpell.SpellType);
 
             attackSpell.IsAttack = false;
         }
 
-        public virtual int GetMDef()
+        protected override void OnActionPerformed(ActionPerformedEventArgs e)
         {
-            return mDef;
+            base.OnActionPerformed(e);
         }
-
+        
     }
 }

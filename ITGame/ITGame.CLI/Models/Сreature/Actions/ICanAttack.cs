@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ITGame.CLI.Models.Creature.Actions
 {
-    public interface ICanAttack
+    public interface ICanAttack : ITGame.CLI.IAction
     {
         void WeaponAttack();
         void SpellAttack();

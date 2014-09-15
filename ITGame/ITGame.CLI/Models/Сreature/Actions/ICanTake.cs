@@ -5,9 +5,9 @@ using System.Text;
 
 namespace ITGame.CLI.Models.Creature.Actions
 {
-    public interface ICanTake
+    public interface ICanTake:IAction
     {
         void Take(ITGame.CLI.Models.Items.Item item);
-        void Drop(ITGame.CLI.Models.Items.Item item);
+        void Drop(Guid itemId);
     }
 }

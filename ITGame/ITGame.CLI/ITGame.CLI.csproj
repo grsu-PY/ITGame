@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionPerformedEventArgs.cs" />
+    <Compile Include="ActionType.cs" />
+    <Compile Include="IAction.cs" />
     <Compile Include="Models\Equipment\Fist.cs" />
     <Compile Include="Models\Identity.cs" />
     <Compile Include="Models\Items\Item.cs" />

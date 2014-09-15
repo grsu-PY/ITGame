@@ -7,5 +7,9 @@ namespace ITGame.CLI.Models.Equipment
 {
     public class Gloves : Armor
     {
+        public Gloves()
+        {
+            equipmentType = EquipmentType.Gloves;
+        }
     }
 }

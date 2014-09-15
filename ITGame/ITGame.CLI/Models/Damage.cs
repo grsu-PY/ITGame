@@ -7,8 +7,24 @@ namespace ITGame.CLI.Models
 {
     public class Damage
     {
-        public int PhysicalDamage { get; set; }
+        private int physicalDamage;
+        private int magicalDamage;
+        public int PhysicalDamage
+        {
+            get { return physicalDamage; }
+            set
+            {
+                physicalDamage = value > 0 ? value : 0;
+            }
+        }
 
-        public int MagicalDamage { get; set; }
+        public int MagicalDamage
+        {
+            get { return magicalDamage; }
+            set
+            {
+                magicalDamage = value > 0 ? value : 0;
+            }
+        }
     }
 }

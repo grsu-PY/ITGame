@@ -13,26 +13,30 @@ namespace ITGame.CLI
     {
         static void Main(string[] args)
         {
-            Elf legolas = new Elf();
-            legolas.HP = legolas.MaxHP;
-            Console.WriteLine("Legolas\nCurrent/Max: {0}/{1}", legolas.HP, legolas.MaxHP);
+            Elf legolas = new Elf { Name = "Legolas" };
+            legolas.ActionPerformed += ActionPerformed;
+            Console.WriteLine("{0}\nCurrent/Max: {1}/{2}", legolas.Name, legolas.HP, legolas.MaxHP);
 
             legolas.Equip(new Bow { PhysicalAttack = 15 });
 
-            Human gendalf = new Human();
-            gendalf.HP = gendalf.MaxHP;
-            Console.WriteLine("Gendalf\nCurrent/Max: {0}/{1}", legolas.HP, legolas.MaxHP);
+            Human gendalf = new Human { Name = "Gendalf" };
+            gendalf.ActionPerformed += ActionPerformed;
+            Console.WriteLine("{0}\nCurrent/Max: {1}/{2}", gendalf.Name, gendalf.HP, gendalf.MaxHP);
 
             gendalf.SelectSpell(new AttackSpell { TotalMagicalAttack = 30 });
 
             gendalf.SetTarget(legolas);
 
-            Console.WriteLine("\nGendalf deals {0} damage to Legolas.", 30);
             gendalf.SpellAttack();
 
-            Console.WriteLine("\n\nLegolas\nCurrent/Max: {0}/{1}", legolas.HP, legolas.MaxHP);
+            Console.WriteLine("\n\n{0}\nCurrent/Max: {1}/{2}", legolas.Name, legolas.HP, legolas.MaxHP);
 
             Console.ReadKey();
+        }
+
+        static void ActionPerformed(object sender, ActionPerformedEventArgs e)
+        {
+            Console.WriteLine(e.message);
         }
     }
 }

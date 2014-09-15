@@ -155,13 +155,16 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public virtual void RecieveDamage(Damage damage, AttackSpell targetAttackSpell = null)
+        public virtual void RecieveDamage(Damage damage, SpellType spellType = SpellType.None)
         {
-            int pDmg = damage.PhysicalDamage > 0 ? damage.PhysicalDamage : 0;
-            int mDmg = damage.MagicalDamage > 0 ? damage.MagicalDamage : 0;
+            var message = string.Format("You {0} have recieved {1} damage",
+                Name,
+                damage.MagicalDamage + damage.PhysicalDamage);
 
-            HP -= pDmg;
-            HP -= mDmg;
+            HP -= damage.PhysicalDamage;
+            HP -= damage.MagicalDamage;
+
+            OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));
         }
 
         public virtual void WeaponAttack()
@@ -190,11 +193,21 @@ namespace ITGame.CLI.Models.Creature
         public int MaxMP { get { return initialMP + wisdom * 10; } }
 
 
-
-
         public virtual void SpellAttack()
         {
             throw new NotImplementedException();
+        }
+
+        public event EventHandler<ActionPerformedEventArgs> ActionPerformed;
+
+        protected virtual void OnActionPerformed(ActionPerformedEventArgs e)
+        {
+            EventHandler<ActionPerformedEventArgs> handler = ActionPerformed;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ITGame.CLI.Models.Magic
     public enum SpellType {
         Shadow,
         Arcane,
-        Fire
+        Fire,
+        None
     }
 }

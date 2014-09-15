@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Magic
 {
-    public class Spell
+    public class Spell : ITGame.CLI.Models.Identity
     {
         /*
          * Fields
          */
-        private int spellId;
         private int baseMagicalAttack;
         private int bonusMagicalAttack;
         private int totalMagicalAttack;
@@ -28,8 +27,7 @@ namespace ITGame.CLI.Models.Magic
         {
 
         }
-        public Spell(int spellId, string spellName, SpellType spellType, int baseMagicalAttack, int bonusMagicalAttack, int manaCost) {
-            this.spellId = spellId;
+        public Spell(string spellName, SpellType spellType, int baseMagicalAttack, int bonusMagicalAttack, int manaCost) {
             this.spellName = spellName;
             this.baseMagicalAttack = baseMagicalAttack;
             this.bonusMagicalAttack = bonusMagicalAttack;
@@ -41,11 +39,9 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Properties
          */
+        public Guid Id { get; set; }
+        public string Name { get; set; }
         public SpellType SpellType { get { return spellType; } }
-
-        public int SpellID {
-            get { return spellId; }
-        }
 
         public string SpellName
         {
@@ -83,5 +79,7 @@ namespace ITGame.CLI.Models.Magic
             get { return manaCost; }
         }
 
+
+        
     }
 }

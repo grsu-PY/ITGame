@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ITGame.CLI.Models.Creature.Actions
 {
-    public interface IMoveable
+    public interface IMoveable:IAction
     {
         void Move();
     }
