@@ -155,7 +155,7 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public virtual void RecieveDamage(Damage damage)
+        public virtual void RecieveDamage(Damage damage, AttackSpell targetAttackSpell = null)
         {
             int pDmg = damage.PhysicalDamage > 0 ? damage.PhysicalDamage : 0;
             int mDmg = damage.MagicalDamage > 0 ? damage.MagicalDamage : 0;

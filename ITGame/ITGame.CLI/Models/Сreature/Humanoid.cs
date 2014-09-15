@@ -113,7 +113,7 @@ namespace ITGame.CLI.Models.Creature
             weight -= item.Weight;
         }
 
-        public void SelectSpell(AttackSpell selectedAttackSpell, DefensiveSpell selectedDefensiveSpell) {
+        public void SelectSpell(AttackSpell selectedAttackSpell = null, DefensiveSpell selectedDefensiveSpell = null) {
             this.attackSpell = selectedAttackSpell;
             this.defensiveSpell = selectedDefensiveSpell;
         }
@@ -143,7 +143,8 @@ namespace ITGame.CLI.Models.Creature
             var mDef = GetMDef();
 
             if (targetAttackSpell != null) 
-                mDef += (defensiveSpell.IsAttack != false && defensiveSpell.SpellType == targetAttackSpell.SpellType) ? defensiveSpell.TotalMagicalAttack : 0;
+                mDef += (defensiveSpell != null && 
+                        (defensiveSpell.IsAttack != false && defensiveSpell.SpellType == targetAttackSpell.SpellType)) ? defensiveSpell.TotalMagicalAttack : 0;
 
             damage.PhysicalDamage -= PhysicalDefence;
             damage.MagicalDamage -= mDef + this.mDef;
@@ -175,7 +176,7 @@ namespace ITGame.CLI.Models.Creature
             _target.RecieveDamage(new Damage{
                 PhysicalDamage = 0,
                 MagicalDamage = MagicalAttack
-            });
+            }, attackSpell);
 
             attackSpell.IsAttack = false;
         }

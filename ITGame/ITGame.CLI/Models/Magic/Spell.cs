@@ -17,6 +17,7 @@ namespace ITGame.CLI.Models.Magic
         private int totalMagicalAttack;
         private int manaCost;
         private string spellName;
+        private bool isAttack;
 
         protected SpellType spellType;
 
@@ -68,8 +69,8 @@ namespace ITGame.CLI.Models.Magic
         }
 
         public bool IsAttack {
-            get { throw new System.NotImplementedException(); }
-            set { }
+            get { return isAttack; }
+            set { isAttack = value; }
         }
 
         public float BaseSpeedCast  // Этот параметр пусть пока повисит, мало ли, решим реализовать
