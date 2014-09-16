@@ -16,8 +16,7 @@ namespace ITGame.CLI
         static void Main(string[] args)
         {
             #region Game
-            Human nazgul = new Human();
-            nazgul.HP = nazgul.MaxHP;
+            Humanoid nazgul = new Humanoid() { HumanoidRace = HumanoidRace.Human };
             nazgul.ActionPerformed += ActionPerformed;
 
             nazgul.Equip(new Weapon { PhysicalAttack = 8, WeaponType = WeaponType.Sword });
@@ -33,8 +32,8 @@ namespace ITGame.CLI
                                       nazgul.MagicalDefence,
                                       nazgul.PhysicalAttack);
 
-            Human gendalf = new Human();
-            gendalf.HP = gendalf.MaxHP;
+            Humanoid gendalf = new Humanoid() { HumanoidRace = HumanoidRace.Human };
+            gendalf.MP = 5; // checked event
             gendalf.ActionPerformed += ActionPerformed;
             // gendalf.SelectSpell(new AttackSpell { MagicalPower = 20, ManaCost = 3 });
             //  gendalf.Equip(new Staff { PhysicalAttack = 3, MagicalAttack = 10 });
@@ -182,6 +181,7 @@ namespace ITGame.CLI
                 case ActionType.Equip:
                     break;
                 case ActionType.Info:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     break;
                 case ActionType.SystemInfo:
                     break;

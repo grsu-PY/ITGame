@@ -58,16 +58,13 @@
     <Compile Include="Models\Magic\SpellType.cs" />
     <Compile Include="Models\Сreature\Actions\ICanAttack.cs" />
     <Compile Include="Models\Сreature\Actions\IRecieveDamage.cs" />
-    <Compile Include="Models\Сreature\Dwarf.cs" />
-    <Compile Include="Models\Сreature\Elf.cs" />
-    <Compile Include="Models\Сreature\Human.cs" />
     <Compile Include="Models\Сreature\Actions\ICanEquip.cs" />
     <Compile Include="Models\Equipment\ITakeable.cs" />
     <Compile Include="Models\Сreature\Actions\ICanTake.cs" />
     <Compile Include="Models\Сreature\Actions\IMoveable.cs" />
     <Compile Include="Models\Сreature\Humanoid.cs" />
     <Compile Include="Models\Сreature\Creature.cs" />
-    <Compile Include="Models\Сreature\Orc.cs" />
+    <Compile Include="Models\Сreature\HumanoidRace.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Equipment\Weapon.cs" />

@@ -11,6 +11,8 @@ namespace ITGame.CLI.Models.Creature
 {
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
+        protected HumanoidRace humanoidRace;
+        
         protected Dictionary<Guid, Item> items;
         protected Dictionary<string, Weapon> weapons;
         protected Dictionary<string, Armor> armors;
@@ -77,7 +79,7 @@ namespace ITGame.CLI.Models.Creature
                     weapon = null;
                     break;
                 case EquipmentType.Armor:
-                    /*switch (equipType)   this problem
+                    /*switch (equipType)   this problem; we can replaced to 2 function - RemoveWeapon, RemoveArmor
                     {
                         case ArmorType.Body:
                             body = null;
@@ -138,6 +140,12 @@ namespace ITGame.CLI.Models.Creature
         public void SelectSpell(AttackSpell selectedAttackSpell = null, DefensiveSpell selectedDefensiveSpell = null) {
             this.attackSpell = selectedAttackSpell;
             this.defensiveSpell = selectedDefensiveSpell;
+        }
+
+        public HumanoidRace HumanoidRace
+        {
+            get { return humanoidRace; }
+            set { humanoidRace = value; }
         }
         public override int PhysicalAttack
         {

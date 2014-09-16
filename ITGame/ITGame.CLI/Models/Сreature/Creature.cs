@@ -15,13 +15,13 @@ namespace ITGame.CLI.Models.Creature
 
         protected Creature _target;
 
-        private readonly int strength = 2;
-        private readonly int wisdom = 1;
-        private readonly int agility = 1;
-        private readonly int constitution = 5;
+        private int strength = 2;
+        private int wisdom = 1;
+        private int agility = 1;
+        private int constitution = 5;
         
-        private readonly int initialMP = 5;
-        private readonly int initialHP = 20;
+        private int initialMP = 5;
+        private int initialHP = 20;
 
         protected int pDef;
         protected int mDef;
@@ -48,6 +48,10 @@ namespace ITGame.CLI.Models.Creature
             {
                 return strength;
             }
+            set
+            {
+                strength = value;
+            }
         }
 
         public int Wisdom
@@ -55,6 +59,10 @@ namespace ITGame.CLI.Models.Creature
             get
             {
                 return wisdom;
+            }
+            set
+            {
+                wisdom = value;
             }
         }
 
@@ -64,6 +72,10 @@ namespace ITGame.CLI.Models.Creature
             {
                 return constitution;
             }
+            set
+            {
+                constitution = value;
+            }
         }
 
         public int Agility
@@ -71,6 +83,10 @@ namespace ITGame.CLI.Models.Creature
             get
             {
                 return agility;
+            }
+            set
+            {
+                agility = value;
             }
         }
 

@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Creature
 {
-    public class Human : Humanoid
+    public enum HumanoidRace
     {
+        Dwarf,
+        Elf,
+        Human,
+        Orc
     }
 }
