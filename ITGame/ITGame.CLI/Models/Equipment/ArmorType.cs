@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Equipment
 {
-    public class Gloves : Armor
-    {
-        public Gloves()
-        {
-            equipmentType = EquipmentType.Gloves;
-        }
+    public enum ArmorType {
+        Body,
+        Boots,
+        Gloves,
+        Helmet,
+        None
     }
 }

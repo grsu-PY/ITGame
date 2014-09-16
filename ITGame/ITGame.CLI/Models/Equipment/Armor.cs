@@ -7,6 +7,10 @@ namespace ITGame.CLI.Models.Equipment
 {
     public class Armor : Equipment
     {
+        public Armor()
+        {
+            equipmentType = EquipmentType.Armor;
+        }
         public int PhysicalDef
         {
             get

@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Equipment
 {
-    public class Fist : Weapon
-    {
+    public enum WeaponType {
+        Bow,
+        Dagger,
+        Fist,
+        Hummer,
+        Staff,
+        Sword,
+        None
     }
 }

@@ -16,10 +16,10 @@ namespace ITGame.CLI.Models.Creature
         protected Dictionary<string, Armor> armors;
         protected Dictionary<string, Spell> spells;
 
-        protected Helmet helmet;
-        protected Body body;
-        protected Gloves gloves;
-        protected Boots boots;
+        protected Armor body;
+        protected Armor boots;
+        protected Armor gloves;
+        protected Armor helmet;
 
         protected Weapon weapon;
 
@@ -33,25 +33,34 @@ namespace ITGame.CLI.Models.Creature
                 case EquipmentType.Weapon:
                     weapon = equipment as Weapon;
                     break;
-                case EquipmentType.Helmet:
-                    helmet = equipment as Helmet;
-                    pDef += helmet.PhysicalDef;
-                    mDef += helmet.MagicalDef;
-                    break;
-                case EquipmentType.Body:
-                    body = equipment as Body;
-                    pDef += body.PhysicalDef;
-                    mDef += body.MagicalDef;
-                    break;
-                case EquipmentType.Gloves:
-                    gloves = equipment as Gloves;
-                    pDef += gloves.PhysicalDef;
-                    mDef += gloves.MagicalDef;
-                    break;
-                case EquipmentType.Boots:
-                    boots = equipment as Boots;
-                    pDef += boots.PhysicalDef;
-                    mDef += boots.MagicalDef;
+                case EquipmentType.Armor:
+                    switch (equipment.ArmorType) 
+                    {
+                        case ArmorType.Body:
+                            body = equipment as Armor;
+                            pDef += body.PhysicalDef;
+                            mDef += body.MagicalDef;
+                            break;
+                        case ArmorType.Boots:
+                            boots = equipment as Armor;
+                            pDef += boots.PhysicalDef;
+                            mDef += boots.MagicalDef;
+                            break;
+                        case ArmorType.Gloves:
+                            gloves = equipment as Armor;
+                            pDef += gloves.PhysicalDef;
+                            mDef += gloves.MagicalDef;
+                            break;
+                        case ArmorType.Helmet:
+                            helmet = equipment as Armor;
+                            pDef += helmet.PhysicalDef;
+                            mDef += helmet.MagicalDef;
+                            break;
+                        case ArmorType.None:
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case EquipmentType.None:
                     break;
@@ -67,25 +76,34 @@ namespace ITGame.CLI.Models.Creature
                 case EquipmentType.Weapon:
                     weapon = null;
                     break;
-                case EquipmentType.Helmet:
-                    helmet = null;
-                    pDef -= helmet.PhysicalDef;
-                    mDef -= helmet.MagicalDef;
-                    break;
-                case EquipmentType.Body:
-                    body = null;
-                    pDef -= body.PhysicalDef;
-                    mDef -= body.MagicalDef;
-                    break;
-                case EquipmentType.Gloves:
-                    gloves = null;
-                    pDef -= gloves.PhysicalDef;
-                    mDef -= gloves.MagicalDef;
-                    break;
-                case EquipmentType.Boots:
-                    boots = null;
-                    pDef -= boots.PhysicalDef;
-                    mDef -= boots.MagicalDef;
+                case EquipmentType.Armor:
+                    /*switch (equipType)   this problem
+                    {
+                        case ArmorType.Body:
+                            body = null;
+                            pDef -= body.PhysicalDef;
+                            mDef -= body.MagicalDef;
+                            break;
+                        case ArmorType.Boots:
+                            boots = null;
+                            pDef -= boots.PhysicalDef;
+                            mDef -= boots.MagicalDef;
+                            break;
+                        case ArmorType.Gloves:
+                            gloves = null;
+                            pDef -= gloves.PhysicalDef;
+                            mDef -= gloves.MagicalDef;
+                            break;
+                        case ArmorType.Helmet:
+                            helmet = null;
+                            pDef -= helmet.PhysicalDef;
+                            mDef -= helmet.MagicalDef;
+                            break;
+                        case ArmorType.None:
+                            break;
+                        default:
+                            break;
+                    }*/
                     break;
                 case EquipmentType.None:
                     break;

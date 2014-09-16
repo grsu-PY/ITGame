@@ -8,10 +8,7 @@ namespace ITGame.CLI.Models.Equipment
     public enum EquipmentType
     {
         Weapon,
-        Helmet,
-        Body,
-        Gloves,
-        Boots,
+        Armor,
         None,
     }
 }

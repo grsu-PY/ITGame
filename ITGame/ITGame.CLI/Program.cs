@@ -18,8 +18,9 @@ namespace ITGame.CLI
             #region Game
             Human nazgul = new Human();
             nazgul.HP = nazgul.MaxHP;
+            nazgul.ActionPerformed += ActionPerformed;
 
-            nazgul.Equip(new Sword { PhysicalAttack = 8 });
+            nazgul.Equip(new Weapon { PhysicalAttack = 8, WeaponType = WeaponType.Sword });
             nazgul.SelectSpell(selectedDefensiveSpell: new DefensiveSpell { TotalDuration = 3, MagicalPower = 5 });
             // nazgul.SpellDefense();
 
@@ -34,7 +35,7 @@ namespace ITGame.CLI
 
             Human gendalf = new Human();
             gendalf.HP = gendalf.MaxHP;
-
+            gendalf.ActionPerformed += ActionPerformed;
             // gendalf.SelectSpell(new AttackSpell { MagicalPower = 20, ManaCost = 3 });
             //  gendalf.Equip(new Staff { PhysicalAttack = 3, MagicalAttack = 10 });
 
@@ -54,8 +55,8 @@ namespace ITGame.CLI
             nazgul.SetTarget(gendalf);
 
             ArrayList weapons = new ArrayList();
-            weapons.Add(new Sword { PhysicalAttack = 6 });
-            weapons.Add(new Staff { PhysicalAttack = 2, MagicalAttack = 3 });
+            weapons.Add(new Weapon { PhysicalAttack = 6, WeaponType = WeaponType.Sword });
+            weapons.Add(new Weapon { PhysicalAttack = 2, MagicalAttack = 3, WeaponType = WeaponType.Staff });
 
             ArrayList attack_spells = new ArrayList();
             attack_spells.Add(new AttackSpell { MagicalPower = 7, ManaCost = 3 });

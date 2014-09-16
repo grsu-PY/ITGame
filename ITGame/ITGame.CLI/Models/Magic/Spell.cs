@@ -11,7 +11,6 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Fields
          */
-        private int spellId;
         private int magicalPower;
         private int manaCost;
         private string spellName;

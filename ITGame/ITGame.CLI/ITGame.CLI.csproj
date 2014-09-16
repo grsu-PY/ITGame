@@ -44,19 +44,13 @@
     <Compile Include="ActionPerformedEventArgs.cs" />
     <Compile Include="ActionType.cs" />
     <Compile Include="IAction.cs" />
-    <Compile Include="Models\Equipment\Fist.cs" />
+    <Compile Include="Models\Equipment\ArmorType.cs" />
+    <Compile Include="Models\Equipment\WeaponType.cs" />
     <Compile Include="Models\Identity.cs" />
     <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Equipment\EquipmentType.cs" />
     <Compile Include="Models\Damage.cs" />
     <Compile Include="Models\Equipment\Armor.cs" />
-    <Compile Include="Models\Equipment\Bow.cs" />
-    <Compile Include="Models\Equipment\Dagger.cs" />
-    <Compile Include="Models\Equipment\Hummer.cs" />
-    <Compile Include="Models\Equipment\Body.cs" />
-    <Compile Include="Models\Equipment\Boots.cs" />
-    <Compile Include="Models\Equipment\Gloves.cs" />
-    <Compile Include="Models\Equipment\Helmet.cs" />
     <Compile Include="Models\Equipment\Equipment.cs" />
     <Compile Include="Models\Magic\AttackSpell.cs" />
     <Compile Include="Models\Magic\DefensiveSpell.cs" />
@@ -76,8 +70,6 @@
     <Compile Include="Models\Сreature\Orc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Equipment\Staff.cs" />
-    <Compile Include="Models\Equipment\Sword.cs" />
     <Compile Include="Models\Equipment\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
