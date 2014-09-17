@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ITGame.CLI
+namespace ITGame.CLI.Models.Creature.Actions
 {
     public class ActionPerformedEventArgs:EventArgs
     {

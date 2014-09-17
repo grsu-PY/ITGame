@@ -8,7 +8,7 @@ using ITGame.CLI.Models.Magic;
 namespace ITGame.CLI.Models.Creature
 {
 
-    public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, ITGame.CLI.Models.Identity
+    public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

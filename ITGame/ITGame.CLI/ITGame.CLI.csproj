@@ -41,9 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionPerformedEventArgs.cs" />
-    <Compile Include="ActionType.cs" />
-    <Compile Include="IAction.cs" />
+    <Compile Include="Models\Environment\Surface.cs" />
+    <Compile Include="Models\Environment\SurfaceRule.cs" />
+    <Compile Include="Models\Environment\SurfaceType.cs" />
+    <Compile Include="Models\Сreature\Actions\ActionPerformedEventArgs.cs" />
+    <Compile Include="Models\Сreature\Actions\ActionType.cs" />
+    <Compile Include="Models\Сreature\Actions\IAction.cs" />
     <Compile Include="Models\Equipment\ArmorType.cs" />
     <Compile Include="Models\Equipment\WeaponType.cs" />
     <Compile Include="Models\Identity.cs" />
@@ -74,7 +77,6 @@
     <None Include="Class Diagramms.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Environment\" />
     <Folder Include="Story\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

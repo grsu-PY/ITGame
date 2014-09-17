@@ -8,6 +8,8 @@ using System.Collections;
 using ITGame.CLI.Models.Creature;
 using ITGame.CLI.Models.Magic;
 using ITGame.CLI.Models.Equipment;
+using ITGame.CLI.Models.Creature.Actions;
+using ITGame.CLI.Models.Environment;
 namespace ITGame.CLI
 {
     class Program
@@ -15,8 +17,34 @@ namespace ITGame.CLI
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
+            var _surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
+            _surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
+
+            IEnumerable<Creature> creatures = new List<Creature>
+            {
+                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRace.Elf},
+                new Humanoid{Name="Ahaha"}
+            };
+            foreach (var cr in creatures)
+            {
+                Console.WriteLine(cr.Name);
+            }
+            Surface.ConfigureRules(_surfaceRules);
+            Surface.ApplyInfluence(creatures);
+            foreach (var cr in creatures)
+            {
+                Console.WriteLine(cr.Name);
+            }
+
             #region Game
-            Humanoid nazgul = new Humanoid() { HumanoidRace = HumanoidRace.Human };
+            //RunGame();
+            #endregion
+            Console.ReadKey();
+        }
+
+        private static void RunGame()
+        {
+            Humanoid nazgul = new Humanoid() { HumanoidRace = HumanoidRace.Human, Name = "Nazgul" };
             nazgul.ActionPerformed += ActionPerformed;
 
             nazgul.Equip(new Weapon { PhysicalAttack = 8, WeaponType = WeaponType.Sword });
@@ -32,7 +60,7 @@ namespace ITGame.CLI
                                       nazgul.MagicalDefence,
                                       nazgul.PhysicalAttack);
 
-            Humanoid gendalf = new Humanoid() { HumanoidRace = HumanoidRace.Human };
+            Humanoid gendalf = new Humanoid() { HumanoidRace = HumanoidRace.Human, Name = "Gendalf" };
             gendalf.MP = 5; // checked event
             gendalf.ActionPerformed += ActionPerformed;
             // gendalf.SelectSpell(new AttackSpell { MagicalPower = 20, ManaCost = 3 });
@@ -155,8 +183,6 @@ namespace ITGame.CLI
                 round++;
 
             }
-            #endregion
-            Console.ReadKey();
         }
 
         static void ActionPerformed(object sender, ActionPerformedEventArgs e)

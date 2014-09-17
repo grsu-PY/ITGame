@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ITGame.CLI.Models.Creature.Actions
 {
-    public interface IRecieveDamage : ITGame.CLI.IAction
+    public interface IRecieveDamage : IAction
     {
         void RecieveDamage(Damage damage, SpellType spellType = SpellType.None);
     }
