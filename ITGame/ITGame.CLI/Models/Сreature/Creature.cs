@@ -236,5 +236,11 @@ namespace ITGame.CLI.Models.Creature
                 handler(this, e);
             }
         }
+        public virtual void SubscribeForSurface(ref EventHandler<SurfaceAffectEventArgs> ev)
+        {
+            ev += OnSurfaceChangedHandler;
+        }
+
+        protected abstract void OnSurfaceChangedHandler(object sender, SurfaceAffectEventArgs e);
     }
 }

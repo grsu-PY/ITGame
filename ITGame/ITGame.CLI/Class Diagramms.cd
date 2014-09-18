@@ -8,19 +8,19 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Creature">
-    <Position X="1" Y="6.5" Width="1.5" />
+    <Position X="5.5" Y="6.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAgWACApAIQAAAAFAAKAEQShQhBAAQA4QAAICAAACIY=</HashCode>
+      <HashCode>AAgWACApEIQAAAAFAAKAEQShShBAAQA4QAAICAAACIY=</HashCode>
       <FileName>Models\Сreature\Creature.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.576" />
   </Class>
   <Class Name="ITGame.CLI.Models.Creature.Humanoid" Collapsed="true">
-    <Position X="0.5" Y="10.75" Width="1.5" />
+    <Position X="5.5" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgEBgAIAAARAAEEgAgBAAAACYAAAAigAAGIEBEACAQ=</HashCode>
       <FileName>Models\Сreature\Humanoid.cs</FileName>
@@ -56,14 +56,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Equipment">
-    <Position X="5.5" Y="6.25" Width="1.5" />
+    <Position X="1.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAABAAAAAAAAAAAAAAABAAAAAgAAAAIAAAAAIAAAA=</HashCode>
       <FileName>Models\Equipment\Equipment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Armor">
-    <Position X="5.5" Y="9.5" Width="1.5" />
+    <Position X="0.5" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Models\Equipment\Armor.cs</FileName>
@@ -77,7 +77,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Items.Item">
-    <Position X="5.5" Y="3.5" Width="1.5" />
+    <Position X="1.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQAACAAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>Models\Items\Item.cs</FileName>
@@ -85,7 +85,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="ITGame.CLI.Models.Magic.Spell" Collapsed="true">
-    <Position X="1.75" Y="3.5" Width="1.5" />
+    <Position X="5.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAADAAABAQAAAQAAAIAQgAQAEIAAAAACAAAAAgAAAAA=</HashCode>
       <FileName>Models\Magic\Spell.cs</FileName>
@@ -93,14 +93,14 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="ITGame.CLI.Models.Magic.DefensiveSpell" Collapsed="true">
-    <Position X="2.75" Y="4.75" Width="1.5" />
+    <Position X="6.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAACBAAAAAAAAAAAAAAAAAAAAAABAAAAAQA=</HashCode>
       <FileName>Models\Magic\DefensiveSpell.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Magic.AttackSpell" Collapsed="true">
-    <Position X="0.5" Y="4.75" Width="1.5" />
+    <Position X="4.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Magic\AttackSpell.cs</FileName>
@@ -116,15 +116,22 @@
   <Class Name="ITGame.CLI.Models.Environment.Surface" Collapsed="true">
     <Position X="15.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAEA=</HashCode>
+      <HashCode>AABAAAAAAAAAiAAAAAAAAAAAQAAAAAAAAAggAAEAAAA=</HashCode>
       <FileName>Models\Environment\Surface.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ITGame.CLI.Models.Equipment.Weapon" Collapsed="true">
-    <Position X="12.25" Y="1.5" Width="1.5" />
+    <Position X="2.75" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgAAAAJAACAAQAAgAAAAAAAAAAAAAIgAAAAIAAAAAA=</HashCode>
       <FileName>Models\Equipment\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ITGame.CLI.Models.Creature.SurfaceAffectEventArgs" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Сreature\SurfaceAffectEventArgs.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="ITGame.CLI.Models.Creature.Actions.IMoveable" Collapsed="true">

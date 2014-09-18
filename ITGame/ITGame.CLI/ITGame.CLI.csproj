@@ -44,6 +44,7 @@
     <Compile Include="Models\Environment\Surface.cs" />
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />
+    <Compile Include="Models\Сreature\SurfaceAffectEventArgs.cs" />
     <Compile Include="Models\Сreature\Actions\ActionPerformedEventArgs.cs" />
     <Compile Include="Models\Сreature\Actions\ActionType.cs" />
     <Compile Include="Models\Сreature\Actions\IAction.cs" />

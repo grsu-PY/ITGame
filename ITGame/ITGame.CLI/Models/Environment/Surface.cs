@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITGame.CLI.Models.Creature;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,10 @@ namespace ITGame.CLI.Models.Environment
     public static class Surface
     {
         private static IDictionary<SurfaceType, SurfaceRule> _surfaceRules;
+
+        private static SurfaceType _currentSurfaceType = SurfaceType.Ground;
+
+        public static event EventHandler<SurfaceAffectEventArgs> OnSurfaceChanged;
 
         static Surface()
         {
@@ -35,19 +40,45 @@ namespace ITGame.CLI.Models.Environment
             }
         }
 
-        public static void ApplyInfluence<T>(IEnumerable<T> creatures) where T : Creature.Creature
+        public static void RegisterInfluenceFor<T>(IEnumerable<T> creatures) where T : Creature.Creature
         {
             foreach (var creature in creatures)
             {
-                creature.Name = "10";
+                creature.SubscribeForSurface(ref OnSurfaceChanged);
             }
         }
+        public static void RegisterInfluenceFor<T>(T creature) where T : Creature.Creature
+        {
+            creature.SubscribeForSurface(ref OnSurfaceChanged);            
+        }
+
 
         public static IDictionary<SurfaceType, SurfaceRule> CurrentRules
         {
             get
             {
                 return _surfaceRules;
+            }
+        }
+
+        public static SurfaceType CurrentSurfaceType
+        {
+            get
+            {
+                return _currentSurfaceType;
+            }
+            set
+            {
+                if (value != _currentSurfaceType)
+                {
+                    _currentSurfaceType = value;
+
+                    if (OnSurfaceChanged != null && _surfaceRules.ContainsKey(_currentSurfaceType))
+                    {
+                        var eventArg = new SurfaceAffectEventArgs(_currentSurfaceType, _surfaceRules[_currentSurfaceType]);
+                        OnSurfaceChanged(null, eventArg);
+                    }
+                }
             }
         }
     }

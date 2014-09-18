@@ -23,17 +23,22 @@ namespace ITGame.CLI
             IEnumerable<Creature> creatures = new List<Creature>
             {
                 new Humanoid{Name="Legolas",HumanoidRace=HumanoidRace.Elf},
-                new Humanoid{Name="Ahaha"}
+                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRace.Dwarf}
             };
             foreach (var cr in creatures)
             {
-                Console.WriteLine(cr.Name);
+                cr.ActionPerformed += ActionPerformed;
+                Console.WriteLine(cr.Name + " - " + cr.Wisdom);
             }
+            //добавление новых, или изменение старых правил
             Surface.ConfigureRules(_surfaceRules);
-            Surface.ApplyInfluence(creatures);
+            //существа подписываются на изменения поверхности
+            Surface.RegisterInfluenceFor(creatures);
+            //после смены поверхности, параметры у существ меняются
+            Surface.CurrentSurfaceType = SurfaceType.Water;
             foreach (var cr in creatures)
             {
-                Console.WriteLine(cr.Name);
+                Console.WriteLine(cr.Name + " - " + cr.Wisdom);
             }
 
             #region Game

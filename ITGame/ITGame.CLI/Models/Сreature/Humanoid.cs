@@ -12,7 +12,7 @@ namespace ITGame.CLI.Models.Creature
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
         protected HumanoidRace humanoidRace;
-        
+
         protected Dictionary<Guid, Item> items;
         protected Dictionary<string, Weapon> weapons;
         protected Dictionary<string, Armor> armors;
@@ -27,7 +27,7 @@ namespace ITGame.CLI.Models.Creature
 
         protected AttackSpell attackSpell;
         protected DefensiveSpell defensiveSpell;
-        
+
         public void Equip(ITGame.CLI.Models.Equipment.Equipment equipment)
         {
             switch (equipment.EquipmentType)
@@ -36,7 +36,7 @@ namespace ITGame.CLI.Models.Creature
                     weapon = equipment as Weapon;
                     break;
                 case EquipmentType.Armor:
-                    switch (equipment.ArmorType) 
+                    switch (equipment.ArmorType)
                     {
                         case ArmorType.Body:
                             body = equipment as Armor;
@@ -70,7 +70,7 @@ namespace ITGame.CLI.Models.Creature
                     break;
             }
         }
-        
+
         public void RemoveEquipment(EquipmentType equipType)
         {
             switch (equipType)
@@ -134,10 +134,11 @@ namespace ITGame.CLI.Models.Creature
             {
                 weight -= item.Weight;
                 items.Remove(itemId);
-            }            
+            }
         }
 
-        public void SelectSpell(AttackSpell selectedAttackSpell = null, DefensiveSpell selectedDefensiveSpell = null) {
+        public void SelectSpell(AttackSpell selectedAttackSpell = null, DefensiveSpell selectedDefensiveSpell = null)
+        {
             this.attackSpell = selectedAttackSpell;
             this.defensiveSpell = selectedDefensiveSpell;
         }
@@ -150,7 +151,7 @@ namespace ITGame.CLI.Models.Creature
         public override int PhysicalAttack
         {
             get
-            {   
+            {
                 return base.PhysicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.PhysicalAttack : 0);
             }
         }
@@ -159,7 +160,7 @@ namespace ITGame.CLI.Models.Creature
         {
             get
             {
-                return base.MagicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.MagicalAttack : 
+                return base.MagicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.MagicalAttack :
                                                              ((attackSpell != null && attackSpell.IsAttack != false) ? attackSpell.MagicalPower : 0));
             }
         }
@@ -208,14 +209,14 @@ namespace ITGame.CLI.Models.Creature
             if (attackSpell.ManaCost > MP)
             {
                 message = "You have not a mana point";
-                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));  
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
                 return;
             }
 
             attackSpell.IsAttack = true;
             message = string.Format("Your potential damage is {0}", MagicalAttack);
-            
-            OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));            
+
+            OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));
 
             _target.RecieveDamage(new Damage
             {
@@ -234,7 +235,7 @@ namespace ITGame.CLI.Models.Creature
             if (defensiveSpell.ManaCost > MP)
             {
                 var message = "You have not a mana point";
-                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));  
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
                 return;
             }
 
@@ -250,6 +251,84 @@ namespace ITGame.CLI.Models.Creature
         {
             base.OnActionPerformed(e);
         }
-        
+
+        protected override void OnSurfaceChangedHandler(object sender, SurfaceAffectEventArgs e)
+        {
+            OnActionPerformed(new ActionPerformedEventArgs(
+                string.Format("Oh, look at this, {0}. Surface was changed to {1}", Name, e.surfaceType),
+                ActionType.Info)
+                );
+
+            switch (HumanoidRace)
+            {
+                case HumanoidRace.Dwarf:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case HumanoidRace.Elf:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            Wisdom += e.actionRule.Wisdom;
+                            Strength += e.actionRule.Strength;
+                            Agility += e.actionRule.Agility;
+                            HP += e.actionRule.HP;
+                            MP += e.actionRule.MP;
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case HumanoidRace.Human:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case HumanoidRace.Orc:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
