@@ -11,7 +11,15 @@ namespace ITGame.CLI.Models.Creature
     public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return ""; }
+            set
+            {
+                var message = string.Format("New name - {0}", value);
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
+            }
+        }
 
         protected Creature _target;
 
@@ -122,6 +130,9 @@ namespace ITGame.CLI.Models.Creature
                 currentHP = value > 0
                     ? value > MaxHP ? MaxHP : value
                     : 0;
+
+                var message = string.Format("The new value of health point - {0}", currentHP);
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
             }
         }
 
@@ -136,6 +147,9 @@ namespace ITGame.CLI.Models.Creature
                 currentMP = value > 0
                     ? value > MaxMP ? MaxMP : value
                     : 0;
+
+                var message = string.Format("The new value of mana point - {0}", currentMP);
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
             }
         }
 

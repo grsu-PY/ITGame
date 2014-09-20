@@ -145,8 +145,17 @@ namespace ITGame.CLI.Models.Creature
 
         public HumanoidRace HumanoidRace
         {
-            get { return humanoidRace; }
-            set { humanoidRace = value; }
+            get
+            {
+                return humanoidRace;
+            }
+            set
+            {
+                humanoidRace = value;
+
+                var message = string.Format("Humanoid race changed to {0}", value);
+                OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
+            }
         }
         public override int PhysicalAttack
         {

@@ -11,6 +11,7 @@ namespace ITGame.CLI.Models.Creature
         Dwarf,
         Elf,
         Human,
-        Orc
+        Orc,
+        None
     }
 }

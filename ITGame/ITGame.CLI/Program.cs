@@ -16,7 +16,7 @@ namespace ITGame.CLI
     {
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
-        {
+        {/*
             var _surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
             _surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
 
@@ -40,10 +40,11 @@ namespace ITGame.CLI
             {
                 Console.WriteLine(cr.Name + " - " + cr.Wisdom);
             }
-
+            */
             #region Game
             //RunGame();
             #endregion
+            ToCmd(args);
             Console.ReadKey();
         }
 
@@ -188,6 +189,140 @@ namespace ITGame.CLI
                 round++;
 
             }
+        }
+
+        static void ToCmd(string[] args) {
+            // Все сущности, с которыми можно работать. Можно их поместить в какую-нибудь коллекцию.
+            object creature = null;
+            
+
+            //
+            // Здесь будет реализовано чтение базы и соответственно инициализация параметрами.
+            //
+
+           /* args = new string[3];
+            // args[0] == "create", "read", "update", "delete", "help"
+            args[0] = "update";
+            // args[1] == same creature
+            args[1] = "Humanoid";
+            // args[2] == parameters for creature
+            args[2] = "Human,Legolas,30,10";  // Id,HumanoidRace,Name,HP,MP
+            */
+            string[] param = args[2].Split(',');
+
+            CmdCreate(args[1], ref creature, param);
+        }
+
+        static void CmdCreate(string ctype, ref object creature, string[] parameters) 
+        {
+            switch (ctype) 
+            {
+                case "Humanoid":
+                    creature = new Humanoid();
+                    (creature as Humanoid).ActionPerformed += ActionPerformed;
+
+                    // Замечательная структура, не так ли?:)
+                    (creature as Humanoid).HumanoidRace = parameters[0] != "_" ?
+                                       parameters[0] == "Human" ? HumanoidRace.Human :
+                                           parameters[0] == "Dwarf" ? HumanoidRace.Dwarf :
+                                               parameters[0] == "Elf" ? HumanoidRace.Elf :
+                                                   parameters[0] == "Orc" ? HumanoidRace.Orc : HumanoidRace.None : HumanoidRace.None;
+                    (creature as Humanoid).Name = parameters[1] != "_" ? parameters[1] : "Unnamed"; //==== Здесь конечно же необходимо оставить старое значение. Мелочь - исправим.
+                    (creature as Humanoid).HP = parameters[2] != "_" ? int.Parse(parameters[2]) : 0;
+                    (creature as Humanoid).MP = parameters[3] != "_" ? int.Parse(parameters[3]) : 0;
+
+                    break;
+
+                // Дальше пока так. Не совсем уверен, что нам нужно распространять событийную модель на экипировку.
+                // Можно просто запилить какой-нибудь вывод и все.
+                case "Armor":
+                    creature = new Armor()
+                    {
+                        // Здесь не буду описывать все. У оружия - аналогично.
+                        ArmorType = parameters[0] != "_" ?
+                                        parameters[0] == "Boots" ? ArmorType.Boots :
+                                            parameters[0] == "Body" ? ArmorType.Body : ArmorType.None : ArmorType.None,
+                        Name = parameters[1] != "_" ? parameters[1] : "Unnamed",
+                        MagicalDef = parameters[2] != "_" ? int.Parse(parameters[2]) : 0,
+                        PhysicalDef = parameters[3] != "_" ? int.Parse(parameters[3]) : 0
+                    };
+                    break;
+
+                case "Weapon":
+                    creature = new Weapon()
+                    {
+                        WeaponType = parameters[0] != "_" ?
+                                         parameters[0] == "Bow" ? WeaponType.Bow :
+                                             parameters[0] == "Sword" ? WeaponType.Sword : WeaponType.None : WeaponType.None,
+                        PhysicalAttack = parameters[1] != "_" ? int.Parse(parameters[1]) : 0,
+                        MagicalAttack = parameters[2] != "_" ? int.Parse(parameters[2]) : 0
+                    };
+                    break;
+                case "Spell":
+                    creature = new Spell()
+                    {
+                        SpellName = parameters[0] != "_" ? parameters[0] : "Unnamed",
+                        MagicalPower = parameters[1] != "_" ? int.Parse(parameters[1]) : 0,
+                        ManaCost = parameters[2] != "_" ? int.Parse(parameters[2]) : 0
+                    };
+                    break;
+                default:
+                    Console.WriteLine("Bad parameters!\n");
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
+        static void CmdUpdate(string ctype, ref object creature, string[] parameters) 
+        {
+            switch (ctype)
+            {
+                case "Humanoid":
+                    creature = creature as Humanoid;
+                    (creature as Humanoid).ActionPerformed += ActionPerformed;
+
+                    (creature as Humanoid).HumanoidRace = parameters[0] != "_" ?
+                                       parameters[0] == "Human" ? HumanoidRace.Human :
+                                           parameters[0] == "Dwarf" ? HumanoidRace.Dwarf :
+                                               parameters[0] == "Elf" ? HumanoidRace.Elf :
+                                                   parameters[0] == "Orc" ? HumanoidRace.Orc : HumanoidRace.None : HumanoidRace.None;
+                    (creature as Humanoid).Name = parameters[1] != "_" ? parameters[1] : "Unnamed";
+                    (creature as Humanoid).HP = parameters[2] != "_" ? int.Parse(parameters[2]) : 0;
+                    (creature as Humanoid).MP = parameters[3] != "_" ? int.Parse(parameters[3]) : 0;
+
+                    break;
+
+                case "Armor":
+                    (creature as Armor).ArmorType = parameters[0] != "_" ?
+                                    parameters[0] == "Boots" ? ArmorType.Boots :
+                                        parameters[0] == "Body" ? ArmorType.Body : ArmorType.None : ArmorType.None;
+                    (creature as Armor).Name = parameters[1] != "_" ? parameters[1] : "Unnamed";
+                    (creature as Armor).MagicalDef = parameters[2] != "_" ? int.Parse(parameters[2]) : 0;
+                    (creature as Armor).PhysicalDef = parameters[3] != "_" ? int.Parse(parameters[3]) : 0;
+                    break;
+
+                case "Weapon":
+                    (creature as Weapon).WeaponType = parameters[0] != "_" ?
+                                     parameters[0] == "Bow" ? WeaponType.Bow :
+                                         parameters[0] == "Sword" ? WeaponType.Sword : WeaponType.None : WeaponType.None;
+                    (creature as Weapon).PhysicalAttack = parameters[1] != "_" ? int.Parse(parameters[1]) : 0;
+                    (creature as Weapon).MagicalAttack = parameters[2] != "_" ? int.Parse(parameters[2]) : 0;
+                    break;
+                case "Spell":
+                    (creature as Spell).SpellName = parameters[0] != "_" ? parameters[0] : "Unnamed";
+                    (creature as Spell).MagicalPower = parameters[1] != "_" ? int.Parse(parameters[1]) : 0;
+                    (creature as Spell).ManaCost = parameters[2] != "_" ? int.Parse(parameters[2]) : 0;
+                    break;
+                default:
+                    Console.WriteLine("Bad parameters!\n");
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
+        static void CmdDelete(ref object creature) 
+        {
+            creature = null;
         }
 
         static void ActionPerformed(object sender, ActionPerformedEventArgs e)
