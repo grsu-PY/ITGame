@@ -10,17 +10,15 @@ namespace ITGame.CLI.Models.Items
         public Guid Id { get; set; }
         public virtual string Name { get; set; }
 
-        protected readonly int weight = 1;
-        
+        protected int weight = 1;
+
 
         public int Weight
         {
-            get
-            {
-                return weight;
-            }
+            get { return weight; }
+            set { weight = value; }
         }
 
-        
+
     }
 }

@@ -11,26 +11,8 @@ namespace ITGame.CLI.Models.Equipment
         {
             equipmentType = EquipmentType.Armor;
         }
-        public int PhysicalDef
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
+        public int PhysicalDef { get; set; }
 
-        public int MagicalDef
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
+        public int MagicalDef { get; set; }
     }
 }
