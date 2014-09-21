@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\CmdParser.cs" />
     <Compile Include="Models\Environment\Surface.cs" />
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />
