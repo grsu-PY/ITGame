@@ -11,15 +11,17 @@ namespace ITGame.CLI.Infrastructure
     class CmdParser
     {
         private string[] args;
-        private Hashtable keys = new Hashtable();
+        private Dictionary<string, string> keys = new Dictionary<string, string>();
         private List<string> patterns = new List<string>() 
         {
-            @"^(create|update)\s[Hh]umanoid\s(-[cwas]\s(\w+,?)+\s?)+$",
-            @"^delete\s[Hh]umanoid$"
+            @"^(create|update) [Hh]umanoid (-[cwas] (\w+,?)+\s?)+$",
+            @"^delete [Hh]umanoid$",
+            @"(?<=(^(((create|update|delete)( [Hh]umanoid)? )|read )))help$"  // itgame update help / itgame create humanoid help
         };
         //private string mainRPattern = @"^read ([Hh]umanoid|all)$";
         //private string mainHPattern = @"";
         private string splitPattern = "\\s*,";
+        private bool isHelp = false;
 
         public CmdParser(string[] args) 
         {
@@ -45,7 +47,7 @@ namespace ITGame.CLI.Infrastructure
 
             foreach (string key in keys.Keys) 
             {
-                int index = IsContainsKey(args, (string)keys[key]);
+                int index = IsContainsKey(args, keys[key]);
                 if (index != -1)
                 {
                     if (args[index + 1].Contains(','))
@@ -98,12 +100,30 @@ namespace ITGame.CLI.Infrastructure
             {
                 if (Regex.IsMatch(tempLine, pattern))
                 {
+                    if (pattern == patterns[2]) this.isHelp = true;
                     result = true;
                     break;
                 }
             }
 
             return result;
+        }
+
+        public void GetHelp() 
+        {
+            if (isHelp) 
+            {
+                Console.WriteLine("Describe\n");
+            }
+            else Console.WriteLine("Is not help command.\n");
+        }
+
+        public bool IsHelp 
+        {
+            get
+            {
+                return isHelp;
+            }
         }
     }
 }
