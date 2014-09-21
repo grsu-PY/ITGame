@@ -225,56 +225,62 @@ namespace ITGame.CLI
         }
 
         static void ToCmd(string[] args) {
-            // Все сущности, с которыми можно работать. Можно их поместить в какую-нибудь коллекцию.
-            Humanoid humanoid = null;
-            Spell spell = null;
-            Armor armor = null;
-            Weapon weapon = null;
-            
 
+            Humanoid humanoid = null;
+            
             //
             // Здесь будет реализовано чтение базы и соответственно инициализация параметрами.
             //
 
-            args = new string[8];
+            args = new string[3];
             // args[0] == "create", "read", "update", "delete", "help"
             args[0] = "create";
             // args[1] == same creature
-            args[1] = "Humanoid";
+            args[1] = "humanoid";
             // args[2] == parameters for creature
             // creature
-            args[2] = "-c";
-            args[3] = "Human,Legolas,30,10";
-            // weapon
-            args[4] = "-w";
-            args[5] = "10,12";
-            // spell
-            args[6] = "-s";
-            args[7] = "11";
+            args[2] = "help"; // args[2] = "-c";
+            /*
+             args[3] = "Human,Legolas,30,10";
+             // weapon
+             args[4] = "-w";
+             args[5] = "10,12";
+             // spell
+             args[6] = "-s";
+             args[7] = "11";
+             */
 
             // В результате разбиения, получаем таблицу, в которой, 
             // к каждому набору параметров для объекта, обращаемся по ключу.
             // tab["command"] - string
             // tab["creature"] - string[] и т.д.
             CmdParser parser = new CmdParser(args);
-            
-            Hashtable tab = parser.Parse();
-            foreach (string key in tab.Keys) 
+
+            if (parser.IsHelp) parser.GetHelp();
+            else
             {
-                Console.WriteLine(key+"\n");
-                if (tab[key].GetType().IsArray)
+                // В этом блоке будем инициализировать все объекты
+                Hashtable tab = parser.Parse();
+
+                #region printTab
+                foreach (string key in tab.Keys)
                 {
-                    string[] arr = (string[])tab[key];
-                    for (int index = 0; index < arr.Length; index++)
+                    Console.WriteLine(key + "\n");
+                    if (tab[key].GetType().IsArray)
                     {
-                        Console.WriteLine("-" + arr[index]);
+                        string[] arr = (string[])tab[key];
+                        for (int index = 0; index < arr.Length; index++)
+                        {
+                            Console.WriteLine("-" + arr[index]);
+                        }
+                        Console.WriteLine();
                     }
-                    Console.WriteLine();
+                    else
+                    {
+                        Console.WriteLine("-" + tab[key] + "\n");
+                    }
                 }
-                else 
-                {
-                    Console.WriteLine("-" + tab[key] + "\n");
-                }
+                #endregion
             }
         }
 
