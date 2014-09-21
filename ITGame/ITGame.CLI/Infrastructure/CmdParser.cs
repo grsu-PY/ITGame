@@ -90,20 +90,9 @@ namespace ITGame.CLI.Infrastructure
 
         private bool CheckLine() 
         {
-            bool result = false;
-
             string tempLine = ConvertArrayToString(args);
-
-            foreach (string pattern in patterns)
-            {
-                if (Regex.IsMatch(tempLine, pattern))
-                {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
+            
+            return patterns.Any(pattern => Regex.IsMatch(tempLine, pattern));
         }
     }
 }
