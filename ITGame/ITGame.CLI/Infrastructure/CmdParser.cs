@@ -12,14 +12,29 @@ namespace ITGame.CLI.Infrastructure
     {
         private string[] args;
         private Hashtable keys = new Hashtable();
+        private List<string> patterns = new List<string>() 
+        {
+            @"^(create|update)\s[Hh]umanoid\s(-[cwas]\s(\w+,?)+\s?)+$",
+            @"^delete\s[Hh]umanoid$"
+        };
+        //private string mainRPattern = @"^read ([Hh]umanoid|all)$";
+        //private string mainHPattern = @"";
+        private string splitPattern = "\\s*,";
 
         public CmdParser(string[] args) 
         {
             this.args = args;
+
             this.keys.Add("creature", "-c");
             this.keys.Add("weapon", "-w");
             this.keys.Add("armor", "-a");
             this.keys.Add("spell", "-s");
+
+            if (!CheckLine()) 
+            {
+                Console.WriteLine("Bad parameters.\n");
+                Environment.Exit(0);
+            }
         }
 
         public Hashtable Parse() 
@@ -27,21 +42,25 @@ namespace ITGame.CLI.Infrastructure
             Hashtable result = new Hashtable();
             result.Add("command", args[0]);
             result.Add("entity", args[1]);
-            Regex rgx = new Regex("\\s*,");
+
             foreach (string key in keys.Keys) 
             {
-                int index = Contains(args, (string)keys[key]);
+                int index = IsContainsKey(args, (string)keys[key]);
                 if (index != -1)
                 {
-                    string[] temp = rgx.Split(args[index + 1]);
-                    result.Add(key, temp);
+                    if (args[index + 1].Contains(','))
+                    {
+                        string[] temp = Regex.Split(args[index + 1], splitPattern);
+                        result.Add(key, temp);
+                    }
+                    else result.Add(key, args[index + 1]);
                 }
             }
 
             return result;
         }
 
-        private int Contains(string[] arr, string pat) 
+        private int IsContainsKey(string[] arr, string pat) 
         {
             int result = -1;
 
@@ -50,6 +69,36 @@ namespace ITGame.CLI.Infrastructure
                 if (arr[index] == pat) 
                 {
                     result = index;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        private string ConvertArrayToString(string[] array) 
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (string value in array) 
+            {
+                builder.Append(value+" ");
+            }
+            builder = builder.Remove(builder.Length - 1, 1);
+
+            return builder.ToString();
+        }
+
+        private bool CheckLine() 
+        {
+            bool result = false;
+
+            string tempLine = ConvertArrayToString(args);
+
+            foreach (string pattern in patterns)
+            {
+                if (Regex.IsMatch(tempLine, pattern))
+                {
+                    result = true;
                     break;
                 }
             }

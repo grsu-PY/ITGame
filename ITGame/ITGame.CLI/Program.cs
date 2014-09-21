@@ -211,14 +211,22 @@ namespace ITGame.CLI
             // args[1] == same creature
             args[1] = "Humanoid";
             // args[2] == parameters for creature
-            args[2] = "-c"; 
+            // creature
+            args[2] = "-c";
             args[3] = "Human,Legolas,30,10";
-            args[4] = "-w"; 
+            // weapon
+            args[4] = "-w";
             args[5] = "10,12";
-            args[6] = "-s"; 
-            args[7] = "12,12";  // Id,HumanoidRace,Name,HP,MP
+            // spell
+            args[6] = "-s";
+            args[7] = "11";
 
+            // В результате разбиения, получаем таблицу, в которой, 
+            // к каждому набору параметров для объекта, обращаемся по ключу.
+            // tab["command"] - string
+            // tab["creature"] - string[] и т.д.
             CmdParser parser = new CmdParser(args);
+
             Hashtable tab = parser.Parse();
             foreach (string key in tab.Keys) 
             {
