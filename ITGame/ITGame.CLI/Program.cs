@@ -45,9 +45,40 @@ namespace ITGame.CLI
             #region Game
             //RunGame();
             #endregion
+
             ToCmd(args);
-            
+
+            EditEntities();
+
             Console.ReadKey();
+        }
+
+        private static void EditEntities()
+        {
+            // при инициализации происходит загрузка данных из файлов (таблиц)
+            // см. App.config там хранится инфа о расположении базы данных(файлов с таблицами)
+            // файлы с таблицами называются по имени сущности
+            var humans = new EntityProjector<Humanoid>();
+            var armors = new EntityProjector<Armor>();
+            var weapons = new EntityProjector<Weapon>();
+
+            var dict1 = new Dictionary<string, string>();
+            dict1.Add("Agility", "101");
+            dict1.Add("HumanoidRace", "Human");
+
+            var human = humans.Create(dict1);
+
+            var dict2 = new Dictionary<string, string>();
+            dict2.Add("Agility", "60");
+            dict2.Add("Strength", "50");
+            dict2.Add("HumanoidRace", "Dwarf");
+
+            var dwarf = humans.Create(dict2);
+
+            humans.Add(human);
+            humans.Add(dwarf);
+
+            humans.SaveChanges();
         }
 
         private static void RunGame()
@@ -226,7 +257,7 @@ namespace ITGame.CLI
             // tab["command"] - string
             // tab["creature"] - string[] и т.д.
             CmdParser parser = new CmdParser(args);
-
+            
             Hashtable tab = parser.Parse();
             foreach (string key in tab.Keys) 
             {
