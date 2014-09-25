@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="Infrastructure\CmdParser.cs" />
     <Compile Include="Infrastructure\EntityProjector.cs" />
+    <Compile Include="Infrastructure\EntityProjectorCommon.cs" />
+    <Compile Include="Infrastructure\EntityRepository.cs" />
+    <Compile Include="Infrastructure\IEntityProjector.cs" />
     <Compile Include="Models\Environment\Surface.cs" />
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />
@@ -77,7 +80,9 @@
     <Compile Include="Models\Equipment\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Class Diagramms.cd" />
   </ItemGroup>
   <ItemGroup>

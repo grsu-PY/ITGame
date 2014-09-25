@@ -58,27 +58,29 @@ namespace ITGame.CLI
             // при инициализации происходит загрузка данных из файлов (таблиц)
             // см. App.config там хранится инфа о расположении базы данных(файлов с таблицами)
             // файлы с таблицами называются по имени сущности
-            var humans = new EntityProjector<Humanoid>();
-            var armors = new EntityProjector<Armor>();
-            var weapons = new EntityProjector<Weapon>();
 
             var dict1 = new Dictionary<string, string>();
             dict1.Add("Agility", "101");
             dict1.Add("HumanoidRace", "Human");
+            
+            var human = EntityRepository.GetInstance<Humanoid>().Create(dict1);
+            var arm = new Armor { ArmorType = ArmorType.Body, Id = Guid.NewGuid(), MagicalDef = 32 };
 
-            var human = humans.Create(dict1);
+            EntityRepository.GetInstance<Armor>().Add(arm);
+
 
             var dict2 = new Dictionary<string, string>();
             dict2.Add("Agility", "60");
             dict2.Add("Strength", "50");
             dict2.Add("HumanoidRace", "Dwarf");
 
-            var dwarf = humans.Create(dict2);
+            var dwarf = EntityRepository.GetInstance<Humanoid>().Create(dict2);
 
-            humans.Add(human);
-            humans.Add(dwarf);
+            EntityRepository.GetInstance<Humanoid>().Add(human);
+            EntityRepository.GetInstance<Humanoid>().Add(dwarf);
 
-            humans.SaveChanges();
+            EntityRepository.GetInstance<Humanoid>().SaveChanges();
+            EntityRepository.GetInstance<Armor>().SaveChanges();
         }
 
         private static void RunGame()
