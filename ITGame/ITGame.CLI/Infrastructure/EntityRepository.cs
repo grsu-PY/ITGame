@@ -15,26 +15,28 @@ namespace ITGame.CLI.Infrastructure
         private static readonly string _dbName;
         private static readonly string _dbPath;
         private static readonly string ext;
-        private const string delim = ",";
+        private static readonly string delim = ";";
+        private const string DBFileDelim = "DBFileDelim";
         private const string DBFileExt = "DBFileExt";
         private const string DBLocation = "DBLocation";
         static EntityRepository()
         {
-            var path = ConfigurationManager.AppSettings[DBLocation];
+            var dbPath = ConfigurationManager.AppSettings[DBLocation];
             ext = ConfigurationManager.AppSettings[DBFileExt];
+            delim = ConfigurationManager.AppSettings[DBFileDelim];
 
-            if (string.IsNullOrEmpty(path) || string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrEmpty(dbPath) || string.IsNullOrWhiteSpace(dbPath))
             {
                 _dbName = string.Empty;
-                path = string.Empty;
+                dbPath = string.Empty;
             }
             else
             {
-                _dbName = Path.GetDirectoryName(path);
-                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                _dbName = Path.GetDirectoryName(dbPath);
+                if (!Directory.Exists(dbPath)) Directory.CreateDirectory(dbPath);
             }
 
-            _dbPath = Path.Combine(path);
+            _dbPath = Path.Combine(dbPath);
 
         }
 

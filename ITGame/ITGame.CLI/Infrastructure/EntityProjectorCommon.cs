@@ -139,8 +139,6 @@ namespace ITGame.CLI.Infrastructure
         {
             var instance = CreateEntity(values) as Identity;
 
-            instance.Id = Guid.NewGuid();
-
             return instance;
         }
 

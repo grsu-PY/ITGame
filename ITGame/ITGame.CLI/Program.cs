@@ -64,6 +64,8 @@ namespace ITGame.CLI
             dict1.Add("HumanoidRace", "Human");
             
             var human = EntityRepository.GetInstance<Humanoid>().Create(dict1);
+            human.Id = Guid.NewGuid();
+
             var arm = new Armor { ArmorType = ArmorType.Body, Id = Guid.NewGuid(), MagicalDef = 32 };
 
             EntityRepository.GetInstance<Armor>().Add(arm);
@@ -75,6 +77,7 @@ namespace ITGame.CLI
             dict2.Add("HumanoidRace", "Dwarf");
 
             var dwarf = EntityRepository.GetInstance<Humanoid>().Create(dict2);
+            dwarf.Id = Guid.NewGuid();
 
             EntityRepository.GetInstance<Humanoid>().Add(human);
             EntityRepository.GetInstance<Humanoid>().Add(dwarf);
