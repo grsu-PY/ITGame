@@ -46,9 +46,10 @@ namespace ITGame.CLI
             //RunGame();
             #endregion
 
-            ToCmd(args);
+           // if(args.Length != 0)
+                ToCmd(args);
 
-            EditEntities();
+           // EditEntities();
 
             Console.ReadKey();
         }
@@ -84,6 +85,91 @@ namespace ITGame.CLI
 
             EntityRepository.GetInstance<Humanoid>().SaveChanges();
             EntityRepository.GetInstance<Armor>().SaveChanges();
+        }
+
+     
+        static void ToCmd(string[] args) {
+
+            args = new string[8];
+            // args[0] == "create", "read", "update", "delete", "help"
+            args[0] = "create";
+            // args[1] == same creature
+            args[1] = "humanoid";
+            // args[2] == parameters for creature
+            // creature
+            args[2] = "-c"; // args[2] = "-c";
+            
+             args[3] = "Human,_.,30,_";
+             // weapon
+             args[4] = "-w";
+             args[5] = "10,12,_";
+             // spell
+             args[6] = "-s";
+             args[7] = "11,12,_";
+             
+            CmdParser parser = new CmdParser(args);
+
+            if (parser.IsHelp) parser.GetHelp();
+            else
+            {
+                Hashtable tab = parser.Parse();
+
+                #region printTab
+                foreach (string key in tab.Keys)
+                {
+                    Console.WriteLine(key + "\n");
+                    if (tab[key].GetType().ToString().Contains("Dictionary"))
+                    {
+                        Dictionary<string, string> arr = (Dictionary<string,string>)tab[key];
+                        foreach (string parm in arr.Keys) 
+                        {
+                            Console.WriteLine("->" + parm + " - " + arr[parm]);
+                        }
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine("->" + tab[key] + "\n");
+                    }
+                }
+                #endregion
+            }
+        }
+
+        static void ActionPerformed(object sender, ActionPerformedEventArgs e)
+        {
+
+            ChangeConsoleColor(e.actionType);
+            Console.WriteLine(e.message);
+            ResetConsoleColor();
+        }
+
+        static void ChangeConsoleColor(ActionType type)
+        {
+            switch (type)
+            {
+                case ActionType.Fight:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case ActionType.Take:
+                    break;
+                case ActionType.Voice:
+                    break;
+                case ActionType.Equip:
+                    break;
+                case ActionType.Info:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case ActionType.SystemInfo:
+                    break;
+                default:
+                    Console.ForegroundColor = defaultColor;
+                    break;
+            }
+        }
+        static void ResetConsoleColor()
+        {
+            Console.ForegroundColor = defaultColor;
         }
 
         private static void RunGame()
@@ -229,100 +315,5 @@ namespace ITGame.CLI
             }
         }
 
-        static void ToCmd(string[] args) {
-
-            Humanoid humanoid = null;
-            
-            //
-            // Здесь будет реализовано чтение базы и соответственно инициализация параметрами.
-            //
-
-            args = new string[3];
-            // args[0] == "create", "read", "update", "delete", "help"
-            args[0] = "create";
-            // args[1] == same creature
-            args[1] = "humanoid";
-            // args[2] == parameters for creature
-            // creature
-            args[2] = "help"; // args[2] = "-c";
-            /*
-             args[3] = "Human,Legolas,30,10";
-             // weapon
-             args[4] = "-w";
-             args[5] = "10,12";
-             // spell
-             args[6] = "-s";
-             args[7] = "11";
-             */
-
-            // В результате разбиения, получаем таблицу, в которой, 
-            // к каждому набору параметров для объекта, обращаемся по ключу.
-            // tab["command"] - string
-            // tab["creature"] - string[] и т.д.
-            CmdParser parser = new CmdParser(args);
-
-            if (parser.IsHelp) parser.GetHelp();
-            else
-            {
-                // В этом блоке будем инициализировать все объекты
-                Hashtable tab = parser.Parse();
-
-                #region printTab
-                foreach (string key in tab.Keys)
-                {
-                    Console.WriteLine(key + "\n");
-                    if (tab[key].GetType().IsArray)
-                    {
-                        string[] arr = (string[])tab[key];
-                        for (int index = 0; index < arr.Length; index++)
-                        {
-                            Console.WriteLine("-" + arr[index]);
-                        }
-                        Console.WriteLine();
-                    }
-                    else
-                    {
-                        Console.WriteLine("-" + tab[key] + "\n");
-                    }
-                }
-                #endregion
-            }
-        }
-
-        static void ActionPerformed(object sender, ActionPerformedEventArgs e)
-        {
-
-            ChangeConsoleColor(e.actionType);
-            Console.WriteLine(e.message);
-            ResetConsoleColor();
-        }
-
-        static void ChangeConsoleColor(ActionType type)
-        {
-            switch (type)
-            {
-                case ActionType.Fight:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case ActionType.Take:
-                    break;
-                case ActionType.Voice:
-                    break;
-                case ActionType.Equip:
-                    break;
-                case ActionType.Info:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case ActionType.SystemInfo:
-                    break;
-                default:
-                    Console.ForegroundColor = defaultColor;
-                    break;
-            }
-        }
-        static void ResetConsoleColor()
-        {
-            Console.ForegroundColor = defaultColor;
-        }
     }
 }
