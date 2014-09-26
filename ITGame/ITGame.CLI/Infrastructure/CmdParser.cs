@@ -20,12 +20,11 @@ namespace ITGame.CLI.Infrastructure
         };
         private List<string> patterns = new List<string>() 
         {
-            @"^(create|update) [Hh]umanoid (-[cwas] (([a-zA-Z]+|[0-9]+|_|(_.)),?)+\s?)+$",
+            @"^(create|update) [Hh]umanoid (-[cwas] (([a-zA-Z]+|[0-9]+|_|(_\.)),?)+\s?)+$",
             @"^delete [Hh]umanoid$",
-            @"(?<=(^(((create|update|delete)|read )))?help$"  // itgame update help / itgame create humanoid help
+            @"(?<=(^(create|update|delete|read) ))?help$"
         };
-        //private string mainRPattern = @"^read ([Hh]umanoid|all)$";
-        //private string mainHPattern = @"";
+
         private string splitPattern = "\\s*,";
         private bool isHelp = false;
 
@@ -77,12 +76,12 @@ namespace ITGame.CLI.Infrastructure
                     if (ckey.Contains(key))
                     {
                         Dictionary<string, string> dtemp = new Dictionary<string, string>();
-                        string[] oldValues = (string[])table[key];
-                        string[] newValues = (string[])entityInfo[ckey];
-                        for (int index = 0; index < newValues.Length; index++)
+                        string[] EValues = (string[])table[key];
+                        string[] EKeys = (string[])entityInfo[ckey];
+                        for (int index = 0; index < EKeys.Length; index++)
                         {
-                            if(oldValues[index] != "_")
-                                dtemp.Add(newValues[index], oldValues[index]);
+                            if(EValues[index] != "_")
+                                dtemp.Add(EKeys[index], EValues[index]);
                         }
 
                         rtb[key] = dtemp;
@@ -99,8 +98,9 @@ namespace ITGame.CLI.Infrastructure
         private string AdditionParm(string line, int cparm)
         {
             string rline = line;
-            int index = rline.IndexOf("_.,");
-            rline = rline.Replace("_.,", "");
+            int index = rline.IndexOf("_.");
+            rline = rline.Replace("_.", "");
+            rline = rline.Insert(index, "_");
             while (GetComa(rline) != cparm - 1) rline = rline.Insert(index, "_,");
 
             return rline;

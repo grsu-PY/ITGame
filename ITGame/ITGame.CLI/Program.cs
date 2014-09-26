@@ -90,7 +90,7 @@ namespace ITGame.CLI
      
         static void ToCmd(string[] args) {
 
-            args = new string[8];
+            args = new string[10];
             // args[0] == "create", "read", "update", "delete", "help"
             args[0] = "create";
             // args[1] == same creature
@@ -98,14 +98,17 @@ namespace ITGame.CLI
             // args[2] == parameters for creature
             // creature
             args[2] = "-c"; // args[2] = "-c";
-            
-             args[3] = "Human,_.,30,_";
-             // weapon
-             args[4] = "-w";
-             args[5] = "10,12,_";
-             // spell
-             args[6] = "-s";
-             args[7] = "11,12,_";
+            args[3] = "_.,12,30";
+            // weapon
+            args[4] = "-w";
+            args[5] = "Sword,_.";
+            // spell
+            args[6] = "-s";
+            args[7] = "Wrath,12,_";
+
+            // armor
+            args[8] = "-a";
+            args[9] = "Gloves,10,2";
              
             CmdParser parser = new CmdParser(args);
 
