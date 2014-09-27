@@ -20,7 +20,7 @@ namespace ITGame.CLI.Infrastructure
         };
         private List<string> patterns = new List<string>() 
         {
-            @"^(create|update) [Hh]umanoid (-[cwas] (([a-zA-Z]+|[0-9]+|_|(_\.)),?)+\s?)+$",
+            @"^(create|update) [Hh]umanoid ((-[cwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
             @"^delete [Hh]umanoid$",
             @"(?<=(^(create|update|delete|read) ))?help$"
         };
