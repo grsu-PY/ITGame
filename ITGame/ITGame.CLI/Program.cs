@@ -17,34 +17,12 @@ namespace ITGame.CLI
     {
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
-        {/*
-            var _surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
-            _surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
-
-            IEnumerable<Creature> creatures = new List<Creature>
-            {
-                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRace.Elf},
-                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRace.Dwarf}
-            };
-            foreach (var cr in creatures)
-            {
-                cr.ActionPerformed += ActionPerformed;
-                Console.WriteLine(cr.Name + " - " + cr.Wisdom);
-            }
-            //добавление новых, или изменение старых правил
-            Surface.ConfigureRules(_surfaceRules);
-            //существа подписываются на изменения поверхности
-            Surface.RegisterInfluenceFor(creatures);
-            //после смены поверхности, параметры у существ меняются
-            Surface.CurrentSurfaceType = SurfaceType.Water;
-            foreach (var cr in creatures)
-            {
-                Console.WriteLine(cr.Name + " - " + cr.Wisdom);
-            }
-            */
+        {
             #region Game
             //RunGame();
             #endregion
+
+            //SurfaceOnAction();
 
            // if(args.Length != 0)
                 ToCmd(args);
@@ -121,9 +99,9 @@ namespace ITGame.CLI
                 foreach (string key in tab.Keys)
                 {
                     Console.WriteLine(key + "\n");
-                    if (tab[key].GetType().ToString().Contains("Dictionary"))
+                    if (tab[key] is IDictionary<string,string>)
                     {
-                        Dictionary<string, string> arr = (Dictionary<string,string>)tab[key];
+                        var arr = tab[key] as IDictionary<string,string>;
                         foreach (string parm in arr.Keys) 
                         {
                             Console.WriteLine("->" + parm + " - " + arr[parm]);
@@ -316,6 +294,37 @@ namespace ITGame.CLI
                 round++;
 
             }
+        }
+
+        /// <summary>
+        /// Поверхность в действии
+        /// </summary>
+        public static void SurfaceOnAction()
+        {            
+            var _surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
+            _surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
+
+            IEnumerable<Creature> creatures = new List<Creature>
+            {
+                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRace.Elf},
+                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRace.Dwarf}
+            };
+            foreach (var cr in creatures)
+            {
+                cr.ActionPerformed += ActionPerformed;
+                Console.WriteLine(cr.Name + " - " + cr.Wisdom);
+            }
+            //добавление новых, или изменение старых правил
+            Surface.ConfigureRules(_surfaceRules);
+            //существа подписываются на изменения поверхности
+            Surface.RegisterInfluenceFor(creatures);
+            //после смены поверхности, параметры у существ меняются
+            Surface.CurrentSurfaceType = SurfaceType.Water;
+            foreach (var cr in creatures)
+            {
+                Console.WriteLine(cr.Name + " - " + cr.Wisdom);
+            }
+            
         }
 
     }
