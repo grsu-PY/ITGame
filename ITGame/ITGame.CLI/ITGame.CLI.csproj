@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Infrastructure\CmdParser.cs" />
     <Compile Include="Infrastructure\EntityProjector.cs" />
     <Compile Include="Infrastructure\EntityProjectorCommon.cs" />

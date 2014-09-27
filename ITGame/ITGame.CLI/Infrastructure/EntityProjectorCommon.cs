@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ITGame.CLI.Extensions;
 
 namespace ITGame.CLI.Infrastructure
 {
@@ -35,8 +36,7 @@ namespace ITGame.CLI.Infrastructure
         private void InitTable()
         {
             var propertiesNames = EntityType
-                .GetProperties()
-                .Where(p => p.GetSetMethod(false) != null)
+                .GetSetGetProperties()
                 .Select(p => p.Name)
                 .Aggregate((s1, s2) => s1 + EntityRepository.DELIM + s2);
 
@@ -80,8 +80,7 @@ namespace ITGame.CLI.Infrastructure
             object instance = Activator.CreateInstance(EntityType);
 
             var properties = EntityType
-                .GetProperties()
-                .Where(p => p.GetSetMethod(false) != null)
+                .GetSetGetProperties()
                 .Where(prop => values.ContainsKey(prop.Name));
 
             foreach (var property in properties)
@@ -177,7 +176,7 @@ namespace ITGame.CLI.Infrastructure
             StringBuilder row = new StringBuilder();
             string column = string.Empty;
 
-            var properties = EntityType.GetProperties().Where(p => p.GetSetMethod(false) != null);
+            var properties = EntityType.GetSetGetProperties();
 
             var propertiesNames = properties
                 .Select(p => p.Name)
