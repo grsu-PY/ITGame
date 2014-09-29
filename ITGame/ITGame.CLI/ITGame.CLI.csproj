@@ -44,10 +44,11 @@
   <ItemGroup>
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Infrastructure\CmdParser.cs" />
+    <Compile Include="Infrastructure\EntityProjector`.cs" />
     <Compile Include="Infrastructure\EntityProjector.cs" />
-    <Compile Include="Infrastructure\EntityProjectorCommon.cs" />
     <Compile Include="Infrastructure\EntityRepository.cs" />
     <Compile Include="Infrastructure\IEntityProjector.cs" />
+    <Compile Include="Infrastructure\IEntityProjector`.cs" />
     <Compile Include="Models\Environment\Surface.cs" />
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />
