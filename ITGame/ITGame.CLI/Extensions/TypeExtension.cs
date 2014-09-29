@@ -14,14 +14,14 @@ namespace ITGame.CLI.Extensions
             return Assembly
                 .GetExecutingAssembly()
                 .GetTypes()
-                .FirstOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
+                .SingleOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
         }
 
         public static IEnumerable<PropertyInfo> GetSetGetProperties(this Type type)
         {
             return type
                 .GetProperties()
-                .Where(p => p.GetSetMethod(false) != null && p.GetGetMethod() != null);
+                .Where(p => p.CanWrite && p.CanRead);
         }
     }
 }
