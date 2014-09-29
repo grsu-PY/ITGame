@@ -8,6 +8,6 @@ namespace ITGame.CLI.Models.Creature.Actions
     public interface ICanEquip : IAction
     {
         void Equip(ITGame.CLI.Models.Equipment.Equipment equipment);
-        void RemoveEquipment(Equipment.EquipmentType equipType);
+        void RemoveEquipment(Equipment.Equipment equipment);
     }
 }

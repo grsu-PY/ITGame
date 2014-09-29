@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ITGame.CLI.Models.Creature.Actions;
 using ITGame.CLI.Models.Magic;
+using ITGame.CLI.Models.Environment;
 
 namespace ITGame.CLI.Models.Creature
 {
@@ -22,6 +23,8 @@ namespace ITGame.CLI.Models.Creature
         }
 
         protected Creature _target;
+        protected SurfaceRule _lastSurfaceRule;
+        protected SurfaceType _lastSurfaceType;
 
         private int strength = 2;
         private int wisdom = 1;
@@ -256,5 +259,25 @@ namespace ITGame.CLI.Models.Creature
         }
 
         protected abstract void OnSurfaceChangedHandler(object sender, SurfaceAffectEventArgs e);
+
+        protected virtual void ApplySurfaceRule(SurfaceRule surfaceRule, bool bonus, double bonusRate = 1)
+        {
+            if (bonus)
+            {
+                Wisdom += (int)(surfaceRule.Wisdom * bonusRate);
+                Strength += (int)(surfaceRule.Strength * bonusRate);
+                Agility += (int)(surfaceRule.Agility * bonusRate);
+                HP += (int)(surfaceRule.HP * bonusRate);
+                MP += (int)(surfaceRule.MP * bonusRate);
+            }
+            else
+            {
+                Wisdom -= (int)(surfaceRule.Wisdom * bonusRate);
+                Strength -= (int)(surfaceRule.Strength * bonusRate);
+                Agility -= (int)(surfaceRule.Agility * bonusRate);
+                HP -= (int)(surfaceRule.HP * bonusRate);
+                MP -= (int)(surfaceRule.MP * bonusRate);
+            }
+        }
     }
 }

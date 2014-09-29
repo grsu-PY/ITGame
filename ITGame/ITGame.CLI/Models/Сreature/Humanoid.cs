@@ -36,25 +36,26 @@ namespace ITGame.CLI.Models.Creature
                     weapon = equipment as Weapon;
                     break;
                 case EquipmentType.Armor:
-                    switch (equipment.ArmorType)
+                    var armor = equipment as Armor;
+                    switch (armor.ArmorType)
                     {
                         case ArmorType.Body:
-                            body = equipment as Armor;
+                            body = armor;
                             pDef += body.PhysicalDef;
                             mDef += body.MagicalDef;
                             break;
                         case ArmorType.Boots:
-                            boots = equipment as Armor;
+                            boots = armor;
                             pDef += boots.PhysicalDef;
                             mDef += boots.MagicalDef;
                             break;
                         case ArmorType.Gloves:
-                            gloves = equipment as Armor;
+                            gloves = armor;
                             pDef += gloves.PhysicalDef;
                             mDef += gloves.MagicalDef;
                             break;
                         case ArmorType.Helmet:
-                            helmet = equipment as Armor;
+                            helmet = armor;
                             pDef += helmet.PhysicalDef;
                             mDef += helmet.MagicalDef;
                             break;
@@ -71,15 +72,16 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public void RemoveEquipment(EquipmentType equipType)
+        public void RemoveEquipment(Equipment.Equipment equipment)
         {
-            switch (equipType)
+            switch (equipment.EquipmentType)
             {
                 case EquipmentType.Weapon:
                     weapon = null;
                     break;
                 case EquipmentType.Armor:
-                    /*switch (equipType)   this problem; we can replaced to 2 function - RemoveWeapon, RemoveArmor
+                    var armorType = (equipment as Armor).ArmorType;
+                    switch (armorType)
                     {
                         case ArmorType.Body:
                             body = null;
@@ -105,7 +107,7 @@ namespace ITGame.CLI.Models.Creature
                             break;
                         default:
                             break;
-                    }*/
+                    }
                     break;
                 case EquipmentType.None:
                     break;
@@ -263,19 +265,118 @@ namespace ITGame.CLI.Models.Creature
 
         protected override void OnSurfaceChangedHandler(object sender, SurfaceAffectEventArgs e)
         {
+            if (e.surfaceType == _lastSurfaceType) return;//могут ли сюда прийти новые правила для старой поверхности?
+
             OnActionPerformed(new ActionPerformedEventArgs(
                 string.Format("Oh, look at this, {0}. Surface was changed to {1}", Name, e.surfaceType),
                 ActionType.Info)
                 );
 
+            RemoveOldSurfaceBonus();
+
+            _lastSurfaceRule = e.actionRule;
+            _lastSurfaceType = e.surfaceType;
+
+            SetNewSurfaceRule(e);
+        }
+
+        private void SetNewSurfaceRule(SurfaceAffectEventArgs e)
+        {
             switch (HumanoidRace)
             {
                 case HumanoidRace.Dwarf:
                     switch (e.surfaceType)
                     {
                         case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(e.actionRule, bonus: true, bonusRate: 1.2);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            ApplySurfaceRule(e.actionRule, bonus: true, bonusRate: 0.2);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            ApplySurfaceRule(e.actionRule, bonus: false, bonusRate: 0.8);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            ApplySurfaceRule(e.actionRule, bonus: false, bonusRate: 0.6);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case HumanoidRace.Elf:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(e.actionRule, bonus: true);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            ApplySurfaceRule(e.actionRule, bonus: true);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            ApplySurfaceRule(e.actionRule, bonus: false, bonusRate: 1.5);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            ApplySurfaceRule(e.actionRule, bonus: false);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case HumanoidRace.Human:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(e.actionRule, bonus: true);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            ApplySurfaceRule(e.actionRule, bonus: true, bonusRate: 0.5);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            ApplySurfaceRule(e.actionRule, bonus: false);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            ApplySurfaceRule(e.actionRule, bonus: false, bonusRate: 0.5);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case HumanoidRace.Orc:
+                    switch (e.surfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(e.actionRule, bonus: true);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            ApplySurfaceRule(e.actionRule, bonus: false);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Lava:
+                            ApplySurfaceRule(e.actionRule, bonus: false, bonusRate: 0.8);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            ApplySurfaceRule(e.actionRule, bonus: true);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void RemoveOldSurfaceBonus()
+        {
+            switch (HumanoidRace)
+            {
+                case HumanoidRace.Dwarf:
+                    switch (_lastSurfaceType)
+                    {
+                        case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false, bonusRate: 1.2);
+                            break;
+                        case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false, bonusRate: 0.2);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Lava:
                             break;
@@ -286,16 +387,13 @@ namespace ITGame.CLI.Models.Creature
                     }
                     break;
                 case HumanoidRace.Elf:
-                    switch (e.surfaceType)
+                    switch (_lastSurfaceType)
                     {
                         case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Water:
-                            Wisdom += e.actionRule.Wisdom;
-                            Strength += e.actionRule.Strength;
-                            Agility += e.actionRule.Agility;
-                            HP += e.actionRule.HP;
-                            MP += e.actionRule.MP;
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Lava:
                             break;
@@ -306,11 +404,13 @@ namespace ITGame.CLI.Models.Creature
                     }
                     break;
                 case HumanoidRace.Human:
-                    switch (e.surfaceType)
+                    switch (_lastSurfaceType)
                     {
                         case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Water:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false, bonusRate: 0.5);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Lava:
                             break;
@@ -321,15 +421,17 @@ namespace ITGame.CLI.Models.Creature
                     }
                     break;
                 case HumanoidRace.Orc:
-                    switch (e.surfaceType)
+                    switch (_lastSurfaceType)
                     {
                         case ITGame.CLI.Models.Environment.SurfaceType.Ground:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false);
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Water:
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Lava:
                             break;
                         case ITGame.CLI.Models.Environment.SurfaceType.Swamp:
+                            ApplySurfaceRule(_lastSurfaceRule, bonus: false);
                             break;
                         default:
                             break;
@@ -339,5 +441,6 @@ namespace ITGame.CLI.Models.Creature
                     break;
             }
         }
+        
     }
 }

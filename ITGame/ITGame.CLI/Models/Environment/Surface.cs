@@ -20,8 +20,8 @@ namespace ITGame.CLI.Models.Environment
             _surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
 
             _surfaceRules.Add(SurfaceType.Ground, new SurfaceRule());
-            _surfaceRules.Add(SurfaceType.Lava, new SurfaceRule { HP = -10, MP = -10, Strength = -5, Wisdom = -5, Agility = -5 });
-            _surfaceRules.Add(SurfaceType.Swamp, new SurfaceRule { MP = -5, Wisdom = -1 });
+            _surfaceRules.Add(SurfaceType.Lava, new SurfaceRule { HP = 10, MP = 10, Strength = 5, Wisdom = 5, Agility = 5 });
+            _surfaceRules.Add(SurfaceType.Swamp, new SurfaceRule { MP = 5, Wisdom = 1 });
             _surfaceRules.Add(SurfaceType.Water, new SurfaceRule { MP = 25, Wisdom = 5 });
         }
 
