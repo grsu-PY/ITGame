@@ -28,6 +28,15 @@ namespace ITGame.CLI.Infrastructure
         private string splitPattern = "\\s*,";
         private bool isHelp = false;
 
+        private enum commands 
+        {
+            create,
+            update,
+            delete,
+            read,
+            help
+        }
+
         public CmdParser(string[] args) 
         {
             this.args = args;
@@ -39,7 +48,7 @@ namespace ITGame.CLI.Infrastructure
             }
         }
 
-        public Hashtable Parse() 
+        public Hashtable Parse()
         {
             Hashtable result = new Hashtable();
             result.Add("Command", args[0]);
@@ -168,7 +177,7 @@ namespace ITGame.CLI.Infrastructure
         {
             if (isHelp) 
             {
-                if (args[0] == "help") 
+                if (args[0].Equals(commands.help.ToString())) 
                 {
                     Console.WriteLine("Options:");
                     foreach (string key in commandInfo.Keys) 
@@ -176,9 +185,9 @@ namespace ITGame.CLI.Infrastructure
                         Console.WriteLine("\t" + key + " - " + commandInfo[key]);
                     }
                 }
-                else if (args[1] == "help") 
+                else if (args[1].Equals(commands.help.ToString())) 
                 {
-                    if (args[0] == "create" || args[0] == "update")
+                    if (args[0].Equals(commands.create.ToString()) || args[0].Equals(commands.update.ToString()))
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", args[0]));
                         Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", args[0]));
@@ -198,11 +207,11 @@ namespace ITGame.CLI.Infrastructure
                                           "\t"+args[0]+" humanoid -w Sword,20,40 -c _,Elf,_.,10,_,_");
 
                     }
-                    else if (args[0] == "delete") 
+                    else if (args[0].Equals(commands.delete.ToString())) 
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0} <entity>\n\nExamples:\n\t{0} Humanoid", args[0]));
                     }
-                    else if (args[0] == "read") 
+                    else if (args[0].Equals(commands.read.ToString())) 
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0}", args[0]));
                     }
@@ -221,11 +230,11 @@ namespace ITGame.CLI.Infrastructure
 
         private Dictionary<string, string> commandInfo = new Dictionary<string, string>()
         {
-            {"create", "Create a new entity"},
-            {"update", "Update entity"},
-            {"delete", "Remove entity"},
-            {"read", "View the existing entity"},
-            {"help", "Get help"}
+            {commands.create.ToString(), "Create a new entity"},
+            {commands.update.ToString(), "Update entity"},
+            {commands.delete.ToString(), "Remove entity"},
+            {commands.read.ToString(), "View the existing entity"},
+            {commands.help.ToString(), "Get help"}
         };
         private Dictionary<string, int> ecountParam = new Dictionary<string, int>()
         {
@@ -261,9 +270,12 @@ namespace ITGame.CLI.Infrastructure
                 }},
             {"Spell( -s <parameters> )", new string[]
                 {
+                    "SpellType",
+                    "SchoolSpell",
                     "SpellName",
                     "MagicalPower",
-                    "ManaCost"
+                    "ManaCost",
+                    "TotalDuration"
                 }}
         };
     }

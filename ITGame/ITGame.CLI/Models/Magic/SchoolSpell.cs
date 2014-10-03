@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Magic
 {
-    public class AttackSpell : Spell
-    {
+    public enum SchoolSpell {
+        Shadow,
+        Arcane,
+        Fire,
+        None
     }
 }

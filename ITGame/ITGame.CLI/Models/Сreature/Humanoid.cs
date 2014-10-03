@@ -25,8 +25,8 @@ namespace ITGame.CLI.Models.Creature
 
         protected Weapon weapon;
 
-        protected AttackSpell attackSpell;
-        protected DefensiveSpell defensiveSpell;
+        protected Spell attackSpell;
+        protected Spell defensiveSpell;
 
         public void Equip(ITGame.CLI.Models.Equipment.Equipment equipment)
         {
@@ -139,7 +139,7 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public void SelectSpell(AttackSpell selectedAttackSpell = null, DefensiveSpell selectedDefensiveSpell = null)
+        public void SelectSpell(Spell selectedAttackSpell = null, Spell selectedDefensiveSpell = null)
         {
             this.attackSpell = selectedAttackSpell;
             this.defensiveSpell = selectedDefensiveSpell;
@@ -176,16 +176,16 @@ namespace ITGame.CLI.Models.Creature
             }
         }
 
-        public override void RecieveDamage(Damage damage, SpellType spellType = SpellType.None)
+        public override void RecieveDamage(Damage damage, SchoolSpell schoolSpell = SchoolSpell.None)
         {
             var mDef = MagicalDefence;
 
-            if (spellType != SpellType.None)
+            if (schoolSpell != SchoolSpell.None)
                 mDef += (defensiveSpell != null &&
-                        (defensiveSpell.Duration != 0 && defensiveSpell.SpellType == spellType)) ? defensiveSpell.MagicalPower : 0;
+                        (defensiveSpell.CurrentDuration != 0 && defensiveSpell.SchoolSpell == schoolSpell)) ? defensiveSpell.MagicalPower : 0;
 
             if (defensiveSpell != null)
-                defensiveSpell.Duration -= defensiveSpell.Duration != 0 ? 1 : 0;
+                defensiveSpell.CurrentDuration -= defensiveSpell.CurrentDuration != 0 ? 1 : 0;
 
             damage.PhysicalDamage -= pDef;
             damage.MagicalDamage -= mDef;
@@ -233,7 +233,7 @@ namespace ITGame.CLI.Models.Creature
             {
                 PhysicalDamage = 0,
                 MagicalDamage = MagicalAttack
-            }, attackSpell.SpellType);
+            }, attackSpell.SchoolSpell);
 
             ManaConsumption(attackSpell.ManaCost);
             attackSpell.IsAttack = false;
@@ -250,13 +250,13 @@ namespace ITGame.CLI.Models.Creature
                 return;
             }
 
-            defensiveSpell.Duration = defensiveSpell.TotalDuration;
+            defensiveSpell.CurrentDuration = defensiveSpell.TotalDuration;
             ManaConsumption(defensiveSpell.ManaCost);
         }
 
         public Weapon Weapon { get { return weapon; } }
-        public AttackSpell AttackSpell { get { return attackSpell; } }
-        public DefensiveSpell DefensiveSpell { get { return defensiveSpell; } }
+        public Spell AttackSpell { get { return attackSpell; } }
+        public Spell DefensiveSpell { get { return defensiveSpell; } }
 
         protected override void OnActionPerformed(ActionPerformedEventArgs e)
         {

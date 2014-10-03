@@ -195,7 +195,7 @@ namespace ITGame.CLI.Models.Creature
             MP -= mCost;
         }
 
-        public virtual void RecieveDamage(Damage damage, SpellType spellType = SpellType.None)
+        public virtual void RecieveDamage(Damage damage, SchoolSpell spellType = SchoolSpell.None)
         {
             var message = string.Format("You {0} have recieved {1} damage",
                 Name,

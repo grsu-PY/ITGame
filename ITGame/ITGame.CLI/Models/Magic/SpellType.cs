@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Magic
 {
-    public enum SpellType {
-        Shadow,
-        Arcane,
-        Fire,
-        None
+    public enum SpellType 
+    {
+        AttackSpell,
+        DefensiveSpell
     }
 }

@@ -52,6 +52,7 @@
     <Compile Include="Models\Environment\Surface.cs" />
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />
+    <Compile Include="Models\Magic\SpellType.cs" />
     <Compile Include="Models\Сreature\SurfaceAffectEventArgs.cs" />
     <Compile Include="Models\Сreature\Actions\ActionPerformedEventArgs.cs" />
     <Compile Include="Models\Сreature\Actions\ActionType.cs" />
@@ -64,10 +65,8 @@
     <Compile Include="Models\Damage.cs" />
     <Compile Include="Models\Equipment\Armor.cs" />
     <Compile Include="Models\Equipment\Equipment.cs" />
-    <Compile Include="Models\Magic\AttackSpell.cs" />
-    <Compile Include="Models\Magic\DefensiveSpell.cs" />
     <Compile Include="Models\Magic\Spell.cs" />
-    <Compile Include="Models\Magic\SpellType.cs" />
+    <Compile Include="Models\Magic\SchoolSpell.cs" />
     <Compile Include="Models\Сreature\Actions\ICanAttack.cs" />
     <Compile Include="Models\Сreature\Actions\IRecieveDamage.cs" />
     <Compile Include="Models\Сreature\Actions\ICanEquip.cs" />

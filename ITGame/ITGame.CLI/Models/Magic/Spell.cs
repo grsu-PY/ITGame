@@ -11,12 +11,14 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Fields
          */
+        private SpellType spellType;
+        private SchoolSpell schoolSpell;
         private int magicalPower;
         private int manaCost;
         private string spellName;
         private bool isAttack;
-
-        protected SpellType spellType;
+        private int totalDuration;
+        private int currentDuration;
 
         /*
          * Methods
@@ -31,7 +33,17 @@ namespace ITGame.CLI.Models.Magic
          */
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public SpellType SpellType { get { return spellType; } }
+        public SchoolSpell SchoolSpell
+        {
+            get { return schoolSpell; }
+            set { schoolSpell = value; }
+        }
+
+        public SpellType SpellType 
+        {
+            get { return spellType; }
+            set { spellType = value; }
+        }
 
         public string SpellName
         {
@@ -59,6 +71,18 @@ namespace ITGame.CLI.Models.Magic
         {
             get { return manaCost; }
             set { manaCost = value; }
+        }
+
+        public int TotalDuration 
+        {
+            get { return totalDuration; }
+            set { totalDuration = value; }
+        }
+
+        public int CurrentDuration 
+        {
+            get { return currentDuration; }
+            set { currentDuration = value; }
         }
 
 

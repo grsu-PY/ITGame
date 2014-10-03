@@ -67,8 +67,8 @@ namespace ITGame.CLI
 
      
         static void ToCmd(string[] args) {
-
-            args = new string[10];
+            
+            args = new string[8];
             // args[0] == "create", "read", "update", "delete", "help"
             args[0] = "create";
             // args[1] == same creature
@@ -81,21 +81,69 @@ namespace ITGame.CLI
             args[4] = "-w";
             args[5] = "Sword,_.";
             // spell
-            args[6] = "-s";
-            args[7] = "Wrath,12,_";
-
+      //      args[6] = "-s";
+      //      args[7] = "Attack,Fire,Wrath,12,_.";
             // armor
-            args[8] = "-a";
-            args[9] = "Gloves,10,2";
-             
+            args[6] = "-a";
+            args[7] = "Gloves,10,2";
+
             CmdParser parser = new CmdParser(args);
 
             if (parser.IsHelp) parser.GetHelp();
             else
             {
-                Hashtable tab = parser.Parse();
+                Hashtable cmdArgs = parser.Parse();
+                string command = (string)cmdArgs["Command"];
 
-                #region printTab
+                var creature = cmdArgs["Creature"] as Dictionary<string, string>;
+                var weapon = cmdArgs["Weapon"] as Dictionary<string, string>;
+                var armor = cmdArgs["Armor"] as Dictionary<string, string>;
+                var spell = cmdArgs["Spell"] as Dictionary<string, string>;
+
+                switch (command) 
+                {
+                    case "create":
+                        if (creature != null) 
+                        {
+                            var hmd = EntityRepository.GetInstance<Humanoid>().Create(creature);
+                            hmd.Id = new Guid();
+                            EntityRepository.GetInstance<Humanoid>().Add(hmd);
+                            EntityRepository.GetInstance<Humanoid>().SaveChanges();
+                            Console.WriteLine("Humanoid created\n");
+                        }
+                        if (weapon != null) 
+                        {
+                            var wpn = EntityRepository.GetInstance<Weapon>().Create(weapon);
+                            wpn.Id = new Guid();
+                            EntityRepository.GetInstance<Weapon>().Add(wpn);
+                            EntityRepository.GetInstance<Weapon>().SaveChanges();
+                            Console.WriteLine("Weapon created\n");
+                        }
+                        if (armor != null) 
+                        {
+                            var arm = EntityRepository.GetInstance<Armor>().Create(armor);
+                            arm.Id = new Guid();
+                            EntityRepository.GetInstance<Armor>().Add(arm);
+                            EntityRepository.GetInstance<Armor>().SaveChanges();
+                            Console.WriteLine("Armor created\n");
+                        }
+                        if (spell != null) 
+                        {
+                            var spl = EntityRepository.GetInstance<Spell>().Create(spell);
+                            spl.Id = new Guid();
+                            EntityRepository.GetInstance<Spell>().Add(spl);
+                            EntityRepository.GetInstance<Spell>().SaveChanges();
+                            Console.WriteLine("Spell created\n");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+        }
+        /*
+        #region printTab
                 foreach (string key in tab.Keys)
                 {
                     Console.WriteLine(key + "\n");
@@ -113,10 +161,7 @@ namespace ITGame.CLI
                         Console.WriteLine("->" + tab[key] + "\n");
                     }
                 }
-                #endregion
-            }
-        }
-
+                #endregion*/
         static void ActionPerformed(object sender, ActionPerformedEventArgs e)
         {
 
@@ -159,7 +204,7 @@ namespace ITGame.CLI
             nazgul.ActionPerformed += ActionPerformed;
 
             nazgul.Equip(new Weapon { PhysicalAttack = 8, WeaponType = WeaponType.Sword });
-            nazgul.SelectSpell(selectedDefensiveSpell: new DefensiveSpell { TotalDuration = 3, MagicalPower = 5 });
+            nazgul.SelectSpell(selectedDefensiveSpell: new Spell { TotalDuration = 3, MagicalPower = 5 });
             // nazgul.SpellDefense();
 
             Console.WriteLine("Nazgul\nCurrentHP/MaxHP: {0}/{1}\n" +
@@ -197,11 +242,11 @@ namespace ITGame.CLI
             weapons.Add(new Weapon { PhysicalAttack = 2, MagicalAttack = 3, WeaponType = WeaponType.Staff });
 
             ArrayList attack_spells = new ArrayList();
-            attack_spells.Add(new AttackSpell { MagicalPower = 7, ManaCost = 3 });
-            attack_spells.Add(new AttackSpell { MagicalPower = 10, ManaCost = 7 });
+            attack_spells.Add(new Spell { MagicalPower = 7, ManaCost = 3 });
+            attack_spells.Add(new Spell { MagicalPower = 10, ManaCost = 7 });
 
             ArrayList defensive_spells = new ArrayList();
-            defensive_spells.Add(new DefensiveSpell { MagicalPower = 5, ManaCost = 5 });
+            defensive_spells.Add(new Spell { MagicalPower = 5, ManaCost = 5 });
 
             Console.WriteLine("\n\nHello, Gendalf.\nYou should choose spells and weapons.\n\n");
             Console.WriteLine("\nPlease, choose Weapon.\n");
@@ -218,7 +263,7 @@ namespace ITGame.CLI
             Console.WriteLine("\nPlease, choose Attack Spell.\n");
             index = 1;
 
-            foreach (AttackSpell spell in attack_spells)
+            foreach (Spell spell in attack_spells)
             {
                 Console.WriteLine("{0}: Magical Power:{1}, Mana Cost:{2}.", index, spell.MagicalPower, spell.ManaCost);
                 index++;
@@ -228,14 +273,14 @@ namespace ITGame.CLI
             Console.WriteLine("\nPlease, choose Defensive Spell.\n");
             index = 1;
 
-            foreach (DefensiveSpell spell in defensive_spells)
+            foreach (Spell spell in defensive_spells)
             {
                 Console.WriteLine("{0}: Magical Power:{1}, Mana Cost:{2}.", index, spell.MagicalPower, spell.ManaCost);
                 index++;
             }
             int dSpellNum = Int32.Parse(Console.ReadLine()) - 1;
 
-            gendalf.SelectSpell((AttackSpell)attack_spells[aSpellNum], (DefensiveSpell)defensive_spells[dSpellNum]);
+            gendalf.SelectSpell((Spell)attack_spells[aSpellNum], (Spell)defensive_spells[dSpellNum]);
 
 
             int round = 1;
