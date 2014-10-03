@@ -92,17 +92,13 @@ namespace ITGame.CLI
             if (parser.IsHelp) parser.GetHelp();
             else
             {
-                Hashtable cmdArgs = parser.Parse();
-                string command = (string)cmdArgs["Command"];
-
-                var creature = cmdArgs["Creature"] as Dictionary<string, string>;
-                var weapon = cmdArgs["Weapon"] as Dictionary<string, string>;
-                var armor = cmdArgs["Armor"] as Dictionary<string, string>;
-                var spell = cmdArgs["Spell"] as Dictionary<string, string>;
+                CmdData cmdArgs = parser.Parse();
+                string command = cmdArgs.Command;
 
                 switch (command) 
                 {
                     case "create":
+                        var creature = cmdArgs.Creature;
                         if (creature != null) 
                         {
                             var hmd = EntityRepository.GetInstance<Humanoid>().Create(creature);
@@ -111,6 +107,8 @@ namespace ITGame.CLI
                             EntityRepository.GetInstance<Humanoid>().SaveChanges();
                             Console.WriteLine("Humanoid created\n");
                         }
+
+                        var weapon = cmdArgs.Weapon;
                         if (weapon != null) 
                         {
                             var wpn = EntityRepository.GetInstance<Weapon>().Create(weapon);
@@ -119,6 +117,8 @@ namespace ITGame.CLI
                             EntityRepository.GetInstance<Weapon>().SaveChanges();
                             Console.WriteLine("Weapon created\n");
                         }
+
+                        var armor = cmdArgs.Armor;
                         if (armor != null) 
                         {
                             var arm = EntityRepository.GetInstance<Armor>().Create(armor);
@@ -127,6 +127,8 @@ namespace ITGame.CLI
                             EntityRepository.GetInstance<Armor>().SaveChanges();
                             Console.WriteLine("Armor created\n");
                         }
+
+                        var spell = cmdArgs.Spell;
                         if (spell != null) 
                         {
                             var spl = EntityRepository.GetInstance<Spell>().Create(spell);

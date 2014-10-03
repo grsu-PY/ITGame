@@ -48,7 +48,7 @@ namespace ITGame.CLI.Infrastructure
             }
         }
 
-        public Hashtable Parse()
+        public CmdData Parse()
         {
             Hashtable result = new Hashtable();
             result.Add("Command", args[0]);
@@ -72,7 +72,7 @@ namespace ITGame.CLI.Infrastructure
             }
 
             result = AdditionTable(result);
-            return result;
+            return new CmdData(result);
         }
 
         private Hashtable AdditionTable(Hashtable table)

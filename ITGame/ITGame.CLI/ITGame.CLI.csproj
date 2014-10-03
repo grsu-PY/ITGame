@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\TypeExtension.cs" />
+    <Compile Include="Infrastructure\CmdData.cs" />
     <Compile Include="Infrastructure\CmdParser.cs" />
     <Compile Include="Infrastructure\EntityProjector`.cs" />
     <Compile Include="Infrastructure\EntityProjector.cs" />
