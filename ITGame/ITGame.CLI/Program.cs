@@ -68,74 +68,42 @@ namespace ITGame.CLI
      
         static void ToCmd(string[] args) {
             
-            args = new string[8];
+            args = new string[9];
             // args[0] == "create", "read", "update", "delete", "help"
             args[0] = "create";
-            // args[1] == same creature
-            args[1] = "humanoid";
-            // args[2] == parameters for creature
+            // args[1] == parameters for creature
             // creature
-            args[2] = "-c"; // args[2] = "-c";
-            args[3] = "_.,12,30";
+            args[1] = "-h";
+            args[2] = "_.,12,30";
             // weapon
-            args[4] = "-w";
-            args[5] = "Sword,_.";
+            args[3] = "-w";
+            args[4] = "Sword,_.";
             // spell
-      //      args[6] = "-s";
-      //      args[7] = "Attack,Fire,Wrath,12,_.";
+            args[5] = "-s";
+            args[6] = "AttackSpell,Fire,Wrath,12,_.";
             // armor
-            args[6] = "-a";
-            args[7] = "Gloves,10,2";
-
+            args[7] = "-a";
+            args[8] = "Gloves,10,2";
+            
             CmdParser parser = new CmdParser(args);
 
             if (parser.IsHelp) parser.GetHelp();
             else
             {
-                CmdData cmdArgs = parser.Parse();
-                string command = cmdArgs.Command;
+                List<CmdData> cmdArgs = parser.Parse();
+                CmdCommands command = cmdArgs[0].Command;
 
                 switch (command) 
                 {
-                    case "create":
-                        var creature = cmdArgs.Creature;
-                        if (creature != null) 
+                    case CmdCommands.create:
+                        foreach (CmdData cData in cmdArgs) 
                         {
-                            var hmd = EntityRepository.GetInstance<Humanoid>().Create(creature);
-                            hmd.Id = new Guid();
-                            EntityRepository.GetInstance<Humanoid>().Add(hmd);
-                            EntityRepository.GetInstance<Humanoid>().SaveChanges();
-                            Console.WriteLine("Humanoid created\n");
-                        }
+                            Type entityType = Type.GetType(cData.Entity);
+                            var entity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            entity.Id = new Guid();
 
-                        var weapon = cmdArgs.Weapon;
-                        if (weapon != null) 
-                        {
-                            var wpn = EntityRepository.GetInstance<Weapon>().Create(weapon);
-                            wpn.Id = new Guid();
-                            EntityRepository.GetInstance<Weapon>().Add(wpn);
-                            EntityRepository.GetInstance<Weapon>().SaveChanges();
-                            Console.WriteLine("Weapon created\n");
-                        }
-
-                        var armor = cmdArgs.Armor;
-                        if (armor != null) 
-                        {
-                            var arm = EntityRepository.GetInstance<Armor>().Create(armor);
-                            arm.Id = new Guid();
-                            EntityRepository.GetInstance<Armor>().Add(arm);
-                            EntityRepository.GetInstance<Armor>().SaveChanges();
-                            Console.WriteLine("Armor created\n");
-                        }
-
-                        var spell = cmdArgs.Spell;
-                        if (spell != null) 
-                        {
-                            var spl = EntityRepository.GetInstance<Spell>().Create(spell);
-                            spl.Id = new Guid();
-                            EntityRepository.GetInstance<Spell>().Add(spl);
-                            EntityRepository.GetInstance<Spell>().SaveChanges();
-                            Console.WriteLine("Spell created\n");
+                            EntityRepository.GetInstance(entityType).Add(entity);
+                            EntityRepository.GetInstance(entityType).SaveChanges();
                         }
                         break;
                     default:
@@ -144,26 +112,18 @@ namespace ITGame.CLI
                 
             }
         }
+
         /*
-        #region printTab
-                foreach (string key in tab.Keys)
+         foreach (CmdData data in cmdArgs) 
                 {
-                    Console.WriteLine(key + "\n");
-                    if (tab[key] is IDictionary<string,string>)
+                    Console.WriteLine(data.Entity);
+                    foreach (string key in data.Properties.Keys) 
                     {
-                        var arr = tab[key] as IDictionary<string,string>;
-                        foreach (string parm in arr.Keys) 
-                        {
-                            Console.WriteLine("->" + parm + " - " + arr[parm]);
-                        }
-                        Console.WriteLine();
-                    }
-                    else
-                    {
-                        Console.WriteLine("->" + tab[key] + "\n");
+                        Console.WriteLine("->" + key + " - " + data.Properties[key]);
                     }
                 }
-                #endregion*/
+         */
+
         static void ActionPerformed(object sender, ActionPerformedEventArgs e)
         {
 

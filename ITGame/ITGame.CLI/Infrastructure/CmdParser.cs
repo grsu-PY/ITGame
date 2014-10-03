@@ -13,33 +13,47 @@ namespace ITGame.CLI.Infrastructure
         private string[] args;
         private Dictionary<string, string> keys = new Dictionary<string, string>() 
         {
-            {"Creature", "-c"},
+            {"Humanoid", "-h"},
             {"Weapon", "-w"},
             {"Armor", "-a"},
             {"Spell", "-s"}
         };
         private List<string> patterns = new List<string>() 
         {
-            @"^(create|update) [Hh]umanoid ((-[cwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
-            @"^delete [Hh]umanoid$",
-            @"(?<=(^(create|update|delete|read) ))?help$"
+            @"^(create|update) ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
+            @"^delete (Humanoid|Weapon|Armor|Spell)$",
+            @"(?<=(^(create|update|delete|read) ))?help$",
+            @"^read$"
         };
 
+        private CmdCommands command;
         private string splitPattern = "\\s*,";
         private bool isHelp = false;
-
-        private enum commands 
-        {
-            create,
-            update,
-            delete,
-            read,
-            help
-        }
 
         public CmdParser(string[] args) 
         {
             this.args = args;
+
+            switch (args[0]) 
+            {
+                case "create":
+                    command = CmdCommands.create;
+                    break;
+                case "update":
+                    command = CmdCommands.update;
+                    break;
+                case "delete":
+                    command = CmdCommands.delete;
+                    break;
+                case "read":
+                    command = CmdCommands.read;
+                    break;
+                case "help":
+                    command = CmdCommands.help;
+                    break;
+                default:
+                    break;
+            }
 
             if (!CheckLine()) 
             {
@@ -48,60 +62,57 @@ namespace ITGame.CLI.Infrastructure
             }
         }
 
-        public CmdData Parse()
+        public List<CmdData> Parse()
         {
             Hashtable result = new Hashtable();
-            result.Add("Command", args[0]);
-            result.Add("Entity", args[1]);
-
-            foreach (string key in keys.Keys) 
+            List<CmdData> retList = new List<CmdData>();
+            string[] props = null;
+            if (command == CmdCommands.create || command == CmdCommands.update)
             {
-                int index = IsContainsKey(args, keys[key]);
-                if (index != -1)
+                foreach (string key in keys.Keys)
                 {
-                    if (args[index + 1].Contains(','))
+                    int index = IsContainsKey(args, keys[key]);
+                    if (index != -1)
                     {
                         string temp = args[index + 1];
                         if (temp.Contains("_."))
                             temp = AdditionParm(args[index + 1], ecountParam[args[index]]);
-                        string[] tempArr = Regex.Split(temp, splitPattern);
-                        result.Add(key, tempArr);
+                        props = Regex.Split(temp, splitPattern);
                     }
-                    else result.Add(key, args[index + 1]);
+
+                    retList.Add(new CmdData(command, key, AdditionTable(props, key)));
                 }
             }
+            else if (command == CmdCommands.delete)
+            {
+                retList.Add(new CmdData(command, args[1], null));
+            }
+            else if (command == CmdCommands.read) 
+            {
+                retList.Add(new CmdData(command, null, null));
+            }
 
-            result = AdditionTable(result);
-            return new CmdData(result);
+            return retList;
         }
 
-        private Hashtable AdditionTable(Hashtable table)
+        private Dictionary<string, string> AdditionTable(string[] EValues, string key)
         {
-            Hashtable rtb = new Hashtable();
-            foreach (string key in table.Keys) 
+            Dictionary<string, string> dtb = new Dictionary<string,string>();
+            foreach (string ckey in entityInfo.Keys)
             {
-                foreach (string ckey in entityInfo.Keys)
+                if (ckey.Contains(key))
                 {
-                    if (ckey.Contains(key))
+                    string[] EKeys = (string[])entityInfo[ckey];
+                    for (int index = 0; index < EKeys.Length; index++)
                     {
-                        Dictionary<string, string> dtemp = new Dictionary<string, string>();
-                        string[] EValues = (string[])table[key];
-                        string[] EKeys = (string[])entityInfo[ckey];
-                        for (int index = 0; index < EKeys.Length; index++)
-                        {
-                            if(EValues[index] != "_")
-                                dtemp.Add(EKeys[index], EValues[index]);
-                        }
-
-                        rtb[key] = dtemp;
-                        break;
+                        if (EValues[index] != "_")
+                            dtb.Add(EKeys[index], EValues[index]);
                     }
+                    break;
                 }
             }
-            rtb.Add("Command", table["Command"]);
-            rtb.Add("Entity", table["Entity"]);
 
-            return rtb;
+            return dtb;
         }
 
         private string AdditionParm(string line, int cparm)
@@ -177,7 +188,7 @@ namespace ITGame.CLI.Infrastructure
         {
             if (isHelp) 
             {
-                if (args[0].Equals(commands.help.ToString())) 
+                if (command == CmdCommands.help) 
                 {
                     Console.WriteLine("Options:");
                     foreach (string key in commandInfo.Keys) 
@@ -185,9 +196,9 @@ namespace ITGame.CLI.Infrastructure
                         Console.WriteLine("\t" + key + " - " + commandInfo[key]);
                     }
                 }
-                else if (args[1].Equals(commands.help.ToString())) 
+                else if (args[1].Equals(CmdCommands.help.ToString())) 
                 {
-                    if (args[0].Equals(commands.create.ToString()) || args[0].Equals(commands.update.ToString()))
+                    if (args[0].Equals(CmdCommands.create.ToString()) || args[0].Equals(CmdCommands.update.ToString()))
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", args[0]));
                         Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", args[0]));
@@ -203,15 +214,15 @@ namespace ITGame.CLI.Infrastructure
                         }
                         Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n"+
                                           "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n"+
-                                          "Examples:\n\t"+args[0]+" humanoid -c Gamer,Elf,_.,10,20,50\n"+
-                                          "\t"+args[0]+" humanoid -w Sword,20,40 -c _,Elf,_.,10,_,_");
+                                          "Examples:\n\t"+args[0]+" -h Gamer,Elf,_.,10,20,50\n"+
+                                          "\t"+args[0]+" -w Sword,20,40 -c _,Elf,_.,10,_,_");
 
                     }
-                    else if (args[0].Equals(commands.delete.ToString())) 
+                    else if (args[0].Equals(CmdCommands.delete.ToString())) 
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0} <entity>\n\nExamples:\n\t{0} Humanoid", args[0]));
                     }
-                    else if (args[0].Equals(commands.read.ToString())) 
+                    else if (args[0].Equals(CmdCommands.read.ToString())) 
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0}", args[0]));
                     }
@@ -230,22 +241,22 @@ namespace ITGame.CLI.Infrastructure
 
         private Dictionary<string, string> commandInfo = new Dictionary<string, string>()
         {
-            {commands.create.ToString(), "Create a new entity"},
-            {commands.update.ToString(), "Update entity"},
-            {commands.delete.ToString(), "Remove entity"},
-            {commands.read.ToString(), "View the existing entity"},
-            {commands.help.ToString(), "Get help"}
+            {CmdCommands.create.ToString(), "Create a new entity"},
+            {CmdCommands.update.ToString(), "Update entity"},
+            {CmdCommands.delete.ToString(), "Remove entity"},
+            {CmdCommands.read.ToString(), "View the existing entity"},
+            {CmdCommands.help.ToString(), "Get help"}
         };
         private Dictionary<string, int> ecountParam = new Dictionary<string, int>()
         {
-            {"-c", 8},
+            {"-h", 8},
             {"-w", 3},
             {"-a", 3},
-            {"-s", 3}
+            {"-s", 6}
         };
         private Hashtable entityInfo = new Hashtable() 
         {
-            {"Creature( -c <parameters> )", new string[]
+            {"Humanoid( -h <parameters> )", new string[]
                 {
                     "Name",
                     "Race",

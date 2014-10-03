@@ -9,24 +9,17 @@ namespace ITGame.CLI.Infrastructure
 {
     class CmdData
     {
-        private readonly string _Command;
+        private readonly CmdCommands _Command;
         private readonly string _Entity;
-        private readonly Dictionary<string, string> _Creature;
-        private readonly Dictionary<string, string> _Weapon;
-        private readonly Dictionary<string, string> _Armor;
-        private readonly Dictionary<string, string> _Spell;
-
-        public CmdData(Hashtable parsedData) 
+        private readonly Dictionary<string, string> _Properties;
+        public CmdData(CmdCommands command, string entity, Dictionary<string, string> props) 
         {
-            this._Command = parsedData["Command"] as string;
-            this._Entity = parsedData["Entity"] as string;
-            this._Creature = parsedData["Creature"] as Dictionary<string, string>;
-            this._Weapon = parsedData["Weapon"] as Dictionary<string, string>;
-            this._Armor = parsedData["Armor"] as Dictionary<string, string>;
-            this._Spell = parsedData["Spell"] as Dictionary<string, string>;
+            this._Command = command;
+            this._Entity = entity;
+            this._Properties = props;
         }
 
-        public string Command 
+        public CmdCommands Command 
         {
             get { return _Command; }
         }
@@ -36,24 +29,9 @@ namespace ITGame.CLI.Infrastructure
             get { return _Entity; }
         }
 
-        public Dictionary<string, string> Creature
+        public Dictionary<string, string> Properties
         {
-            get { return _Creature; }
-        }
-
-        public Dictionary<string, string> Weapon
-        {
-            get { return _Weapon; }
-        }
-
-        public Dictionary<string, string> Armor
-        {
-            get { return _Armor; }
-        }
-
-        public Dictionary<string, string> Spell
-        {
-            get { return _Spell; }
+            get { return _Properties; }
         }
     }
 }
