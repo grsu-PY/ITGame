@@ -11,6 +11,7 @@ using ITGame.CLI.Models.Equipment;
 using ITGame.CLI.Models.Creature.Actions;
 using ITGame.CLI.Models.Environment;
 using ITGame.CLI.Infrastructure;
+using ITGame.CLI.Extensions;
 namespace ITGame.CLI
 {
     class Program
@@ -98,12 +99,18 @@ namespace ITGame.CLI
                     case CmdCommands.create:
                         foreach (CmdData cData in cmdArgs) 
                         {
-                            Type entityType = Type.GetType(cData.Entity);
+                            Type entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.Entity);
                             var entity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
                             entity.Id = new Guid();
 
-                            EntityRepository.GetInstance(entityType).Add(entity);
-                            EntityRepository.GetInstance(entityType).SaveChanges();
+                            if (EntityRepository.GetInstance(entityType).TryLoad(entity.Id, out entity))
+                            {
+                                EntityRepository.GetInstance(entityType).Add(entity);
+                                EntityRepository.GetInstance(entityType).SaveChanges();
+
+                                Console.WriteLine("{0} created\n", cData.Entity);
+                            }
+                            else Console.WriteLine("{0} already exists\n", cData.Entity);
                         }
                         break;
                     default:

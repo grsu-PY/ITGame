@@ -34,26 +34,7 @@ namespace ITGame.CLI.Infrastructure
         {
             this.args = args;
 
-            switch (args[0]) 
-            {
-                case "create":
-                    command = CmdCommands.create;
-                    break;
-                case "update":
-                    command = CmdCommands.update;
-                    break;
-                case "delete":
-                    command = CmdCommands.delete;
-                    break;
-                case "read":
-                    command = CmdCommands.read;
-                    break;
-                case "help":
-                    command = CmdCommands.help;
-                    break;
-                default:
-                    break;
-            }
+            command = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[0], true);
 
             if (!CheckLine()) 
             {
@@ -196,33 +177,36 @@ namespace ITGame.CLI.Infrastructure
                         Console.WriteLine("\t" + key + " - " + commandInfo[key]);
                     }
                 }
-                else if (args[1].Equals(CmdCommands.help.ToString())) 
-                {
-                    if (args[0].Equals(CmdCommands.create.ToString()) || args[0].Equals(CmdCommands.update.ToString()))
+                else {
+                    CmdCommands fCommand = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[1]);
+                    if (fCommand == CmdCommands.help)
                     {
-                        Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", args[0]));
-                        Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", args[0]));
-                        foreach (string key in entityInfo.Keys) 
+                        if (command == CmdCommands.create || command == CmdCommands.update)
                         {
-                            Console.WriteLine("\t" + key + ":");
-                            string[] arr = (string[])entityInfo[key];
-                            foreach (string p in arr) 
+                            Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", args[0]));
+                            Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", args[0]));
+                            foreach (string key in entityInfo.Keys)
                             {
-                                Console.WriteLine("\t\t" + p);
+                                Console.WriteLine("\t" + key + ":");
+                                string[] arr = (string[])entityInfo[key];
+                                foreach (string p in arr)
+                                {
+                                    Console.WriteLine("\t\t" + p);
+                                }
+                                Console.WriteLine();
                             }
-                            Console.WriteLine();
-                        }
-                        Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n"+
-                                          "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n"+
-                                          "Examples:\n\t"+args[0]+" -h Gamer,Elf,_.,10,20,50\n"+
-                                          "\t"+args[0]+" -w Sword,20,40 -c _,Elf,_.,10,_,_");
+                            Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
+                                              "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
+                                              "Examples:\n\t" + args[0] + " -h Gamer,Elf,_.,10,20,50\n" +
+                                              "\t" + args[0] + " -w Sword,20,40 -c _,Elf,_.,10,_,_");
 
+                        }
                     }
-                    else if (args[0].Equals(CmdCommands.delete.ToString())) 
+                    else if (fCommand == CmdCommands.delete)
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0} <entity>\n\nExamples:\n\t{0} Humanoid", args[0]));
                     }
-                    else if (args[0].Equals(CmdCommands.read.ToString())) 
+                    else if (fCommand == CmdCommands.read)
                     {
                         Console.WriteLine(string.Format("Using:\n\t{0}", args[0]));
                     }
