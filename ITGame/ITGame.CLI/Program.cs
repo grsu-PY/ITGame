@@ -69,23 +69,27 @@ namespace ITGame.CLI
      
         static void ToCmd(string[] args) {
             
-            args = new string[9];
+            args = new string[2];
             // args[0] == "create", "read", "update", "delete", "help"
-            args[0] = "create";
+            args[0] = "update";
             // args[1] == parameters for creature
             // creature
-            args[1] = "-h";
-            args[2] = "_.,12,30";
+            args[1] = "help"; // args[1] = "-h";
+            /*args[2] = "_.,20";
+            args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
             // weapon
-            args[3] = "-w";
-            args[4] = "Sword,_.";
+            args[4] = "-w";
+            args[5] = "Sword,_.";
+            args[6] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
             // spell
-            args[5] = "-s";
-            args[6] = "AttackSpell,Fire,Wrath,12,_.";
+            args[7] = "-s";
+            args[8] = "AttackSpell,Fire,Wrath,12,_.";
+            args[9] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
             // armor
-            args[7] = "-a";
-            args[8] = "Gloves,10,2";
-            
+            args[10] = "-a";
+            args[11] = "Gloves,10,2";
+            args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+           */
             CmdParser parser = new CmdParser(args);
 
             if (parser.IsHelp) parser.GetHelp();

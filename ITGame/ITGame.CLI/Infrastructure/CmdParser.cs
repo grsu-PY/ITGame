@@ -20,10 +20,11 @@ namespace ITGame.CLI.Infrastructure
         };
         private List<string> patterns = new List<string>() 
         {
-            @"^(create|update) ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
+            @"^create ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
+            @"^update ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+ (\w{8}-(\w{4}-){3}\w{12})\s?)+$",
             @"^delete (Humanoid|Weapon|Armor|Spell) (\w{8}-(\w{4}-){3}\w{12})$",
             @"(?<=(^(create|update|delete|read) ))?help$",
-            @"^read$"
+            @"^read (Humanoid|Weapon|Armor|Spell)$"
         };
 
         private CmdCommands command;
@@ -61,7 +62,21 @@ namespace ITGame.CLI.Infrastructure
                         props = Regex.Split(temp, splitPattern);
                     }
 
-                    retList.Add(new CmdData(command, key, AdditionTable(props, key)));
+                    if (command == CmdCommands.update)
+                    {
+                        Guid guid;
+                        if (Guid.TryParse(args[index + 2], out guid))
+                        {
+                            retList.Add(new CmdData(command, key, guid, AdditionTable(props, key)));
+                        }
+                        else 
+                        {
+                            Console.WriteLine("Bad Guid\n");
+                            Environment.Exit(0);
+                        }
+                    }
+                    else
+                        retList.Add(new CmdData(command, key, AdditionTable(props, key)));
                 }
             }
             else if (command == CmdCommands.delete)
@@ -70,11 +85,14 @@ namespace ITGame.CLI.Infrastructure
                 if (Guid.TryParse(args[2], out guid))
                     retList.Add(new CmdData(command, args[1], guid, null));
                 else
+                {
                     Console.WriteLine("Bad Guid\n");
+                    Environment.Exit(0);
+                }
             }
             else if (command == CmdCommands.read) 
             {
-                retList.Add(new CmdData(command, null, null));
+                retList.Add(new CmdData(command, args[1], null));
             }
 
             return retList;
@@ -160,7 +178,7 @@ namespace ITGame.CLI.Infrastructure
             {
                 if (Regex.IsMatch(tempLine, pattern))
                 {
-                    if (pattern == patterns[2]) this.isHelp = true;
+                    if (pattern == patterns[3]) this.isHelp = true;
                     result = true;
                     break;
                 }
@@ -187,8 +205,12 @@ namespace ITGame.CLI.Infrastructure
                     {
                         if (command == CmdCommands.create || command == CmdCommands.update)
                         {
-                            Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", args[0]));
-                            Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", args[0]));
+                            if(command == CmdCommands.update)
+                                Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters> <guid>\n", command));
+                            else
+                                Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", command));
+
+                            Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", command));
                             foreach (string key in entityInfo.Keys)
                             {
                                 Console.WriteLine("\t" + key + ":");
@@ -199,21 +221,41 @@ namespace ITGame.CLI.Infrastructure
                                 }
                                 Console.WriteLine();
                             }
-                            Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
-                                              "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
-                                              "Examples:\n\t" + args[0] + " -h Gamer,Elf,_.,10,20,50\n" +
-                                              "\t" + args[0] + " -w Sword,20,40 -c _,Elf,_.,10,_,_");
+
+                            if (command == CmdCommands.update)
+                                Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
+                                                  "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
+                                                  "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50 0f8fad5b-d9cb-469f-a165-70867728950e\n" +
+                                                  "\t" + command + " -w Sword,20,40 2f8bad23-0034-ba40-a165-adb27728950e -c _,Elf,_.,10,_,_ d9cb0f8fad5b-0f8f-7728469f-a165-7086469f950e");
+                            else
+                                Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
+                                                  "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
+                                                  "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50\n" +
+                                                  "\t" + command + " -w Sword,20,40 -c _,Elf,_.,10,_,_");
+                            
+                                
 
                         }
-                    }
-                    else if (fCommand == CmdCommands.delete)
-                    {
-                        Console.WriteLine("Using:\n\t{0} [entity] [guid]\n\nExamples:\n\t"+ args[0] + " Humanoid\n\t" +
-                                                                                            args[0] + " 0f8fad5b-d9cb-469f-a165-70867728950e");
-                    }
-                    else if (fCommand == CmdCommands.read)
-                    {
-                        Console.WriteLine(string.Format("Using:\n\t{0}", args[0]));
+                        else if (command == CmdCommands.delete)
+                        {
+                            Console.WriteLine("Using:\n\t" + command + " <entity> <guid>\n");
+                            Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", command));
+                            foreach (string key in keys.Keys)
+                            {
+                                Console.WriteLine("\t" + key);
+                            }
+                            Console.WriteLine("\nExamples:\n\t" + command + " Humanoid 0f8fad5b-d9cb-469f-a165-70867728950e");
+                        }
+                        else if (command == CmdCommands.read)
+                        {
+                            Console.WriteLine(string.Format("Using:\n\t{0} <entity>\n", command));
+                            Console.WriteLine(string.Format("Available parameters for \"{0}\":\n", command));
+                            foreach (string key in keys.Keys)
+                            {
+                                Console.WriteLine("\t" + key);
+                            }
+                            Console.WriteLine("\nExamples:\n\t" + command + " Humanoid");
+                        }
                     }
                 }
             }
