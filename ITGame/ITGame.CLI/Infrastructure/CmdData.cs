@@ -21,9 +21,10 @@ namespace ITGame.CLI.Infrastructure
             this._Properties = props;
         }
 
-        public CmdData(CmdCommands command, Guid entityGuid, Dictionary<string, string> props)
+        public CmdData(CmdCommands command, string entity, Guid entityGuid, Dictionary<string, string> props)
         {
             this._Command = command;
+            this._Entity = entity;
             this._EntityGuid = entityGuid;
             this._Properties = props;
             this._IsGuid = true;

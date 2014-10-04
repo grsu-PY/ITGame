@@ -67,10 +67,10 @@ namespace ITGame.CLI.Infrastructure
             else if (command == CmdCommands.delete)
             {
                 Guid guid;
-                if (Guid.TryParse(args[1], out guid))
-                    retList.Add(new CmdData(command, guid, null));
+                if (Guid.TryParse(args[2], out guid))
+                    retList.Add(new CmdData(command, args[1], guid, null));
                 else
-                    retList.Add(new CmdData(command, args[1], null));
+                    Console.WriteLine("Bad Guid\n");
             }
             else if (command == CmdCommands.read) 
             {
