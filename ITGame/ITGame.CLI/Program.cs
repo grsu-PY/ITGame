@@ -113,6 +113,12 @@ namespace ITGame.CLI
                             else Console.WriteLine("{0} already exists\n", cData.Entity);
                         }
                         break;
+                    case CmdCommands.update:
+                        break;
+                    case CmdCommands.delete:
+                        break;
+                    case CmdCommands.read:
+                        break;
                     default:
                         break;
                 }

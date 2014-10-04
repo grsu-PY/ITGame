@@ -21,7 +21,7 @@ namespace ITGame.CLI.Infrastructure
         private List<string> patterns = new List<string>() 
         {
             @"^(create|update) ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
-            @"^delete (Humanoid|Weapon|Armor|Spell)$",
+            @"^delete (Humanoid|Weapon|Armor|Spell) (\w{8}-(\w{4}-){3}\w{12})$",
             @"(?<=(^(create|update|delete|read) ))?help$",
             @"^read$"
         };
@@ -66,7 +66,11 @@ namespace ITGame.CLI.Infrastructure
             }
             else if (command == CmdCommands.delete)
             {
-                retList.Add(new CmdData(command, args[1], null));
+                Guid guid;
+                if (Guid.TryParse(args[1], out guid))
+                    retList.Add(new CmdData(command, guid, null));
+                else
+                    retList.Add(new CmdData(command, args[1], null));
             }
             else if (command == CmdCommands.read) 
             {
@@ -204,7 +208,8 @@ namespace ITGame.CLI.Infrastructure
                     }
                     else if (fCommand == CmdCommands.delete)
                     {
-                        Console.WriteLine(string.Format("Using:\n\t{0} <entity>\n\nExamples:\n\t{0} Humanoid", args[0]));
+                        Console.WriteLine("Using:\n\t{0} [entity] [guid]\n\nExamples:\n\t"+ args[0] + " Humanoid\n\t" +
+                                                                                            args[0] + " 0f8fad5b-d9cb-469f-a165-70867728950e");
                     }
                     else if (fCommand == CmdCommands.read)
                     {
