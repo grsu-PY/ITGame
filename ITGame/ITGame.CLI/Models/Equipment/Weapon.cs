@@ -25,5 +25,11 @@ namespace ITGame.CLI.Models.Equipment
             get { return weaponType; }
             set { weaponType = value; }
         }
+
+        public override string ToString()
+        {
+            return string.Format("ID {0}, Name {1}, WeaponType {2}, PAtk {3}, MAtk {4}",
+                Id, Name, WeaponType, PhysicalAttack, MagicalAttack);
+        }
     }
 }

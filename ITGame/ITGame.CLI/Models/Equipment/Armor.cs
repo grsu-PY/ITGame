@@ -22,5 +22,11 @@ namespace ITGame.CLI.Models.Equipment
             get { return armorType; }
             set { armorType = value; }
         }
+
+        public override string ToString()
+        {
+            return string.Format("ID {0}, Name {1}, ArmorType {2}, PDef {3}, MDef{4}",
+                Id, Name, ArmorType, PhysicalDef, MagicalDef);
+        }
     }
 }

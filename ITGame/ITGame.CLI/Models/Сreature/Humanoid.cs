@@ -441,6 +441,13 @@ namespace ITGame.CLI.Models.Creature
                     break;
             }
         }
+
+
+        public override string ToString()
+        {
+            return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, PAtk {5}, MAtk {6}",
+                Id, Name, HumanoidRace, HP, MP, PhysicalAttack, MagicalAttack);
+        }
         
     }
 }

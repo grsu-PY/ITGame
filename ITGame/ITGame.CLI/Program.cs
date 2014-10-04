@@ -101,27 +101,66 @@ namespace ITGame.CLI
                 switch (command) 
                 {
                     case CmdCommands.create:
-                        foreach (CmdData cData in cmdArgs) 
+                        foreach (CmdData cData in cmdArgs)
                         {
-                            Type entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.Entity);
-                            var entity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
-                            entity.Id = new Guid();
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            newEntity.Id = new Guid();
 
-                            if (EntityRepository.GetInstance(entityType).TryLoad(entity.Id, out entity))
+                            try
                             {
-                                EntityRepository.GetInstance(entityType).Add(entity);
+                                EntityRepository.GetInstance(entityType).Add(newEntity);
                                 EntityRepository.GetInstance(entityType).SaveChanges();
 
-                                Console.WriteLine("{0} created\n", cData.Entity);
+                                Console.WriteLine("{0} created\n", cData.EntityType);
                             }
-                            else Console.WriteLine("{0} already exists\n", cData.Entity);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                         }
                         break;
                     case CmdCommands.update:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var updatedEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            updatedEntity.Id = cData.EntityGuid;
+                            try
+                            {
+                                EntityRepository.GetInstance(entityType).Update(updatedEntity);
+                                EntityRepository.GetInstance(entityType).SaveChanges();
+
+                                Console.WriteLine("Entity of type {0} with id {1} have just successfully been updated", cData.EntityType, cData.EntityGuid);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                        }
                         break;
                     case CmdCommands.delete:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+
+                            EntityRepository.GetInstance(entityType).Delete(cData.EntityGuid);
+                            EntityRepository.GetInstance(entityType).SaveChanges();
+
+                            Console.WriteLine("Entity of type {0} with id {1} have just successfully been deleted", cData.EntityType, cData.EntityGuid);
+                        }
                         break;
                     case CmdCommands.read:
+                        foreach (var cData in cmdArgs)
+                        {
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entities = EntityRepository.GetInstance(entityType).GetAll();
+
+                            foreach (var entity in entities)
+                            {
+                                Console.WriteLine(entity.ToString());
+                            }
+                        }
                         break;
                     default:
                         break;

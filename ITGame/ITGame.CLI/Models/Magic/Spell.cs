@@ -15,7 +15,6 @@ namespace ITGame.CLI.Models.Magic
         private SchoolSpell schoolSpell;
         private int magicalPower;
         private int manaCost;
-        private string spellName;
         private bool isAttack;
         private int totalDuration;
         private int currentDuration;
@@ -44,13 +43,7 @@ namespace ITGame.CLI.Models.Magic
             get { return spellType; }
             set { spellType = value; }
         }
-
-        public string SpellName
-        {
-            get { return spellName; }
-            set { spellName = value; }
-        }
-
+        
         public int MagicalPower
         {
             get { return magicalPower; }
@@ -86,6 +79,10 @@ namespace ITGame.CLI.Models.Magic
         }
 
 
-        
+        public override string ToString()
+        {
+            return string.Format("ID {0}, Name {1}, SpellType {2}, Power {3}, Mana Cost {4}",
+                Id, Name, SchoolSpell, MagicalPower, ManaCost);
+        }
     }
 }

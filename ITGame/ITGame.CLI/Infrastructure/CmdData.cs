@@ -9,50 +9,50 @@ namespace ITGame.CLI.Infrastructure
 {
     class CmdData
     {
-        private readonly CmdCommands _Command;
-        private readonly string _Entity;
-        private readonly Guid _EntityGuid;
-        private readonly Dictionary<string, string> _Properties;
-        private readonly bool _IsGuid = false;
+        private readonly CmdCommands _command;
+        private readonly string _entityType;
+        private readonly Guid _entityGuid;
+        private readonly Dictionary<string, string> _properties;
+        private readonly bool _isGuid = false;
         public CmdData(CmdCommands command, string entity, Dictionary<string, string> props) 
         {
-            this._Command = command;
-            this._Entity = entity;
-            this._Properties = props;
+            _command = command;
+            _entityType = entity;
+            _properties = props;
         }
 
         public CmdData(CmdCommands command, string entity, Guid entityGuid, Dictionary<string, string> props)
         {
-            this._Command = command;
-            this._Entity = entity;
-            this._EntityGuid = entityGuid;
-            this._Properties = props;
-            this._IsGuid = true;
+            _command = command;
+            _entityType = entity;
+            _entityGuid = entityGuid;
+            _properties = props;
+            _isGuid = true;
         }
 
         public CmdCommands Command 
         {
-            get { return _Command; }
+            get { return _command; }
         }
 
-        public string Entity
+        public string EntityType
         {
-            get { return _Entity; }
+            get { return _entityType; }
         }
 
         public Guid EntityGuid 
         {
-            get { return _EntityGuid; }
+            get { return _entityGuid; }
         }
 
         public Dictionary<string, string> Properties
         {
-            get { return _Properties; }
+            get { return _properties; }
         }
 
         public bool IsGuid 
         {
-            get { return _IsGuid; }
+            get { return _isGuid; }
         }
     }
 }
