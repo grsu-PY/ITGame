@@ -25,12 +25,12 @@ namespace ITGame.CLI
 
             //SurfaceOnAction();
 
-           // if(args.Length != 0)
+           if(args.Length != 0)
                 ToCmd(args);
 
            // EditEntities();
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         private static void EditEntities()
@@ -68,28 +68,29 @@ namespace ITGame.CLI
 
      
         static void ToCmd(string[] args) {
-            
-            args = new string[2];
-            // args[0] == "create", "read", "update", "delete", "help"
-            args[0] = "update";
-            // args[1] == parameters for creature
-            // creature
-            args[1] = "help"; // args[1] = "-h";
-            /*args[2] = "_.,20";
-            args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            // weapon
-            args[4] = "-w";
-            args[5] = "Sword,_.";
-            args[6] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            // spell
-            args[7] = "-s";
-            args[8] = "AttackSpell,Fire,Wrath,12,_.";
-            args[9] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            // armor
-            args[10] = "-a";
-            args[11] = "Gloves,10,2";
-            args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-           */
+            //args = new string[4];
+            //// args[0] == "create", "read", "update", "delete", "help"
+            //args[0] = "update";
+            //// args[1] == parameters for creature
+            //// creature
+            //args[1] = "-h"; // args[1] = "-h";
+            //args[2] = "Anton,Elf,11,_.";
+            //args[3] = "356f811d-c876-4bc8-8d90-fa2c69cd1a25";
+            ///*args[2] = "_.,20";
+            //args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            //// weapon
+            //args[4] = "-w";
+            //args[5] = "Sword,_.";
+            //args[6] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            //// spell
+            //args[7] = "-s";
+            //args[8] = "AttackSpell,Fire,Wrath,12,_.";
+            //args[9] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            //// armor
+            //args[10] = "-a";
+            //args[11] = "Gloves,10,2";
+            //args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+           
             CmdParser parser = new CmdParser(args);
 
             if (parser.IsHelp) parser.GetHelp();
@@ -105,7 +106,7 @@ namespace ITGame.CLI
                         {
                             var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
                             var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
-                            newEntity.Id = new Guid();
+                            newEntity.Id = Guid.NewGuid();
 
                             try
                             {

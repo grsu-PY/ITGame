@@ -11,12 +11,14 @@ namespace ITGame.CLI.Models.Creature
 
     public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity
     {
+        private string name;
         public Guid Id { get; set; }
         public string Name
         {
-            get { return ""; }
+            get { return name; }
             set
             {
+                name = value;
                 var message = string.Format("New name - {0}", value);
                 OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
             }
@@ -49,8 +51,6 @@ namespace ITGame.CLI.Models.Creature
             currentMP = MaxMP;
             pDef = constitution;
             mDef = wisdom;
-
-            Name = "Creature";
         }
 
         public int Strength

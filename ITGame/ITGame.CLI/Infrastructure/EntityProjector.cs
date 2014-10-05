@@ -89,7 +89,7 @@ namespace ITGame.CLI.Infrastructure
                 {
                     property.SetValue(instance, Enum.Parse(property.PropertyType, values[property.Name]));
                 }
-                else if (property.PropertyType.IsClass || property.PropertyType.IsInterface)
+                else if ((property.PropertyType.IsClass || property.PropertyType.IsInterface) && property.PropertyType != typeof(string))
                 {
                     if (property.PropertyType.IsAssignableFrom(typeof(Identity)))
                     {
@@ -196,7 +196,7 @@ namespace ITGame.CLI.Infrastructure
                     {
                         column = Enum.GetName(prop.PropertyType, prop.GetValue(entity));
                     }
-                    else if (prop.PropertyType.IsClass || prop.PropertyType.IsInterface)
+                    else if ((prop.PropertyType.IsClass || prop.PropertyType.IsInterface) && prop.PropertyType != typeof(string))
                     {
                         if (prop.PropertyType.IsAssignableFrom(typeof(Identity)))
                         {

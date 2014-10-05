@@ -31,13 +31,13 @@ namespace ITGame.CLI.Infrastructure
         private string splitPattern = "\\s*,";
         private bool isHelp = false;
 
-        public CmdParser(string[] args) 
+        public CmdParser(string[] args)
         {
             this.args = args;
 
             command = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[0], true);
 
-            if (!CheckLine()) 
+            if (!CheckLine())
             {
                 Console.WriteLine("Bad parameters.\n");
                 Environment.Exit(0);
@@ -60,23 +60,24 @@ namespace ITGame.CLI.Infrastructure
                         if (temp.Contains("_."))
                             temp = AdditionParm(args[index + 1], ecountParam[args[index]]);
                         props = Regex.Split(temp, splitPattern);
+                        if (command == CmdCommands.update)
+                        {
+                            Guid guid;
+                            if (Guid.TryParse(args[index + 2], out guid))
+                            {
+                                retList.Add(new CmdData(command, key, guid, AdditionTable(props, key)));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Bad Guid\n");
+                                Environment.Exit(0);
+                            }
+                        }
+                        else
+                            retList.Add(new CmdData(command, key, AdditionTable(props, key)));
                     }
 
-                    if (command == CmdCommands.update)
-                    {
-                        Guid guid;
-                        if (Guid.TryParse(args[index + 2], out guid))
-                        {
-                            retList.Add(new CmdData(command, key, guid, AdditionTable(props, key)));
-                        }
-                        else 
-                        {
-                            Console.WriteLine("Bad Guid\n");
-                            Environment.Exit(0);
-                        }
-                    }
-                    else
-                        retList.Add(new CmdData(command, key, AdditionTable(props, key)));
+
                 }
             }
             else if (command == CmdCommands.delete)
@@ -90,7 +91,7 @@ namespace ITGame.CLI.Infrastructure
                     Environment.Exit(0);
                 }
             }
-            else if (command == CmdCommands.read) 
+            else if (command == CmdCommands.read)
             {
                 retList.Add(new CmdData(command, args[1], null));
             }
@@ -100,7 +101,7 @@ namespace ITGame.CLI.Infrastructure
 
         private Dictionary<string, string> AdditionTable(string[] EValues, string key)
         {
-            Dictionary<string, string> dtb = new Dictionary<string,string>();
+            Dictionary<string, string> dtb = new Dictionary<string, string>();
             foreach (string ckey in entityInfo.Keys)
             {
                 if (ckey.Contains(key))
@@ -140,13 +141,13 @@ namespace ITGame.CLI.Infrastructure
             return rnum;
         }
 
-        private int IsContainsKey(string[] arr, string pat) 
+        private int IsContainsKey(string[] arr, string pat)
         {
             int result = -1;
 
-            for (int index = 0; index < arr.Length; index++) 
+            for (int index = 0; index < arr.Length; index++)
             {
-                if (arr[index] == pat) 
+                if (arr[index] == pat)
                 {
                     result = index;
                     break;
@@ -156,19 +157,19 @@ namespace ITGame.CLI.Infrastructure
             return result;
         }
 
-        private string ConvertArrayToString(string[] array) 
+        private string ConvertArrayToString(string[] array)
         {
             StringBuilder builder = new StringBuilder();
-            foreach (string value in array) 
+            foreach (string value in array)
             {
-                builder.Append(value+" ");
+                builder.Append(value + " ");
             }
             builder = builder.Remove(builder.Length - 1, 1);
 
             return builder.ToString();
         }
 
-        private bool CheckLine() 
+        private bool CheckLine()
         {
             bool result = false;
 
@@ -187,25 +188,26 @@ namespace ITGame.CLI.Infrastructure
             return result;
         }
 
-        public void GetHelp() 
+        public void GetHelp()
         {
-            if (isHelp) 
+            if (isHelp)
             {
-                if (command == CmdCommands.help) 
+                if (command == CmdCommands.help)
                 {
                     Console.WriteLine("Options:");
-                    foreach (string key in commandInfo.Keys) 
+                    foreach (string key in commandInfo.Keys)
                     {
                         Console.WriteLine("\t" + key + " - " + commandInfo[key]);
                     }
                 }
-                else {
+                else
+                {
                     CmdCommands fCommand = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[1]);
                     if (fCommand == CmdCommands.help)
                     {
                         if (command == CmdCommands.create || command == CmdCommands.update)
                         {
-                            if(command == CmdCommands.update)
+                            if (command == CmdCommands.update)
                                 Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters> <guid>\n", command));
                             else
                                 Console.WriteLine(string.Format("Using:\n\t{0} <entity> <parameters>\n", command));
@@ -232,8 +234,8 @@ namespace ITGame.CLI.Infrastructure
                                                   "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
                                                   "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50\n" +
                                                   "\t" + command + " -w Sword,20,40 -c _,Elf,_.,10,_,_");
-                            
-                                
+
+
 
                         }
                         else if (command == CmdCommands.delete)
@@ -262,7 +264,7 @@ namespace ITGame.CLI.Infrastructure
             else Console.WriteLine("Is not help command.\n");
         }
 
-        public bool IsHelp 
+        public bool IsHelp
         {
             get
             {
@@ -281,8 +283,8 @@ namespace ITGame.CLI.Infrastructure
         private Dictionary<string, int> ecountParam = new Dictionary<string, int>()
         {
             {"-h", 8},
-            {"-w", 3},
-            {"-a", 3},
+            {"-w", 4},
+            {"-a", 4},
             {"-s", 6}
         };
         private Hashtable entityInfo = new Hashtable() 
@@ -290,7 +292,7 @@ namespace ITGame.CLI.Infrastructure
             {"Humanoid( -h <parameters> )", new string[]
                 {
                     "Name",
-                    "Race",
+                    "HumanoidRace",
                     "Strength",
                     "Agility",
                     "Wisdom",
@@ -300,21 +302,23 @@ namespace ITGame.CLI.Infrastructure
                 }},
             {"Weapon( -w <parameters> )", new string[]
                 {
+                    "Name",
                     "WeaponType",
                     "MagicalAttack",
                     "PhysicalAttack"
                 }},
             {"Armor( -a <parameters> )", new string[]
                 {
+                    "Name",
                     "ArmorType",
                     "MagicalDef",
                     "PhysicalDef"
                 }},
             {"Spell( -s <parameters> )", new string[]
                 {
+                    "Name",
                     "SpellType",
                     "SchoolSpell",
-                    "SpellName",
                     "MagicalPower",
                     "ManaCost",
                     "TotalDuration"
