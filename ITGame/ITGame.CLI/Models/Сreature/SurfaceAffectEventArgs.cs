@@ -1,10 +1,7 @@
-﻿using ITGame.CLI.Models.Environment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using ITGame.CLI.Models.Environment;
 
-namespace ITGame.CLI.Models.Creature
+namespace ITGame.CLI.Models.Сreature
 {
     public class SurfaceAffectEventArgs : EventArgs
     {

@@ -12,7 +12,7 @@ namespace ITGame.CLI.Infrastructure
 {
     public class EntityProjector<T> : IEntityProjector<T> where T : class, Identity, new()
     {
-        private IEntityProjector _ep;
+        private readonly IEntityProjector _ep;
         
         public EntityProjector(IEntityProjector ep)
         {

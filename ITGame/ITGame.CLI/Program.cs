@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-
-using ITGame.CLI.Models.Creature;
 using ITGame.CLI.Models.Magic;
 using ITGame.CLI.Models.Equipment;
-using ITGame.CLI.Models.Creature.Actions;
 using ITGame.CLI.Models.Environment;
 using ITGame.CLI.Infrastructure;
 using ITGame.CLI.Extensions;
+using ITGame.CLI.Models.Сreature;
+using ITGame.CLI.Models.Сreature.Actions;
+
 namespace ITGame.CLI
 {
     class Program
@@ -365,8 +365,8 @@ namespace ITGame.CLI
         /// </summary>
         public static void SurfaceOnAction()
         {            
-            var _surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
-            _surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
+            var surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
+            surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
 
             IEnumerable<Creature> creatures = new List<Creature>
             {
@@ -379,7 +379,7 @@ namespace ITGame.CLI
                 Console.WriteLine(cr.Name + " - " + cr.Wisdom);
             }
             //добавление новых, или изменение старых правил
-            Surface.ConfigureRules(_surfaceRules);
+            Surface.ConfigureRules(surfaceRules);
             //существа подписываются на изменения поверхности
             Surface.RegisterInfluenceFor(creatures);
             //после смены поверхности, параметры у существ меняются

@@ -57,7 +57,7 @@ namespace ITGame.CLI.Infrastructure
 
         private static class EntityRepositoryBase
         {
-            private static IDictionary<Type, IEntityProjector> _eps = new Dictionary<Type, IEntityProjector>();
+            private static readonly IDictionary<Type, IEntityProjector> _eps = new Dictionary<Type, IEntityProjector>();
 
             public static IEntityProjector GetInstance(Type type)
             {

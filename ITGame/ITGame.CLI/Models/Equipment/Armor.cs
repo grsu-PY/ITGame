@@ -7,7 +7,7 @@ namespace ITGame.CLI.Models.Equipment
 {
     public class Armor : Equipment
     {
-        protected ArmorType armorType = ArmorType.None;
+        private ArmorType armorType = ArmorType.None;
 
         public Armor()
         {

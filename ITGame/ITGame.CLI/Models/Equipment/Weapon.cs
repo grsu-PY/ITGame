@@ -7,7 +7,7 @@ namespace ITGame.CLI.Models.Equipment
 {
     public class Weapon : Equipment
     {
-        protected WeaponType weaponType = WeaponType.None;
+        private WeaponType weaponType = WeaponType.None;
 
         public Weapon()
         {

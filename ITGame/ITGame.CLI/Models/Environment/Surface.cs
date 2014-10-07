@@ -1,15 +1,15 @@
-﻿using ITGame.CLI.Models.Creature;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ITGame.CLI.Models.Сreature;
 
 namespace ITGame.CLI.Models.Environment
 {
     public static class Surface
     {
-        private static IDictionary<SurfaceType, SurfaceRule> _surfaceRules;
+        private static readonly IDictionary<SurfaceType, SurfaceRule> _surfaceRules;
 
         private static SurfaceType _currentSurfaceType = SurfaceType.Ground;
 
@@ -40,14 +40,14 @@ namespace ITGame.CLI.Models.Environment
             }
         }
 
-        public static void RegisterInfluenceFor<T>(IEnumerable<T> creatures) where T : Creature.Creature
+        public static void RegisterInfluenceFor<T>(IEnumerable<T> creatures) where T : Сreature.Creature
         {
             foreach (var creature in creatures)
             {
                 creature.SubscribeForSurface(ref OnSurfaceChanged);
             }
         }
-        public static void RegisterInfluenceFor<T>(T creature) where T : Creature.Creature
+        public static void RegisterInfluenceFor<T>(T creature) where T : Сreature.Creature
         {
             creature.SubscribeForSurface(ref OnSurfaceChanged);            
         }

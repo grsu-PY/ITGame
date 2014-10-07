@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace ITGame.CLI.Models.Creature.Actions
+namespace ITGame.CLI.Models.Сreature.Actions
 {
     public interface ICanTake : IAction
     {
-        void Take(ITGame.CLI.Models.Items.Item item);
+        void Take(Items.Item item);
         void Drop(Guid itemId);
     }
 }

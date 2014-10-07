@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ITGame.CLI.Models.Creature.Actions;
-using ITGame.CLI.Models.Magic;
 using ITGame.CLI.Models.Environment;
+using ITGame.CLI.Models.Magic;
+using ITGame.CLI.Models.Сreature.Actions;
 
-namespace ITGame.CLI.Models.Creature
+namespace ITGame.CLI.Models.Сreature
 {
 
     public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity

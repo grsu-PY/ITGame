@@ -11,22 +11,22 @@ namespace ITGame.CLI.Infrastructure
 {
     public class EntityProjector : IEntityProjector
     {
-        private IDictionary<Guid, Identity> entities;
-        private readonly Type EntityType;
+        private readonly IDictionary<Guid, Identity> _entities;
+        private readonly Type _entityType;
 
-        private readonly string tableName;
-        private readonly string tablePath;
+        private readonly string _tableName;
+        private readonly string _tablePath;
 
         public EntityProjector(Type type)
         {
-            EntityType = type;
-            entities = new Dictionary<Guid, Identity>();
+            _entityType = type;
+            _entities = new Dictionary<Guid, Identity>();
 
-            tableName = type.Name;
+            _tableName = type.Name;
 
-            tablePath = Path.Combine(EntityRepository.PATH, tableName + EntityRepository.EXT);
+            _tablePath = Path.Combine(EntityRepository.PATH, _tableName + EntityRepository.EXT);
 
-            if (!File.Exists(tablePath))
+            if (!File.Exists(_tablePath))
             {
                 InitTable();
             }
@@ -35,12 +35,12 @@ namespace ITGame.CLI.Infrastructure
         }
         private void InitTable()
         {
-            var propertiesNames = EntityType
+            var propertiesNames = _entityType
                 .GetSetGetProperties()
                 .Select(p => p.Name)
                 .Aggregate((s1, s2) => s1 + EntityRepository.DELIM + s2);
 
-            using (var writer = File.CreateText(tablePath))
+            using (var writer = File.CreateText(_tablePath))
             {
                 writer.WriteLine(propertiesNames);
             };
@@ -49,7 +49,7 @@ namespace ITGame.CLI.Infrastructure
 
         private void LoadTable()
         {
-            var rows = File.ReadAllLines(tablePath);
+            var rows = File.ReadAllLines(_tablePath);
             var propNames = rows[0].Split(EntityRepository.DELIM.ToCharArray());
 
             for (int i = 1; i < rows.Length; i++)
@@ -62,11 +62,11 @@ namespace ITGame.CLI.Infrastructure
                     dict.Add(propNames[j], propValues[j]);
                 }
 
-                Identity entity = CreateEntity(dict) as Identity;
+                var entity = CreateEntity(dict) as Identity;
 
-                if (!entities.ContainsKey(entity.Id))
+                if (entity != null && !_entities.ContainsKey(entity.Id))
                 {
-                    entities.Add(entity.Id, entity);
+                    _entities.Add(entity.Id, entity);
                 }
                 else
                 {
@@ -77,45 +77,48 @@ namespace ITGame.CLI.Infrastructure
         }
         private object CreateEntity(IDictionary<string, string> values)
         {
-            object instance = Activator.CreateInstance(EntityType);
+            object instance = Activator.CreateInstance(_entityType);
 
-            var properties = EntityType
+            var properties = _entityType
                 .GetSetGetProperties()
                 .Where(prop => values.ContainsKey(prop.Name));
 
             foreach (var property in properties)
             {
-                if (property.PropertyType.IsEnum)
+                if (property.PropertyType.IsPrimitive)
+                {
+                     property.SetValue(instance, Convert.ChangeType(values[property.Name], property.PropertyType));
+                }
+                else if (property.PropertyType.IsEnum)
                 {
                     property.SetValue(instance, Enum.Parse(property.PropertyType, values[property.Name]));
                 }
-                else if ((property.PropertyType.IsClass || property.PropertyType.IsInterface) && property.PropertyType != typeof(string))
-                {
-                    if (property.PropertyType.IsAssignableFrom(typeof(Identity)))
-                    {
-                        Guid id;
-                        if (Guid.TryParse(values[property.Name], out id))
-                        {
-                            var propValue = EntityRepository.GetInstance(property.PropertyType).Load(id);
-                            property.SetValue(instance, propValue);
-                        }
-                    }
-                }
-                else if (property.PropertyType.Equals(typeof(Guid)))
+                else if (property.PropertyType.IsAssignableFrom(typeof (Identity)))
                 {
                     Guid id;
                     if (Guid.TryParse(values[property.Name], out id))
                     {
-                        property.SetValue(instance, id);
+                        var propValue = EntityRepository.GetInstance(property.PropertyType).Load(id);
+                        property.SetValue(instance, propValue);
                     }
-                    else
-                    {
-                        property.SetValue(instance, Guid.Empty);
-                    }
+                }
+                else if (property.PropertyType == typeof (Guid))
+                {
+                    Guid id;
+                    property.SetValue(instance, Guid.TryParse(values[property.Name], out id) ? id : Guid.Empty);
                 }
                 else
                 {
-                    property.SetValue(instance, Convert.ChangeType(values[property.Name], property.PropertyType));
+                    try
+                    {
+                        property.SetValue(instance, Convert.ChangeType(values[property.Name], property.PropertyType));
+                    }
+                    catch
+                    {
+                        throw new Exception(
+                            string.Format("Type {0} which is nested in {1} is not supported by EntityProjector",
+                                property.PropertyType.Name, _entityType.Name));
+                    }
                 }
             }
 
@@ -124,14 +127,11 @@ namespace ITGame.CLI.Infrastructure
 
         public void Add(Identity entity)
         {
-            if (entities.ContainsKey(entity.Id))
+            if (_entities.ContainsKey(entity.Id))
             {
                 throw new ArgumentException("Duplicated uniqueidentifier values");
             }
-            else
-            {
-                entities.Add(entity.Id, entity);
-            }
+            _entities.Add(entity.Id, entity);
         }
 
         public Identity Create(IDictionary<string, string> values)
@@ -143,12 +143,12 @@ namespace ITGame.CLI.Infrastructure
 
         public void Delete(Guid id)
         {
-            entities.Remove(id);
+            _entities.Remove(id);
         }
 
         public void Delete(Identity entity)
         {
-            if (entities.ContainsKey(entity.Id))
+            if (_entities.ContainsKey(entity.Id))
             {
                 Delete(entity.Id);
             }
@@ -157,7 +157,7 @@ namespace ITGame.CLI.Infrastructure
         public Identity Load(Guid id)
         {
             Identity entity;
-            if (!entities.TryGetValue(id, out entity))
+            if (!_entities.TryGetValue(id, out entity))
             {
                 throw new ArgumentException(string.Format("There is no value with id {0}", id));
             }
@@ -166,17 +166,16 @@ namespace ITGame.CLI.Infrastructure
 
         public bool TryLoad(Guid id, out Identity value)
         {
-            return entities.TryGetValue(id, out value);
+            return _entities.TryGetValue(id, out value);
         }
 
         public void SaveChanges()
         {
 
-            StringBuilder table = new StringBuilder();
-            StringBuilder row = new StringBuilder();
-            string column = string.Empty;
+            var table = new StringBuilder();
+            var row = new StringBuilder();
 
-            var properties = EntityType.GetSetGetProperties();
+            var properties = _entityType.GetSetGetProperties();
 
             var propertiesNames = properties
                 .Select(p => p.Name)
@@ -184,13 +183,13 @@ namespace ITGame.CLI.Infrastructure
 
             table.AppendLine(propertiesNames);
 
-            foreach (var entity in entities.Values)
+            foreach (var entity in _entities.Values)
             {
                 row.Clear();
 
                 foreach (var prop in properties)
                 {
-                    column = string.Empty;
+                    var column = string.Empty;
 
                     if (prop.PropertyType.IsEnum)
                     {
@@ -215,14 +214,14 @@ namespace ITGame.CLI.Infrastructure
                 table.AppendLine(row.ToString());
             }
 
-            File.WriteAllText(tablePath, table.ToString());
+            File.WriteAllText(_tablePath, table.ToString());
         }
 
         public void Update(Identity entity)
         {
-            if (entities.ContainsKey(entity.Id))
+            if (_entities.ContainsKey(entity.Id))
             {
-                entities[entity.Id] = entity;
+                _entities[entity.Id] = entity;
             }
             else
             {
@@ -232,12 +231,12 @@ namespace ITGame.CLI.Infrastructure
 
         public IEnumerable<Identity> GetAll()
         {
-            return entities.Values;
+            return _entities.Values;
         }
 
         public IEnumerable<Identity> GetAll(Func<Identity, bool> where)
         {
-            return entities.Values.Where(where);
+            return _entities.Values.Where(where);
         }
     }
 

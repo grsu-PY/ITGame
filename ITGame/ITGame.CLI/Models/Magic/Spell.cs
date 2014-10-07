@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITGame.CLI.Models.Magic
 {
-    public class Spell : ITGame.CLI.Models.Identity
+    public class Spell : Identity
     {
         /*
          * Fields
