@@ -76,7 +76,7 @@ namespace ITGame.CLI.Infrastructure
 
         private object CreateEntity(IDictionary<string, string> values)
         {
-            return ObjectBuilder.CreateObject(values, _entityType);
+            return ObjectBuilder.CreateObject( _entityType, values);
         }
 
         public void Add(Identity entity)

@@ -11,7 +11,7 @@ namespace ITGame.CLI.Infrastructure
 {
     internal static class ObjectBuilder
     {
-        public static object CreateObject(IDictionary<string, string> values, Type type)
+        public static object CreateObject(Type type, IDictionary<string, string> values)
         {
             var instance = Activator.CreateInstance(type);
 
