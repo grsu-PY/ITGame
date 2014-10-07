@@ -51,6 +51,7 @@
     <Compile Include="Infrastructure\EntityRepository.cs" />
     <Compile Include="Infrastructure\IEntityProjector.cs" />
     <Compile Include="Infrastructure\IEntityProjector`.cs" />
+    <Compile Include="Infrastructure\ObjectBuilder.cs" />
     <Compile Include="Models\Environment\Surface.cs" />
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />

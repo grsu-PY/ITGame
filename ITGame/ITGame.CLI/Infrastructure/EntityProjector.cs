@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ITGame.CLI.Extensions;
 
 namespace ITGame.CLI.Infrastructure
@@ -73,56 +72,11 @@ namespace ITGame.CLI.Infrastructure
                     throw new ApplicationException("Duplicated uniqueidentifier values");
                 }
             }
-
         }
+
         private object CreateEntity(IDictionary<string, string> values)
         {
-            object instance = Activator.CreateInstance(_entityType);
-
-            var properties = _entityType
-                .GetSetGetProperties()
-                .Where(prop => values.ContainsKey(prop.Name));
-
-            foreach (var property in properties)
-            {
-                if (property.PropertyType.IsPrimitive)
-                {
-                     property.SetValue(instance, Convert.ChangeType(values[property.Name], property.PropertyType));
-                }
-                else if (property.PropertyType.IsEnum)
-                {
-                    property.SetValue(instance, Enum.Parse(property.PropertyType, values[property.Name]));
-                }
-                else if (property.PropertyType.IsAssignableFrom(typeof (Identity)))
-                {
-                    Guid id;
-                    if (Guid.TryParse(values[property.Name], out id))
-                    {
-                        var propValue = EntityRepository.GetInstance(property.PropertyType).Load(id);
-                        property.SetValue(instance, propValue);
-                    }
-                }
-                else if (property.PropertyType == typeof (Guid))
-                {
-                    Guid id;
-                    property.SetValue(instance, Guid.TryParse(values[property.Name], out id) ? id : Guid.Empty);
-                }
-                else
-                {
-                    try
-                    {
-                        property.SetValue(instance, Convert.ChangeType(values[property.Name], property.PropertyType));
-                    }
-                    catch
-                    {
-                        throw new Exception(
-                            string.Format("Type {0} which is nested in {1} is not supported by EntityProjector",
-                                property.PropertyType.Name, _entityType.Name));
-                    }
-                }
-            }
-
-            return instance;
+            return ObjectBuilder.CreateObject(values, _entityType);
         }
 
         public void Add(Identity entity)
@@ -189,23 +143,7 @@ namespace ITGame.CLI.Infrastructure
 
                 foreach (var prop in properties)
                 {
-                    var column = string.Empty;
-
-                    if (prop.PropertyType.IsEnum)
-                    {
-                        column = Enum.GetName(prop.PropertyType, prop.GetValue(entity));
-                    }
-                    else if ((prop.PropertyType.IsClass || prop.PropertyType.IsInterface) && prop.PropertyType != typeof(string))
-                    {
-                        if (prop.PropertyType.IsAssignableFrom(typeof(Identity)))
-                        {
-                            column = Convert.ToString(prop.PropertyType.GetProperty("Id").GetValue(prop.GetValue(entity)));
-                        }
-                    }
-                    else
-                    {
-                        column = Convert.ToString(prop.GetValue(entity));
-                    }
+                    var column = ObjectBuilder.ToColumnValue(entity, prop);
 
                     row.Append(column);
                     row.Append(EntityRepository.DELIM);
