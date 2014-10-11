@@ -15,7 +15,6 @@ namespace ITGame.CLI.Models.Magic
         private SchoolSpell schoolSpell;
         private int magicalPower;
         private int manaCost;
-        private bool isAttack;
         private int totalDuration;
         private int currentDuration;
 
@@ -48,11 +47,6 @@ namespace ITGame.CLI.Models.Magic
         {
             get { return magicalPower; }
             set { magicalPower = value; }
-        }
-
-        public bool IsAttack {
-            get { return isAttack; }
-            set { isAttack = value; }
         }
 
         public float BaseSpeedCast  // Этот параметр пусть пока повисит, мало ли, решим реализовать

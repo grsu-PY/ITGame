@@ -162,7 +162,7 @@ namespace ITGame.CLI.Models.Сreature
         {
             get
             {
-                return base.PhysicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.PhysicalAttack : 0);
+                return base.PhysicalAttack + ((weapon != null) ? weapon.PhysicalAttack : 0);
             }
         }
 
@@ -170,8 +170,8 @@ namespace ITGame.CLI.Models.Сreature
         {
             get
             {
-                return base.MagicalAttack + ((weapon != null && weapon.IsAttack != false) ? weapon.MagicalAttack :
-                                                             ((attackSpell != null && attackSpell.IsAttack != false) ? attackSpell.MagicalPower : 0));
+                return base.MagicalAttack + ((weapon != null) ? weapon.MagicalAttack :
+                                                             ((attackSpell != null) ? attackSpell.MagicalPower : 0));
             }
         }
 
@@ -196,8 +196,6 @@ namespace ITGame.CLI.Models.Сreature
         {
             if (_target == null || weapon == null) return;
 
-            weapon.IsAttack = true;
-
             var message = string.Format("Your potential damage is {0}", PhysicalAttack);
 
             OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));
@@ -207,8 +205,6 @@ namespace ITGame.CLI.Models.Сreature
                 PhysicalDamage = PhysicalAttack,
                 MagicalDamage = MagicalAttack
             });
-
-            weapon.IsAttack = false;
         }
 
         public override void SpellAttack()
@@ -223,7 +219,6 @@ namespace ITGame.CLI.Models.Сreature
                 return;
             }
 
-            attackSpell.IsAttack = true;
             message = string.Format("Your potential damage is {0}", MagicalAttack);
 
             OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Fight));
@@ -235,7 +230,6 @@ namespace ITGame.CLI.Models.Сreature
             }, attackSpell.SchoolSpell);
 
             ManaConsumption(attackSpell.ManaCost);
-            attackSpell.IsAttack = false;
         }
 
         public override void SpellDefense()

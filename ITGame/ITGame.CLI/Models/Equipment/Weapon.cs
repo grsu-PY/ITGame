@@ -14,8 +14,6 @@ namespace ITGame.CLI.Models.Equipment
             equipmentType = EquipmentType.Weapon;
         }
 
-        public bool IsAttack { get; set; }
-
         public int PhysicalAttack { get; set; }
 
         public int MagicalAttack { get; set; }
