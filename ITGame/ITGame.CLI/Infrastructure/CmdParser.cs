@@ -22,15 +22,14 @@ namespace ITGame.CLI.Infrastructure
 
         private List<string> patterns = new List<string>
         {
-            @"^create ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
-            @"^update ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+ (\w{8}-(\w{4}-){3}\w{12})\s?)+$",
-            @"^delete (Humanoid|Weapon|Armor|Spell) (\w{8}-(\w{4}-){3}\w{12})$",
-            @"(?<=(^(create|update|delete|read) ))?help$",
-            @"^read (Humanoid|Weapon|Armor|Spell)$"
+            @"^create ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?){1,4}$",
+            @"^update ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+ (\w{8}-(\w{4}-){3}\w{12})\s?){1,4}$",
+            @"^delete ((-[hwas])(?!.*\2) (\w{8}-(\w{4}-){3}\w{12})\s?){1,4}$",
+            @"^read -(([hwas])(?!.*\2)){1,4}$",
+            @"(?<=(^(create|update|delete|read) ))?help$"
         };
 
         private CmdCommands command;
-        private string splitPattern = "\\s*,";
         private bool isHelp = false;
 
         public CmdParser(string[] args)
@@ -67,7 +66,7 @@ namespace ITGame.CLI.Infrastructure
                             var temp = args[index + 1];
                             if (temp.Contains("_."))
                                 temp = AdditionParm(args[index + 1], _ecountParam[args[index]]);
-                            var props = Regex.Split(temp, splitPattern);
+                            var props = Regex.Split(temp, "\\s*,");
                             if (command == CmdCommands.update)
                             {
                                 Guid guid;
@@ -88,18 +87,34 @@ namespace ITGame.CLI.Infrastructure
                     break;
                 case CmdCommands.delete:
                 {
-                    Guid guid;
-                    if (Guid.TryParse(args[2], out guid))
-                        retList.Add(new CmdData(command, args[1], guid, null));
-                    else
+                    foreach (string entity in entityKeys.Keys) 
                     {
-                        Console.WriteLine("Bad Guid.\n");
-                        Environment.Exit(0);
+                        var keyIndex = IsContainsKey(args, entityKeys[entity]);
+                        if (keyIndex != -1) 
+                        {
+                            Guid guid;
+                            if (Guid.TryParse(args[keyIndex + 1], out guid))
+                            {
+                                string _entity = entityKeys.Single(k => k.Value == entityKeys[entity]).Key;
+                                retList.Add(new CmdData(command, _entity, guid, null));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Bad Guid.\n");
+                                Environment.Exit(0);
+                            }
+                        }
                     }
                 }
                     break;
                 case CmdCommands.read:
-                    retList.Add(new CmdData(command, args[1], null));
+                {
+                    for (int index = 1; index < args[1].Length; index++)
+                    {
+                        string entity = entityKeys.Single(k => k.Value[1] == args[1][index]).Key;
+                        retList.Add(new CmdData(command, entity, null));
+                    }
+                }
                     break;
             }
 
@@ -180,7 +195,7 @@ namespace ITGame.CLI.Infrastructure
             {
                 if (Regex.IsMatch(tempLine, pattern))
                 {
-                    if (pattern == patterns[3]) this.isHelp = true;
+                    if (pattern == patterns[4]) this.isHelp = true;
                     result = true;
                     break;
                 }
@@ -240,18 +255,20 @@ namespace ITGame.CLI.Infrastructure
                             Console.WriteLine("Available parameters for \"{0}\":\n", command);
                             foreach (var entity in entityKeys.Keys)
                             {
-                                Console.WriteLine("\t" + entity);
+                                Console.WriteLine("\t{0}( {1} )", entity, entityKeys[entity]);
                             }
-                            Console.WriteLine("\nExamples:\n\t" + command + " Humanoid 0f8fad5b-d9cb-469f-a165-70867728950e");
+                            Console.WriteLine("\nExamples:\n\t" + command + " -h 0f8fad5b-d9cb-469f-a165-70867728950e" +
+                                                                            " -w 2f8bad23-0034-ba40-a165-adb27728950e");
                             break;
                         case CmdCommands.read:
                             Console.WriteLine("Using:\n\t{0} <entity>\n", command);
                             Console.WriteLine("Available parameters for \"{0}\":\n", command);
                             foreach (var entity in entityKeys.Keys)
                             {
-                                Console.WriteLine("\t" + entity);
+                                Console.WriteLine("\t{0}( {1} )", entity, entityKeys[entity]);
                             }
-                            Console.WriteLine("\nExamples:\n\t" + command + " Humanoid");
+                            Console.WriteLine("\nExamples:\n\t" + command + " -h\n\t"+
+                                                                  command + " -saw");
                             break;
                     }
                 }

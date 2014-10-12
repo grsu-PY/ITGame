@@ -94,6 +94,13 @@
   <ItemGroup>
     <Folder Include="Story\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Infrastructure\CmdExamples\create.PNG" />
+    <Content Include="Infrastructure\CmdExamples\delete.PNG" />
+    <Content Include="Infrastructure\CmdExamples\help.PNG" />
+    <Content Include="Infrastructure\CmdExamples\read.PNG" />
+    <Content Include="Infrastructure\CmdExamples\update.PNG" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

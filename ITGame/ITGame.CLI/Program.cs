@@ -98,6 +98,8 @@ namespace ITGame.CLI
                 List<CmdData> cmdArgs = parser.Parse();
                 CmdCommands command = cmdArgs[0].Command;
 
+                Console.WriteLine();
+
                 switch (command) 
                 {
                     case CmdCommands.create:

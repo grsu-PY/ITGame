@@ -440,8 +440,8 @@ namespace ITGame.CLI.Models.Сreature
 
         public override string ToString()
         {
-            return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, PAtk {5}, MAtk {6}",
-                Id, Name, HumanoidRace, HP, MP, PhysicalAttack, MagicalAttack);
+            return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, Str {5}, Agi {6}, Wis {7}, Con {8}  PAtk {9}, MAtk {10}",
+                Id, Name, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
         }
         
     }
