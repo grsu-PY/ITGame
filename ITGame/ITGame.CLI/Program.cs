@@ -23,13 +23,39 @@ namespace ITGame.CLI
             //RunGame();
             #endregion
 
-            //SurfaceOnAction();
+            // SurfaceOnAction();
 
-            ToCmd(args);
+            // if(args.Length != 0)
+            //      ToCmd(args);
 
-           // EditEntities();
+            // if(args.Length != 0)
+            //     ToCmdAsync(args).Wait();
 
-            //Console.ReadKey();
+            // EditEntities();
+
+            // ThreadingExample().Wait();
+
+            // Console.ReadKey();
+        }
+
+        private static async Task ThreadingExample()
+        {            
+            var dict1 = new Dictionary<string, string>();
+            dict1.Add("Agility", "101");
+            dict1.Add("HumanoidRace", "Human");
+            
+            var repo = EntityRepository.GetInstance<Humanoid>();
+            var repo2 = EntityRepository.GetInstance<Armor>();
+            var bar = new ProgressBar();
+
+            bar.StartProgress();
+            var createTask = repo.CreateAsync(dict1);
+            var getAllTask = repo2.GetAllAsync();
+
+            var entity = await createTask;
+            var all = await getAllTask;
+            bar.StopProgress();
+
         }
 
         private static void EditEntities()
@@ -64,32 +90,35 @@ namespace ITGame.CLI
             EntityRepository.GetInstance<Humanoid>().SaveChanges();
             EntityRepository.GetInstance<Armor>().SaveChanges();
         }
-
-     
-        static void ToCmd(string[] args) {
-            //args = new string[2];
-            //// args[0] == "create", "read", "update", "delete", "help"
-            //args[0] = "asd";
-            //// args[1] == parameters for creature
-            //// creature
-            //args[1] = "asd"; // args[1] = "-h";
-            //args[2] = "Anton,Elf,11,_.";
+             
+        static void ToCmd(string[] args)
+        {
+            #region Закомменченые комманды
+            args = new string[3];
+            // args[0] == "create", "read", "update", "delete", "help"
+            args[0] = "create";
+            // args[1] == parameters for creature
+            // creature
+            args[1] = "-h"; // args[1] = "-h";
+            args[2] = "Anton,Elf,11,_.";
             //args[3] = "356f811d-c876-4bc8-8d90-fa2c69cd1a25";
-            ///*args[2] = "_.,20";
-            //args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            //// weapon
-            //args[4] = "-w";
-            //args[5] = "Sword,_.";
-            //args[6] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            //// spell
-            //args[7] = "-s";
-            //args[8] = "AttackSpell,Fire,Wrath,12,_.";
-            //args[9] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            //// armor
-            //args[10] = "-a";
-            //args[11] = "Gloves,10,2";
-            //args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-           
+            /*args[2] = "_.,20";
+            args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            // weapon
+            args[4] = "-w";
+            args[5] = "Sword,_.";
+            args[6] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            // spell
+            args[7] = "-s";
+            args[8] = "AttackSpell,Fire,Wrath,12,_.";
+            args[9] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            // armor
+            args[10] = "-a";
+            args[11] = "Gloves,10,2";
+            args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            */
+            #endregion
+
             CmdParser parser = new CmdParser(args);
 
             if (parser.IsHelp) parser.GetHelp();
@@ -98,11 +127,27 @@ namespace ITGame.CLI
                 List<CmdData> cmdArgs = parser.Parse();
                 CmdCommands command = cmdArgs[0].Command;
 
-                Console.WriteLine();
-
                 switch (command) 
                 {
                     case CmdCommands.create:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            newEntity.Id = Guid.NewGuid();
+
+                            try
+                            {
+                                EntityRepository.GetInstance(entityType).Add(newEntity);
+                                EntityRepository.GetInstance(entityType).SaveChanges();
+
+                                Console.WriteLine("{0} created\n", cData.EntityType);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                        }
                         foreach (CmdData cData in cmdArgs)
                         {
                             var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
@@ -170,17 +215,131 @@ namespace ITGame.CLI
                 
             }
         }
+        static async Task ToCmdAsync(string[] args)
+        {
+            #region Закомменченые комманды
+            //args = new string[3];
+            //// args[0] == "create", "read", "update", "delete", "help"
+            //args[0] = "asd";
+            //// args[1] == parameters for creature
+            //// creature
+            //args[1] = "asd"; // args[1] = "-h";
+            //args[2] = "Anton,Elf,11,_.";
+            ////args[3] = "356f811d-c876-4bc8-8d90-fa2c69cd1a25";
+            ///*args[2] = "_.,20";
+            //args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            //// weapon
+            //args[4] = "-w";
+            //args[5] = "Sword,_.";
+            //args[6] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            //// spell
+            //args[7] = "-s";
+            //args[8] = "AttackSpell,Fire,Wrath,12,_.";
+            //args[9] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            //// armor
+            //args[10] = "-a";
+            //args[11] = "Gloves,10,2";
+            //args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+            
+            #endregion
 
-        /*
-         foreach (CmdData data in cmdArgs) 
+            CmdParser parser = new CmdParser(args);
+            var porgressBar = new ProgressBar();
+
+            if (parser.IsHelp) parser.GetHelp();
+            else
+            {
+                List<CmdData> cmdArgs = parser.Parse();
+                CmdCommands command = cmdArgs[0].Command;
+
+                Console.WriteLine();
+
+                switch (command) 
                 {
-                    Console.WriteLine(data.Entity);
-                    foreach (string key in data.Properties.Keys) 
-                    {
-                        Console.WriteLine("->" + key + " - " + data.Properties[key]);
-                    }
+                    case CmdCommands.create:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            porgressBar.StartProgress();
+
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var newEntity = await EntityRepository.GetInstance(entityType).CreateAsync(cData.Properties);
+                            newEntity.Id = Guid.NewGuid();
+
+                            try
+                            {
+                                await EntityRepository.GetInstance(entityType).AddAsync(newEntity);
+                                await EntityRepository.GetInstance(entityType).SaveChangesAsync();
+
+                                porgressBar.StopProgress();
+                                Console.WriteLine("{0} created\n", cData.EntityType);
+                            }
+                            catch (Exception e)
+                            {
+                                porgressBar.StopProgress();
+                                Console.WriteLine(e.Message);
+                            }
+                        }
+                        break;
+                    case CmdCommands.update:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            porgressBar.StartProgress();
+
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var updatedEntity = await EntityRepository.GetInstance(entityType).CreateAsync(cData.Properties);
+                            updatedEntity.Id = cData.EntityGuid;
+
+                            try
+                            {
+                                await EntityRepository.GetInstance(entityType).UpdateAsync(updatedEntity);
+                                await EntityRepository.GetInstance(entityType).SaveChangesAsync();
+
+                                porgressBar.StopProgress();
+                                Console.WriteLine("Entity of type {0} with id {1} have just successfully been updated", cData.EntityType, cData.EntityGuid);
+                            }
+                            catch (Exception e)
+                            {
+                                porgressBar.StopProgress();
+                                Console.WriteLine(e.Message);
+                            }
+                        }
+                        break;
+                    case CmdCommands.delete:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            porgressBar.StartProgress();
+
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+
+                            await EntityRepository.GetInstance(entityType).DeleteAsync(cData.EntityGuid);
+                            await EntityRepository.GetInstance(entityType).SaveChangesAsync();
+
+                            porgressBar.StopProgress();
+                            Console.WriteLine("Entity of type {0} with id {1} have just successfully been deleted", cData.EntityType, cData.EntityGuid);
+                        }
+                        break;
+                    case CmdCommands.read:
+                        foreach (CmdData cData in cmdArgs)
+                        {
+                            porgressBar.StartProgress();
+
+                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entities = await EntityRepository.GetInstance(entityType).GetAllAsync();
+
+                            porgressBar.StopProgress();
+
+                            foreach (var entity in entities)
+                            {
+                                Console.WriteLine(entity.ToString());
+                            }
+                        }
+                        break;
+                    default:
+                        break;
                 }
-         */
+
+            }
+        }
 
         static void ActionPerformed(object sender, ActionPerformedEventArgs e)
         {

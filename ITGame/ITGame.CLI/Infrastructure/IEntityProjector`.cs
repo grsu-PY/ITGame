@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ITGame.CLI.Infrastructure
 {
@@ -18,5 +19,15 @@ namespace ITGame.CLI.Infrastructure
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAll(Func<T, bool> where);
 
+
+        Task<T> CreateAsync(IDictionary<string, string> values);
+        Task AddAsync(T entity);
+        Task SaveChangesAsync();
+        Task DeleteAsync(T entity);
+        Task DeleteAsync(Guid id);
+        Task UpdateAsync(T entity);
+        Task<T> LoadAsync(Guid id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(Func<T, bool> where);
     }
 }

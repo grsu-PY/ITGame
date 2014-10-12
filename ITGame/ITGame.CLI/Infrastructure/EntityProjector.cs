@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ITGame.CLI.Extensions;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace ITGame.CLI.Infrastructure
 {
@@ -13,24 +15,29 @@ namespace ITGame.CLI.Infrastructure
         private readonly IDictionary<Guid, Identity> _entities;
         private readonly Type _entityType;
 
+        private readonly object _lockObj = new object();
+
         private readonly string _tableName;
         private readonly string _tablePath;
 
         public EntityProjector(Type type)
         {
-            _entityType = type;
-            _entities = new Dictionary<Guid, Identity>();
-
-            _tableName = type.Name;
-
-            _tablePath = Path.Combine(EntityRepository.PATH, _tableName + EntityRepository.EXT);
-
-            if (!File.Exists(_tablePath))
+            lock (_lockObj)
             {
-                InitTable();
-            }
+                _entityType = type;
+                _entities = new Dictionary<Guid, Identity>();
 
-            LoadTable();
+                _tableName = type.Name;
+
+                _tablePath = Path.Combine(EntityRepository.PATH, _tableName + EntityRepository.EXT);
+
+                if (!File.Exists(_tablePath))
+                {
+                    InitTable();
+                }
+
+                LoadTable();
+            }
         }
         private void InitTable()
         {
@@ -81,6 +88,7 @@ namespace ITGame.CLI.Infrastructure
 
         public void Add(Identity entity)
         {
+            Thread.Sleep(2000);
             if (_entities.ContainsKey(entity.Id))
             {
                 throw new ArgumentException("Duplicated uniqueidentifier values");
@@ -90,6 +98,7 @@ namespace ITGame.CLI.Infrastructure
 
         public Identity Create(IDictionary<string, string> values)
         {
+            Thread.Sleep(2000);
             var instance = CreateEntity(values) as Identity;
 
             return instance;
@@ -97,11 +106,13 @@ namespace ITGame.CLI.Infrastructure
 
         public void Delete(Guid id)
         {
+            Thread.Sleep(2000);
             _entities.Remove(id);
         }
 
         public void Delete(Identity entity)
         {
+            Thread.Sleep(2000);
             if (_entities.ContainsKey(entity.Id))
             {
                 Delete(entity.Id);
@@ -110,6 +121,7 @@ namespace ITGame.CLI.Infrastructure
 
         public Identity Load(Guid id)
         {
+            Thread.Sleep(2000);
             Identity entity;
             if (!_entities.TryGetValue(id, out entity))
             {
@@ -125,6 +137,7 @@ namespace ITGame.CLI.Infrastructure
 
         public void SaveChanges()
         {
+            Thread.Sleep(2000);
 
             var table = new StringBuilder();
             var row = new StringBuilder();
@@ -157,6 +170,7 @@ namespace ITGame.CLI.Infrastructure
 
         public void Update(Identity entity)
         {
+            Thread.Sleep(2000);
             if (_entities.ContainsKey(entity.Id))
             {
                 _entities[entity.Id] = entity;
@@ -169,12 +183,98 @@ namespace ITGame.CLI.Infrastructure
 
         public IEnumerable<Identity> GetAll()
         {
+            Thread.Sleep(2000);
             return _entities.Values;
         }
 
         public IEnumerable<Identity> GetAll(Func<Identity, bool> where)
         {
+            Thread.Sleep(2000);
             return _entities.Values.Where(where);
+        }
+        
+        private T1 ThreadSafeFunc<T1>(Func<T1> func)
+        {
+            T1 returnValue = default(T1);
+            lock (_lockObj)
+            {
+                returnValue = func();
+            }
+            return returnValue;
+        }
+        private void ThreadSafeAction(Action action)
+        {
+            lock (_lockObj)
+            {
+                action();
+            }
+        }
+        
+        public async Task<Identity> CreateAsync(IDictionary<string, string> values)
+        {
+            return 
+                await Task.Run<Identity>(() =>
+                    ThreadSafeFunc(() => Create(values))
+                    );
+        }
+
+        public async Task AddAsync(Identity entity)
+        {
+            await Task.Run(() =>
+               ThreadSafeAction(() => Add(entity))
+               );
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await Task.Run(() =>
+                ThreadSafeAction(() => SaveChanges())
+                );
+        }
+
+        public async Task DeleteAsync(Identity entity)
+        {
+            await Task.Run(() =>
+                ThreadSafeAction(() => Delete(entity))
+                );
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            await Task.Run(() =>
+                ThreadSafeAction(() => Delete(id))
+                );
+        }
+
+        public async Task UpdateAsync(Identity entity)
+        {
+            await Task.Run(() =>
+               ThreadSafeAction(() => Update(entity))
+               );
+        }
+
+        public async Task<Identity> LoadAsync(Guid id)
+        {
+            return
+                await Task.Run<Identity>(() =>
+                    ThreadSafeFunc(() => Load(id))
+                    );
+        }
+
+        public async Task<IEnumerable<Identity>> GetAllAsync()
+        {
+            return
+              await Task.Run<IEnumerable<Identity>>(() =>
+                  ThreadSafeFunc(() => GetAll())
+                  );
+        }
+
+        public async Task<IEnumerable<Identity>> GetAllAsync(Func<Identity, bool> where)
+        {
+            return
+               await Task.Run<IEnumerable<Identity>>(() =>
+                   ThreadSafeFunc(() => GetAll(where))
+                   );
         }
     }
 
