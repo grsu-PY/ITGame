@@ -19,9 +19,11 @@ namespace ITGame.CLI.Extensions
 
         public static IEnumerable<PropertyInfo> GetSetGetProperties(this Type type)
         {
-            return type
-                .GetProperties()
-                .Where(p => p.CanWrite && p.CanRead);
+            return type.GetProperties().GetSetGetProperties();
+        }
+        public static IEnumerable<PropertyInfo> GetSetGetProperties(this IEnumerable<PropertyInfo> properties)
+        {
+            return properties.Where(p => p.CanWrite && p.CanRead);
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using ITGame.CLI.Extensions;
+using ITGame.CLI.Models.Сreature;
+using ITGame.CLI.Models.Equipment;
+using ITGame.CLI.Models.Magic;
 
 namespace ITGame.CLI.Infrastructure
 {
@@ -128,7 +131,7 @@ namespace ITGame.CLI.Infrastructure
             {
                 if (entity.Contains(key))
                 {
-                    var entityProperties = GetterProperties.GetProperties(entity);
+                    var entityProperties = ColumnPropertiesHelper.GetPropertiesNames(entity).ToList();
                     for (var index = 0; index < entityProperties.Count; index++)
                     {
                         if (EValues[index] != "_")
@@ -232,7 +235,7 @@ namespace ITGame.CLI.Infrastructure
                             foreach (string entity in entityKeys.Keys)
                             {
                                 Console.WriteLine("\t{0} ( {1} <parameters> ):", entity, entityKeys[entity]);
-                                var entityProperties = GetterProperties.GetProperties(entity);
+                                var entityProperties = ColumnPropertiesHelper.GetPropertiesNames(entity);
                                 foreach (var property in entityProperties)
                                 {
                                     Console.WriteLine("\t\t" + property);
@@ -294,10 +297,10 @@ namespace ITGame.CLI.Infrastructure
         };
         private readonly Dictionary<string, int> _ecountParam = new Dictionary<string, int>
         {
-            {"-h", GetterProperties.GetCountProperties("Humanoid")},
-            {"-w", GetterProperties.GetCountProperties("Weapon")},
-            {"-a", GetterProperties.GetCountProperties("Armor")},
-            {"-s", GetterProperties.GetCountProperties("Spell")}
+            {"-h", typeof(Humanoid).GetColumnProperties().Count()},
+            {"-w", typeof(Weapon).GetColumnProperties().Count()},
+            {"-a", typeof(Armor).GetColumnProperties().Count()},
+            {"-s", typeof(Spell).GetColumnProperties().Count()}
         };
     }
 }

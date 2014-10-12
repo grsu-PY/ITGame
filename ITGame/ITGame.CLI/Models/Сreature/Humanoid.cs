@@ -144,7 +144,7 @@ namespace ITGame.CLI.Models.Сreature
             defensiveSpell = selectedDefensiveSpell;
         }
 
-        [ParsingAttribute]
+        [Column]
         public HumanoidRace HumanoidRace
         {
             get
@@ -249,9 +249,10 @@ namespace ITGame.CLI.Models.Сreature
             ManaConsumption(defensiveSpell.ManaCost);
         }
 
-        public Weapon Weapon { get { return weapon; } }
-        public Spell AttackSpell { get { return attackSpell; } }
-        public Spell DefensiveSpell { get { return defensiveSpell; } }
+        [Column]
+        public Weapon Weapon { get { return weapon; } set { weapon = value; } }
+        public Spell AttackSpell { get { return attackSpell; } set { attackSpell = value; } }
+        public Spell DefensiveSpell { get { return defensiveSpell; } set { defensiveSpell = value; } }
 
         protected override void OnActionPerformed(ActionPerformedEventArgs e)
         {

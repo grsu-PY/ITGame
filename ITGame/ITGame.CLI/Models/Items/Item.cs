@@ -7,14 +7,15 @@ namespace ITGame.CLI.Models.Items
 {
     public abstract class Item : ITGame.CLI.Models.Identity
     {
+        [Column]
         public Guid Id { get; set; }
 
-        [ParsingAttribute]
+        [Column]
         public virtual string Name { get; set; }
 
         protected int weight = 1;
 
-
+        [Column]
         public int Weight
         {
             get { return weight; }

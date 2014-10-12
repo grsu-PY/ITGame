@@ -9,9 +9,11 @@ namespace ITGame.CLI.Models.Сreature
     public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity
     {
         private string name;
+
+        [Column]
         public Guid Id { get; set; }
 
-        [ParsingAttribute]
+        [Column]
         public string Name
         {
             get { return name; }
@@ -52,7 +54,7 @@ namespace ITGame.CLI.Models.Сreature
             mDef = wisdom;
         }
 
-        [ParsingAttribute]
+        [Column]
         public int Strength
         {
             get
@@ -65,7 +67,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
-        [ParsingAttribute]
+        [Column]
         public int Wisdom
         {
             get
@@ -78,7 +80,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
-        [ParsingAttribute]
+        [Column]
         public int Constitution
         {
             get
@@ -91,7 +93,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
-        [ParsingAttribute]
+        [Column]
         public int Agility
         {
             get
@@ -124,7 +126,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
-
+        [Column]
         public int HP
         {
             get
@@ -141,7 +143,7 @@ namespace ITGame.CLI.Models.Сreature
                 OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
             }
         }
-
+        [Column]
         public int MP
         {
             get
@@ -231,10 +233,8 @@ namespace ITGame.CLI.Models.Сreature
             throw new NotImplementedException();
         }
 
-        [ParsingAttribute]
         public int MaxHP { get { return initialHP + constitution * 5; } }
 
-        [ParsingAttribute]
         public int MaxMP { get { return initialMP + wisdom * 10; } }
 
 

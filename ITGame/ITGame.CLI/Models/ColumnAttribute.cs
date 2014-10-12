@@ -7,7 +7,8 @@ using System.Collections;
 
 namespace ITGame.CLI.Models
 {
-    class ParsingAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    public class ColumnAttribute : Attribute
     {
     }
 }

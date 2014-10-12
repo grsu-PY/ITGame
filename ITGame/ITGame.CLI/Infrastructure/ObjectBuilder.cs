@@ -16,6 +16,7 @@ namespace ITGame.CLI.Infrastructure
             var instance = Activator.CreateInstance(type);
 
             var properties = type
+                .GetColumnProperties()
                 .GetSetGetProperties()
                 .Where(prop => values.ContainsKey(prop.Name));
 

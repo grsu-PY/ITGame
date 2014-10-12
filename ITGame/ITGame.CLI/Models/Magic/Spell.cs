@@ -29,26 +29,27 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Properties
          */
+        [Column]
         public Guid Id { get; set; }
 
-        [ParsingAttribute]
+        [Column]
         public string Name { get; set; }
 
-        [ParsingAttribute]
+        [Column]
         public SchoolSpell SchoolSpell
         {
             get { return schoolSpell; }
             set { schoolSpell = value; }
         }
 
-        [ParsingAttribute]
+        [Column]
         public SpellType SpellType 
         {
             get { return spellType; }
             set { spellType = value; }
         }
 
-        [ParsingAttribute]
+        [Column]
         public int MagicalPower
         {
             get { return magicalPower; }
@@ -60,20 +61,20 @@ namespace ITGame.CLI.Models.Magic
             get { throw new NotImplementedException(); }
         }
 
-        [ParsingAttribute]
+        [Column]
         public int ManaCost
         {
             get { return manaCost; }
             set { manaCost = value; }
         }
 
-        [ParsingAttribute]
+        [Column]
         public int TotalDuration 
         {
             get { return totalDuration; }
             set { totalDuration = value; }
         }
-
+        [Column]
         public int CurrentDuration 
         {
             get { return currentDuration; }
