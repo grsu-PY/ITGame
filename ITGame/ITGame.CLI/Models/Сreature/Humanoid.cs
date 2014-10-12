@@ -144,6 +144,7 @@ namespace ITGame.CLI.Models.Сreature
             defensiveSpell = selectedDefensiveSpell;
         }
 
+        [ParsingAttribute]
         public HumanoidRace HumanoidRace
         {
             get
@@ -158,6 +159,7 @@ namespace ITGame.CLI.Models.Сreature
                 OnActionPerformed(new ActionPerformedEventArgs(message, ActionType.Info));
             }
         }
+
         public override int PhysicalAttack
         {
             get

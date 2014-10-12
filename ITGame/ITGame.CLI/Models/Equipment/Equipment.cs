@@ -8,7 +8,8 @@ namespace ITGame.CLI.Models.Equipment
     public class Equipment : ITGame.CLI.Models.Items.Item
     {
         protected EquipmentType equipmentType = EquipmentType.None;
-       
+
+        [ParsingAttribute]
         public EquipmentType EquipmentType
         {
             get { return equipmentType; }

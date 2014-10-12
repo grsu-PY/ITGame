@@ -8,6 +8,8 @@ namespace ITGame.CLI.Models.Items
     public abstract class Item : ITGame.CLI.Models.Identity
     {
         public Guid Id { get; set; }
+
+        [ParsingAttribute]
         public virtual string Name { get; set; }
 
         protected int weight = 1;

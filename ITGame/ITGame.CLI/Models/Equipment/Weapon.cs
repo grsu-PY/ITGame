@@ -14,10 +14,13 @@ namespace ITGame.CLI.Models.Equipment
             equipmentType = EquipmentType.Weapon;
         }
 
+        [ParsingAttribute]
         public int PhysicalAttack { get; set; }
 
+        [ParsingAttribute]
         public int MagicalAttack { get; set; }
 
+        [ParsingAttribute]
         public WeaponType WeaponType
         {
             get { return weaponType; }

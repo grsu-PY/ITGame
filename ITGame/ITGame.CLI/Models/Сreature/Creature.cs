@@ -10,6 +10,8 @@ namespace ITGame.CLI.Models.Сreature
     {
         private string name;
         public Guid Id { get; set; }
+
+        [ParsingAttribute]
         public string Name
         {
             get { return name; }
@@ -50,6 +52,7 @@ namespace ITGame.CLI.Models.Сreature
             mDef = wisdom;
         }
 
+        [ParsingAttribute]
         public int Strength
         {
             get
@@ -62,6 +65,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
+        [ParsingAttribute]
         public int Wisdom
         {
             get
@@ -74,6 +78,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
+        [ParsingAttribute]
         public int Constitution
         {
             get
@@ -86,6 +91,7 @@ namespace ITGame.CLI.Models.Сreature
             }
         }
 
+        [ParsingAttribute]
         public int Agility
         {
             get
@@ -225,8 +231,10 @@ namespace ITGame.CLI.Models.Сreature
             throw new NotImplementedException();
         }
 
+        [ParsingAttribute]
         public int MaxHP { get { return initialHP + constitution * 5; } }
 
+        [ParsingAttribute]
         public int MaxMP { get { return initialMP + wisdom * 10; } }
 
 

@@ -30,19 +30,25 @@ namespace ITGame.CLI.Models.Magic
          * Properties
          */
         public Guid Id { get; set; }
+
+        [ParsingAttribute]
         public string Name { get; set; }
+
+        [ParsingAttribute]
         public SchoolSpell SchoolSpell
         {
             get { return schoolSpell; }
             set { schoolSpell = value; }
         }
 
+        [ParsingAttribute]
         public SpellType SpellType 
         {
             get { return spellType; }
             set { spellType = value; }
         }
-        
+
+        [ParsingAttribute]
         public int MagicalPower
         {
             get { return magicalPower; }
@@ -54,12 +60,14 @@ namespace ITGame.CLI.Models.Magic
             get { throw new NotImplementedException(); }
         }
 
+        [ParsingAttribute]
         public int ManaCost
         {
             get { return manaCost; }
             set { manaCost = value; }
         }
 
+        [ParsingAttribute]
         public int TotalDuration 
         {
             get { return totalDuration; }

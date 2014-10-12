@@ -49,6 +49,7 @@
     <Compile Include="Infrastructure\EntityProjector`.cs" />
     <Compile Include="Infrastructure\EntityProjector.cs" />
     <Compile Include="Infrastructure\EntityRepository.cs" />
+    <Compile Include="Infrastructure\GetterProperties.cs" />
     <Compile Include="Infrastructure\IEntityProjector.cs" />
     <Compile Include="Infrastructure\IEntityProjector`.cs" />
     <Compile Include="Infrastructure\ObjectBuilder.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Models\Environment\SurfaceRule.cs" />
     <Compile Include="Models\Environment\SurfaceType.cs" />
     <Compile Include="Models\Magic\SpellType.cs" />
+    <Compile Include="Models\ParsingAttribute.cs" />
     <Compile Include="Models\Сreature\SurfaceAffectEventArgs.cs" />
     <Compile Include="Models\Сreature\Actions\ActionPerformedEventArgs.cs" />
     <Compile Include="Models\Сreature\Actions\ActionType.cs" />

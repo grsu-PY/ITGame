@@ -5,23 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using ITGame.CLI.Extensions;
 
 namespace ITGame.CLI.Infrastructure
 {
     class CmdParser
     {
         private string[] args;
-        private Dictionary<string, string> keys = new Dictionary<string, string>
+        private Dictionary<string, string> entityKeys = new Dictionary<string, string>
         {
             {"Humanoid", "-h"},
             {"Weapon", "-w"},
             {"Armor", "-a"},
             {"Spell", "-s"}
         };
+
         private List<string> patterns = new List<string>
         {
-            @"^create ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
-            @"^update ((-[hwas])(?!.*\3) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+ (\w{8}-(\w{4}-){3}\w{12})\s?)+$",
+            @"^create ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?)+$",
+            @"^update ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+ (\w{8}-(\w{4}-){3}\w{12})\s?)+$",
             @"^delete (Humanoid|Weapon|Armor|Spell) (\w{8}-(\w{4}-){3}\w{12})$",
             @"(?<=(^(create|update|delete|read) ))?help$",
             @"^read (Humanoid|Weapon|Armor|Spell)$"
@@ -33,28 +35,33 @@ namespace ITGame.CLI.Infrastructure
 
         public CmdParser(string[] args)
         {
-            this.args = args;
-
-            command = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[0], true);
+            if (args.Length != 0)
+                this.args = args;
+            else 
+            {
+                Console.WriteLine("Bad parameters. Please, read help.\n");
+                Environment.Exit(0);
+            }
 
             if (!CheckLine())
             {
-                Console.WriteLine("Bad parameters.\n");
+                Console.WriteLine("Bad parameters. Please, read help.\n");
                 Environment.Exit(0);
             }
+
+            command = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[0], true);
         }
 
         public List<CmdData> Parse()
         {
-            var result = new Hashtable();
             var retList = new List<CmdData>();
             switch (command)
             {
                 case CmdCommands.update:
                 case CmdCommands.create:
-                    foreach (var key in keys.Keys)
+                    foreach (var entity in entityKeys.Keys)
                     {
-                        var index = IsContainsKey(args, keys[key]);
+                        var index = IsContainsKey(args, entityKeys[entity]);
                         if (index != -1)
                         {
                             var temp = args[index + 1];
@@ -66,19 +73,17 @@ namespace ITGame.CLI.Infrastructure
                                 Guid guid;
                                 if (Guid.TryParse(args[index + 2], out guid))
                                 {
-                                    retList.Add(new CmdData(command, key, guid, AdditionTable(props, key)));
+                                    retList.Add(new CmdData(command, entity, guid, AdditionTable(props, entity)));
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Bad Guid\n");
+                                    Console.WriteLine("Bad Guid.\n");
                                     Environment.Exit(0);
                                 }
                             }
                             else
-                                retList.Add(new CmdData(command, key, AdditionTable(props, key)));
+                                retList.Add(new CmdData(command, entity, AdditionTable(props, entity)));
                         }
-
-
                     }
                     break;
                 case CmdCommands.delete:
@@ -88,7 +93,7 @@ namespace ITGame.CLI.Infrastructure
                         retList.Add(new CmdData(command, args[1], guid, null));
                     else
                     {
-                        Console.WriteLine("Bad Guid\n");
+                        Console.WriteLine("Bad Guid.\n");
                         Environment.Exit(0);
                     }
                 }
@@ -104,15 +109,15 @@ namespace ITGame.CLI.Infrastructure
         private Dictionary<string, string> AdditionTable(string[] EValues, string key)
         {
             var dtb = new Dictionary<string, string>();
-            foreach (string ckey in _entityInfo.Keys)
+            foreach (string entity in entityKeys.Keys)
             {
-                if (ckey.Contains(key))
+                if (entity.Contains(key))
                 {
-                    var EKeys = (string[])_entityInfo[ckey];
-                    for (var index = 0; index < EKeys.Length; index++)
+                    var entityProperties = GetterProperties.GetProperties(entity);
+                    for (var index = 0; index < entityProperties.Count; index++)
                     {
                         if (EValues[index] != "_")
-                            dtb.Add(EKeys[index], EValues[index]);
+                            dtb.Add(entityProperties[index], EValues[index]);
                     }
                     break;
                 }
@@ -209,13 +214,13 @@ namespace ITGame.CLI.Infrastructure
                             else
                                 Console.WriteLine("Using:\n\t{0} <entity> <parameters>\n", command);
                             Console.WriteLine("Available parameters for \"{0}\":\n", command);
-                            foreach (string key in _entityInfo.Keys)
+                            foreach (string entity in entityKeys.Keys)
                             {
-                                Console.WriteLine("\t" + key + ":");
-                                var arr = (string[])_entityInfo[key];
-                                foreach (var p in arr)
+                                Console.WriteLine("\t{0} ( {1} <parameters> ):", entity, entityKeys[entity]);
+                                var entityProperties = GetterProperties.GetProperties(entity);
+                                foreach (var property in entityProperties)
                                 {
-                                    Console.WriteLine("\t\t" + p);
+                                    Console.WriteLine("\t\t" + property);
                                 }
                                 Console.WriteLine();
                             }
@@ -223,35 +228,35 @@ namespace ITGame.CLI.Infrastructure
                                 Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
                                                   "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
                                                   "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50 0f8fad5b-d9cb-469f-a165-70867728950e\n" +
-                                                  "\t" + command + " -w Sword,20,40 2f8bad23-0034-ba40-a165-adb27728950e -c _,Elf,_.,10,_,_ d9cb0f8fad5b-0f8f-7728469f-a165-7086469f950e");
+                                                  "\t" + command + " -w Sword,20,40 2f8bad23-0034-ba40-a165-adb27728950e -h _,Elf,_.,10,_,_ d9cb0f8fad5b-0f8f-7728469f-a165-7086469f950e");
                             else
                                 Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
                                                   "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
                                                   "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50\n" +
-                                                  "\t" + command + " -w Sword,20,40 -c _,Elf,_.,10,_,_");
+                                                  "\t" + command + " -w Sword,20,40 -h _,Elf,_.,10,_,_");
                             break;
                         case CmdCommands.delete:
                             Console.WriteLine("Using:\n\t" + command + " <entity> <guid>\n");
                             Console.WriteLine("Available parameters for \"{0}\":\n", command);
-                            foreach (var key in keys.Keys)
+                            foreach (var entity in entityKeys.Keys)
                             {
-                                Console.WriteLine("\t" + key);
+                                Console.WriteLine("\t" + entity);
                             }
                             Console.WriteLine("\nExamples:\n\t" + command + " Humanoid 0f8fad5b-d9cb-469f-a165-70867728950e");
                             break;
                         case CmdCommands.read:
                             Console.WriteLine("Using:\n\t{0} <entity>\n", command);
                             Console.WriteLine("Available parameters for \"{0}\":\n", command);
-                            foreach (var key in keys.Keys)
+                            foreach (var entity in entityKeys.Keys)
                             {
-                                Console.WriteLine("\t" + key);
+                                Console.WriteLine("\t" + entity);
                             }
                             Console.WriteLine("\nExamples:\n\t" + command + " Humanoid");
                             break;
                     }
                 }
             }
-            else Console.WriteLine("Is not help command.\n");
+            else Console.WriteLine("Is not help command. Please, read help.\n");
         }
 
         public bool IsHelp
@@ -272,47 +277,10 @@ namespace ITGame.CLI.Infrastructure
         };
         private readonly Dictionary<string, int> _ecountParam = new Dictionary<string, int>
         {
-            {"-h", 8},
-            {"-w", 4},
-            {"-a", 4},
-            {"-s", 6}
-        };
-        private readonly Hashtable _entityInfo = new Hashtable
-        {
-            {"Humanoid( -h <parameters> )", new[]
-                {
-                    "Name",
-                    "HumanoidRace",
-                    "Strength",
-                    "Agility",
-                    "Wisdom",
-                    "Constitution",
-                    "MaxHP",
-                    "MaxMP"
-                }},
-            {"Weapon( -w <parameters> )", new[]
-                {
-                    "Name",
-                    "WeaponType",
-                    "MagicalAttack",
-                    "PhysicalAttack"
-                }},
-            {"Armor( -a <parameters> )", new[]
-                {
-                    "Name",
-                    "ArmorType",
-                    "MagicalDef",
-                    "PhysicalDef"
-                }},
-            {"Spell( -s <parameters> )", new[]
-                {
-                    "Name",
-                    "SpellType",
-                    "SchoolSpell",
-                    "MagicalPower",
-                    "ManaCost",
-                    "TotalDuration"
-                }}
+            {"-h", GetterProperties.GetCountProperties("Humanoid")},
+            {"-w", GetterProperties.GetCountProperties("Weapon")},
+            {"-a", GetterProperties.GetCountProperties("Armor")},
+            {"-s", GetterProperties.GetCountProperties("Spell")}
         };
     }
 }
