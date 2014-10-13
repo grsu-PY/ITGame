@@ -33,6 +33,11 @@ namespace ITGame.CLI.Infrastructure
             object typedValue;
             var type = property.PropertyType;
 
+            if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+            {
+                BuildDefault(type, out typedValue);
+            }
+            else
             if (type.IsEnum)
             {
                 BuildEnum(type, value, out typedValue);
@@ -63,6 +68,11 @@ namespace ITGame.CLI.Infrastructure
             {
                 property.SetValue(instance, typedValue);
             }
+        }
+
+        private static void BuildDefault(Type type, out object typedValue)
+        {
+            typedValue = type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         private static Guid BuidlGuid(string value)
