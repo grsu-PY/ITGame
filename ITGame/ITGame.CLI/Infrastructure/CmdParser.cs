@@ -25,11 +25,11 @@ namespace ITGame.CLI.Infrastructure
 
         private List<string> patterns = new List<string>
         {
-            @"^create ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+\s?){1,4}$",
-            @"^update ((-[hwas])(?!.*\2) (([a-zA-Z]+|[0-9]+|_),?)*((([a-zA-Z]+|[0-9]+|_|(_\.)),?)(?!_\.))+ (\w{8}-(\w{4}-){3}\w{12})\s?){1,4}$",
-            @"^delete ((-[hwas])(?!.*\2) (\w{8}-(\w{4}-){3}\w{12})\s?){1,4}$",
-            @"^read -(([hwas])(?!.*\2)){1,4}$",
-            @"(?<=(^(create|update|delete|read) ))?help$"
+            CmdPattern.Create,
+            CmdPattern.Update,
+            CmdPattern.Delete,
+            CmdPattern.Read,
+            CmdPattern.Help
         };
 
         private CmdCommands command;
@@ -302,5 +302,55 @@ namespace ITGame.CLI.Infrastructure
             {"-a", typeof(Armor).GetColumnProperties().Count()},
             {"-s", typeof(Spell).GetColumnProperties().Count()}
         };
+    }
+
+    public static class CmdPattern 
+    {
+        private static readonly string _keys = "[hwas]";
+        private static readonly string _letters = "[a-zA-Z]";
+        private static readonly string _digits = "[0-9]";
+        private static readonly string _lineDown = "_";
+        private static readonly string _lineDownDot = @"_\.";
+        private static readonly string _guid = @"\w{8}-(\w{4}-){3}\w{12}";
+
+        private static readonly string _create = string.Format(@"^create ((-{0})(?!.*\2) (({1}+|{2}+|{3}|{4}),?)*((({5}+|{6}+|{7}|{8}|({9})),?)(?!{10}))+\s?)+$",
+                                                                    _keys, _letters, _digits, _guid, _lineDown,
+                                                                    _letters, _digits, _guid, _lineDown, _lineDownDot,
+                                                                    _lineDownDot);
+        private static readonly string _update = string.Format(@"^update ((-{0})(?!.*\2) (({1}+|{2}+|{3}|{4}),?)*((({5}+|{6}+|{7}|{8}|({9})),?)(?!{10}))+ ({11})\s?)+$",
+                                                                    _keys, _letters, _digits, _guid, _lineDown,
+                                                                    _letters, _digits, _guid, _lineDown, _lineDownDot,
+                                                                    _lineDownDot, _guid);
+        private static readonly string _delete = string.Format(@"^delete ((-{0})(?!.*\2) ({1})\s?)+$",
+                                                                    _keys, _guid);
+        private static readonly string _read = string.Format(@"^read -(({0})(?!.*\2))+$",
+                                                                    _keys);
+        private static readonly string _help = "(?<=(^(create|update|delete|read) ))?help$";
+
+        public static string Create
+        {
+            get { return CmdPattern._create; }
+        }      
+
+        public static string Update
+        {
+            get { return CmdPattern._update; }
+        } 
+
+        public static string Delete
+        {
+            get { return CmdPattern._delete; }
+        } 
+
+        public static string Read
+        {
+            get { return CmdPattern._read; }
+        }
+
+        public static string Help
+        {
+            get { return CmdPattern._help; }
+        } 
+
     }
 }

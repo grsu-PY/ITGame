@@ -10,7 +10,6 @@ namespace ITGame.CLI.Models.Сreature
     {
         private string name;
 
-        [Column]
         public Guid Id { get; set; }
 
         [Column]
