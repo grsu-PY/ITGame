@@ -108,7 +108,7 @@ namespace ITGame.CLI.Infrastructure
             {
                 column = Enum.GetName(property.PropertyType, property.GetValue(instance));
             }
-            else if (property.PropertyType.IsAssignableFrom(typeof(Identity)))
+            else if (typeof(Identity).IsAssignableFrom(property.PropertyType))
             {
                 column = Convert.ToString(property.PropertyType.GetProperty("Id").GetValue(property.GetValue(instance)));
             }

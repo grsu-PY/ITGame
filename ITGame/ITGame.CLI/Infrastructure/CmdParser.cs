@@ -134,6 +134,14 @@ namespace ITGame.CLI.Infrastructure
                     var entityProperties = ColumnPropertiesHelper.GetPropertiesNames(entity).ToList();
                     for (var index = 0; index < entityProperties.Count; index++)
                     {
+                        if (entityProperties[index].Equals("Weapon") && EValues[index] != "_") 
+                        {
+                            if (!CheckGuid(EValues[index])) 
+                            {
+                                Console.WriteLine("Bad guid.\n");
+                                Environment.Exit(0);
+                            }
+                        }
                         if (EValues[index] != "_")
                             dtb.Add(entityProperties[index], EValues[index]);
                     }
@@ -207,6 +215,13 @@ namespace ITGame.CLI.Infrastructure
             return result;
         }
 
+        private bool CheckGuid(string id) 
+        {
+            Guid guid;
+            if (Guid.TryParse(id, out guid)) return true;
+            else return false;
+        }
+
         public void GetHelp()
         {
             if (isHelp)
@@ -222,58 +237,12 @@ namespace ITGame.CLI.Infrastructure
                 else
                 {
                     var fCommand = (CmdCommands)Enum.Parse(typeof(CmdCommands), args[1]);
-                    if (fCommand != CmdCommands.help) return;
-                    switch (command)
+                    if (fCommand != CmdCommands.help) 
                     {
-                        case CmdCommands.update:
-                        case CmdCommands.create:
-                            if (command == CmdCommands.update)
-                                Console.WriteLine("Using:\n\t{0} <entity> <parameters> <guid>\n", command);
-                            else
-                                Console.WriteLine("Using:\n\t{0} <entity> <parameters>\n", command);
-                            Console.WriteLine("Available parameters for \"{0}\":\n", command);
-                            foreach (string entity in entityKeys.Keys)
-                            {
-                                Console.WriteLine("\t{0} ( {1} <parameters> ):", entity, entityKeys[entity]);
-                                var entityProperties = ColumnPropertiesHelper.GetPropertiesNames(entity);
-                                foreach (var property in entityProperties)
-                                {
-                                    Console.WriteLine("\t\t" + property);
-                                }
-                                Console.WriteLine();
-                            }
-                            if (command == CmdCommands.update)
-                                Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
-                                                  "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
-                                                  "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50 0f8fad5b-d9cb-469f-a165-70867728950e\n" +
-                                                  "\t" + command + " -w Sword,20,40 2f8bad23-0034-ba40-a165-adb27728950e -h _,Elf,_.,10,_,_ d9cb0f8fad5b-0f8f-7728469f-a165-7086469f950e");
-                            else
-                                Console.WriteLine("If parameter is not changed, then use \"_\" instead.\n" +
-                                                  "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
-                                                  "Examples:\n\t" + command + " -h Gamer,Elf,_.,10,20,50\n" +
-                                                  "\t" + command + " -w Sword,20,40 -h _,Elf,_.,10,_,_");
-                            break;
-                        case CmdCommands.delete:
-                            Console.WriteLine("Using:\n\t" + command + " <entity> <guid>\n");
-                            Console.WriteLine("Available parameters for \"{0}\":\n", command);
-                            foreach (var entity in entityKeys.Keys)
-                            {
-                                Console.WriteLine("\t{0}( {1} )", entity, entityKeys[entity]);
-                            }
-                            Console.WriteLine("\nExamples:\n\t" + command + " -h 0f8fad5b-d9cb-469f-a165-70867728950e" +
-                                                                            " -w 2f8bad23-0034-ba40-a165-adb27728950e");
-                            break;
-                        case CmdCommands.read:
-                            Console.WriteLine("Using:\n\t{0} <entity>\n", command);
-                            Console.WriteLine("Available parameters for \"{0}\":\n", command);
-                            foreach (var entity in entityKeys.Keys)
-                            {
-                                Console.WriteLine("\t{0}( {1} )", entity, entityKeys[entity]);
-                            }
-                            Console.WriteLine("\nExamples:\n\t" + command + " -h\n\t"+
-                                                                  command + " -saw");
-                            break;
+                        Console.WriteLine("Bad parameters. Please, read help.\n");
+                        Environment.Exit(0);
                     }
+                    PrintHelp(command);
                 }
             }
             else Console.WriteLine("Is not help command. Please, read help.\n");
@@ -301,6 +270,91 @@ namespace ITGame.CLI.Infrastructure
             {"-w", typeof(Weapon).GetColumnProperties().Count()},
             {"-a", typeof(Armor).GetColumnProperties().Count()},
             {"-s", typeof(Spell).GetColumnProperties().Count()}
+        };
+
+        private enum helpPart
+        {
+            Using,
+            Parameters,
+            Example
+        }
+
+        private void PrintPartOfHelp(CmdCommands command, helpPart part) 
+        {
+            if (part == helpPart.Parameters)
+            {
+                if (command == CmdCommands.create || command == CmdCommands.update)
+                {
+                    Console.WriteLine("Available parameters for \"{0}\":\n", command);
+                    foreach (string entity in entityKeys.Keys)
+                    {
+                        Console.WriteLine("\t{0} ( {1} ):", entity, entityKeys[entity]);
+                        var entityProperties = ColumnPropertiesHelper.GetPropertiesNames(entity);
+                        foreach (var property in entityProperties)
+                        {
+                            Console.WriteLine("\t\t" + property);
+                        }
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Available parameters for \"{0}\":\n", command);
+                    foreach (var entity in entityKeys.Keys)
+                    {
+                        Console.WriteLine("\t{0}( {1} )", entity, entityKeys[entity]);
+                    }
+                }
+            }
+            else
+            {
+                var dict = helpText[command] as Dictionary<helpPart, string>;
+
+                Console.WriteLine(dict[part]);
+            }
+        }
+
+        private void PrintHelp(CmdCommands command) 
+        {
+            PrintPartOfHelp(command, helpPart.Using);
+            PrintPartOfHelp(command, helpPart.Parameters);
+            PrintPartOfHelp(command, helpPart.Example);
+        }
+
+        private readonly Hashtable helpText = new Hashtable 
+        {
+            {
+                CmdCommands.create, new Dictionary<helpPart, string>{
+                    {helpPart.Using, "Using:\n\tcreate <entity> <parameters>\n"},
+                    {helpPart.Example, "If parameter is not changed, then use \"_\" instead.\n" +
+                                       "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
+                                       "Examples:\n\tcreate -h Gamer,Elf,_.,10,20,50\n" +
+                                                  "\tcreate -w Sword,20,40 -h _,Elf,_.,10,_,_"}}
+            },
+            {
+                CmdCommands.update, new Dictionary<helpPart, string>{
+                    {helpPart.Using, "Using:\n\tupdate <entity> <parameters> <guid>\n"},
+                    {helpPart.Example, "If parameter is not changed, then use \"_\" instead.\n" +
+                                       "If there is a few parameters, then use \"_.\". This operator can be used only one time.\n\n" +
+                                       "Examples:\n\tupdate -h Gamer,Elf,_.,10,20,50 0f8fad5b-d9cb-469f-a165-70867728950e\n" +
+                                                  "\tupdate -w Sword,20,40 2f8bad23-0034-ba40-a165-adb27728950e -h _,Elf,_.,10,_,_ d9cb0f8fad5b-0f8f-7728469f-a165-7086469f950e"}
+                }
+            },
+            {
+                CmdCommands.delete, new Dictionary<helpPart, string>{
+                    {helpPart.Using, "Using:\n\tdelete <entity> <guid>\n"},
+                    {helpPart.Example, "\nExamples:\n\tdelete -h 0f8fad5b-d9cb-469f-a165-70867728950e" +
+                                                            " -w 2f8bad23-0034-ba40-a165-adb27728950e"}
+                }
+            
+            },
+            {
+                CmdCommands.read, new Dictionary<helpPart, string>{
+                    {helpPart.Using, "Using:\n\tread <entity>\n"},
+                    {helpPart.Example, "\nExamples:\n\tread -h"+
+                                                  "\n\tread -saw"}
+                }
+            }
         };
     }
 
