@@ -142,7 +142,7 @@ namespace ITGame.CLI.Infrastructure
             var table = new StringBuilder();
             var row = new StringBuilder();
 
-            var properties = _entityType.GetColumnProperties().GetSetGetProperties();
+            var properties = _entityType.GetSetGetProperties();
 
             var propertiesNames = properties
                 .Select(p => p.Name)
