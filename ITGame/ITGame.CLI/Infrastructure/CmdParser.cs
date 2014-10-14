@@ -163,7 +163,7 @@ namespace ITGame.CLI.Infrastructure
         private int IsContainsKey(string[] arr, string pat)
         {
             var result = -1;
-
+            
             for (var index = 0; index < arr.Length; index++)
             {
                 if (arr[index] == pat)
@@ -312,19 +312,20 @@ namespace ITGame.CLI.Infrastructure
         private static readonly string _lineDown = "_";
         private static readonly string _lineDownDot = @"_\.";
         private static readonly string _guid = @"\w{8}-(\w{4}-){3}\w{12}";
+        private static readonly string _len = "{1,4}";
 
-        private static readonly string _create = string.Format(@"^create ((-{0})(?!.*\2) (({1}+|{2}+|{3}|{4}),?)*((({5}+|{6}+|{7}|{8}|({9})),?)(?!{10}))+\s?)+$",
+        private static readonly string _create = string.Format(@"^create ((-{0})(?!.*\2) (({1}+|{2}+|{3}|{4}),?)*((({5}+|{6}+|{7}|{8}|({9})),?)(?!{10}))+\s?){11}$",
                                                                     _keys, _letters, _digits, _guid, _lineDown,
                                                                     _letters, _digits, _guid, _lineDown, _lineDownDot,
-                                                                    _lineDownDot);
-        private static readonly string _update = string.Format(@"^update ((-{0})(?!.*\2) (({1}+|{2}+|{3}|{4}),?)*((({5}+|{6}+|{7}|{8}|({9})),?)(?!{10}))+ ({11})\s?)+$",
+                                                                    _lineDownDot, _len);
+        private static readonly string _update = string.Format(@"^update ((-{0})(?!.*\2) (({1}+|{2}+|{3}|{4}),?)*((({5}+|{6}+|{7}|{8}|({9})),?)(?!{10}))+ ({11})\s?){12}$",
                                                                     _keys, _letters, _digits, _guid, _lineDown,
                                                                     _letters, _digits, _guid, _lineDown, _lineDownDot,
-                                                                    _lineDownDot, _guid);
-        private static readonly string _delete = string.Format(@"^delete ((-{0})(?!.*\2) ({1})\s?)+$",
-                                                                    _keys, _guid);
-        private static readonly string _read = string.Format(@"^read -(({0})(?!.*\2))+$",
-                                                                    _keys);
+                                                                    _lineDownDot, _guid, _len);
+        private static readonly string _delete = string.Format(@"^delete ((-{0})(?!.*\2) ({1})\s?){2}$",
+                                                                    _keys, _guid, _len);
+        private static readonly string _read = string.Format(@"^read -(({0})(?!.*\2)){1}$",
+                                                                    _keys, _len);
         private static readonly string _help = "(?<=(^(create|update|delete|read) ))?help$";
 
         public static string Create

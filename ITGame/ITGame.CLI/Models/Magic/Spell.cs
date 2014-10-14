@@ -29,7 +29,6 @@ namespace ITGame.CLI.Models.Magic
         /*
          * Properties
          */
-        [Column]
         public Guid Id { get; set; }
 
         [Column]

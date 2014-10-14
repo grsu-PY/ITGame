@@ -41,7 +41,7 @@ namespace ITGame.CLI.Infrastructure
             {
                 BuildEnum(type, value, out typedValue);
             }
-            else if (type.IsAssignableFrom(typeof(Identity)))
+            else if (typeof(Identity).IsAssignableFrom(type))
             {
                 BuildIdentity(type, value, out typedValue);
             }

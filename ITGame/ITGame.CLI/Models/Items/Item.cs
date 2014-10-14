@@ -7,7 +7,6 @@ namespace ITGame.CLI.Models.Items
 {
     public abstract class Item : ITGame.CLI.Models.Identity
     {
-        [Column]
         public Guid Id { get; set; }
 
         [Column]
