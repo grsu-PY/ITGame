@@ -129,7 +129,7 @@ namespace ITGame.CLI.Infrastructure
             var dtb = new Dictionary<string, string>();
             foreach (string entity in entityKeys.Keys)
             {
-                if (entity.Contains(key))
+                if (entity.Equals(key))
                 {
                     var entityProperties = ColumnPropertiesHelper.GetPropertiesNames(entity).ToList();
                     for (var index = 0; index < entityProperties.Count; index++)
@@ -171,7 +171,7 @@ namespace ITGame.CLI.Infrastructure
         private int IsContainsKey(string[] arr, string pat)
         {
             var result = -1;
-            
+
             for (var index = 0; index < arr.Length; index++)
             {
                 if (arr[index] == pat)

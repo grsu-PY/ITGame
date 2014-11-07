@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITGame.CLI", "ITGame.CLI\ITGame.CLI.csproj", "{8EB723A8-66F8-4FB2-A718-7C6BBE9AA93B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITGame.GUI", "ITGame.GUI\ITGame.GUI.csproj", "{F25E0EDB-F727-4C7D-9D0A-5096AD7AB328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8EB723A8-66F8-4FB2-A718-7C6BBE9AA93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EB723A8-66F8-4FB2-A718-7C6BBE9AA93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EB723A8-66F8-4FB2-A718-7C6BBE9AA93B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F25E0EDB-F727-4C7D-9D0A-5096AD7AB328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25E0EDB-F727-4C7D-9D0A-5096AD7AB328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25E0EDB-F727-4C7D-9D0A-5096AD7AB328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25E0EDB-F727-4C7D-9D0A-5096AD7AB328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

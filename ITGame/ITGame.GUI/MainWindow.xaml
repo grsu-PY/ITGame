@@ -1,0 +1,44 @@
+﻿<Window x:Class="ITGame.GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="370.485" Width="822.014">
+    <Grid Margin="0,0,2,46">
+        <Menu HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="814">
+            <MenuItem Header="File">
+                <MenuItem Header="Open" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem Header="Save" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem Header="Save as..." HorizontalAlignment="Left" Width="145"/>
+                <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145"/>
+            </MenuItem>
+            <MenuItem Header="Operations">
+                <MenuItem Header="Modify" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True"/>
+                <MenuItem Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True"/>
+            </MenuItem>
+        </Menu>
+        <GroupBox Header="Modify menu" Margin="0,22,0,-10">
+            <Grid HorizontalAlignment="Left" Height="294" Margin="0,0,-2,-85" VerticalAlignment="Top" Width="804">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="12*"/>
+                    <RowDefinition Height="253*"/>
+                </Grid.RowDefinitions>
+                <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" ToolTip="Creatures" SelectedIndex="0" Grid.RowSpan="2">
+                    <ComboBoxItem Content="Humanoid" HorizontalAlignment="Left" Width="118"/>
+                    <ComboBoxItem Content="Weapon" HorizontalAlignment="Left" Width="118"/>
+                    <ComboBoxItem Content="Armor" HorizontalAlignment="Left" Width="118"/>
+                    <ComboBoxItem Content="Spell" HorizontalAlignment="Left" Width="118"/>
+                </ComboBox>
+                <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Height="210" Width="772" Grid.Row="1">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID"/>
+                        <DataGridTextColumn Header="Name"/>
+                        <DataGridCheckBoxColumn Header="Check"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Content="Load" HorizontalAlignment="Left" Margin="156,10,0,0" VerticalAlignment="Top" Width="75" Grid.RowSpan="2"/>
+                <ProgressBar HorizontalAlignment="Left" Height="23" Margin="0,250,0,0" Grid.Row="1" VerticalAlignment="Top" Width="794" Value="50"/>
+                <Label Content="Предположительно так:&#xD;&#xA;Load служит для загрузки таблицы сущностей.&#xD;&#xA;По умолчанию, при выборе сущности загружается стандартная шапка свойств. Допустимо множественное создание.&#xD;&#xA;Если нажат Load -  загружается таблица выбранной сущности и к шапке добавляется ID,  &#xD;&#xA;т.е. этот режим подразумевает удаление, модификация и создание.&#xD;&#xA;&#xD;&#xA;Помимо этого в меню File, возможны загрузка файла, и сохранение в файл.&#xD;&#xA;&#xD;&#xA;Operations -&gt; Read -  для удобного вывода таблиц." HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top" Grid.Row="1" Width="700" Height="162"/>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>

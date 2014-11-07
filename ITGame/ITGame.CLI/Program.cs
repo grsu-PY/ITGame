@@ -90,13 +90,13 @@ namespace ITGame.CLI
         static void ToCmd(string[] args)
         {
             #region Закомменченые комманды
-            //args = new string[3];
+            args = new string[3];
             // args[0] == "create", "read", "update", "delete", "help"
-            //args[0] = "create";
+            args[0] = "create";
             // args[1] == parameters for creature
             // creature
-            //args[1] = "-h"; // args[1] = "-h";
-            //args[2] = "Anton,Elf,11,_.";
+            args[1] = "-h"; // args[1] = "-h";
+            args[2] = "Anton,_.";
             //args[3] = "356f811d-c876-4bc8-8d90-fa2c69cd1a25";
             /*args[2] = "_.,20";
             args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
@@ -214,13 +214,13 @@ namespace ITGame.CLI
         static async Task ToCmdAsync(string[] args)
         {
             #region Закомменченые комманды
-            args = new string[3];
+            //args = new string[3];
             //// args[0] == "create", "read", "update", "delete", "help"
-            args[0] = "create";
+            //args[0] = "create";
             //// args[1] == parameters for creature
             //// creature
-            args[1] = "-h"; // args[1] = "-h";
-            args[2] = "_.";
+            //args[1] = "-h"; // args[1] = "-h";
+            //args[2] = "_.";
             ////args[3] = "356f811d-c876-4bc8-8d90-fa2c69cd1a25";
             ///*args[2] = "_.,20";
             //args[3] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
