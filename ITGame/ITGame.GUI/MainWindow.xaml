@@ -36,7 +36,7 @@
                 </DataGrid>
                 <Button Content="Load" HorizontalAlignment="Left" Margin="156,10,0,0" VerticalAlignment="Top" Width="75" Grid.RowSpan="2"/>
                 <ProgressBar HorizontalAlignment="Left" Height="23" Margin="0,250,0,0" Grid.Row="1" VerticalAlignment="Top" Width="794" Value="50"/>
-                <Label Content="Предположительно так:&#xD;&#xA;Load служит для загрузки таблицы сущностей.&#xD;&#xA;По умолчанию, при выборе сущности загружается стандартная шапка свойств. Допустимо множественное создание.&#xD;&#xA;Если нажат Load -  загружается таблица выбранной сущности и к шапке добавляется ID,  &#xD;&#xA;т.е. этот режим подразумевает удаление, модификация и создание.&#xD;&#xA;&#xD;&#xA;Помимо этого в меню File, возможны загрузка файла, и сохранение в файл.&#xD;&#xA;&#xD;&#xA;Operations -&gt; Read -  для удобного вывода таблиц." HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top" Grid.Row="1" Width="700" Height="162"/>
+                <Label Content="Предположительно так:&#xA;Load служит для загрузки таблицы сущностей.&#xA;По умолчанию, при выборе сущности загружается стандартная шапка свойств(Режим создания).&#xD;&#xA;Если нажат Load -  загружается таблица выбранной сущности из файла и к шапке добавляется ID,  &#xA;т.е. этот режим подразумевает удаление, модификация и создание.&#xA;&#xA;Помимо этого в меню File, возможны загрузка файла, и сохранение в файл.&#xA;&#xA;Operations -&gt; Read -  для удобного вывода таблиц." HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top" Grid.Row="1" Width="700" Height="162"/>
             </Grid>
         </GroupBox>
 
