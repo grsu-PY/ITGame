@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8EB723A8-66F8-4FB2-A718-7C6BBE9AA93B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{8731B81A-0BE2-4ADF-B273-C8727E72B0D3}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ITGame.CLI</RootNamespace>
-    <AssemblyName>ITGame.CLI</AssemblyName>
+    <RootNamespace>ITGame.Models</RootNamespace>
+    <AssemblyName>ITGame.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,41 +30,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="UIElements\ProgressBar.cs" />
+    <Compile Include="ColumnAttribute.cs" />
+    <Compile Include="Damage.cs" />
+    <Compile Include="Environment\Surface.cs" />
+    <Compile Include="Environment\SurfaceRule.cs" />
+    <Compile Include="Environment\SurfaceType.cs" />
+    <Compile Include="Equipment\Armor.cs" />
+    <Compile Include="Equipment\ArmorType.cs" />
+    <Compile Include="Equipment\Equipment.cs" />
+    <Compile Include="Equipment\EquipmentType.cs" />
+    <Compile Include="Equipment\ITakeable.cs" />
+    <Compile Include="Equipment\Weapon.cs" />
+    <Compile Include="Equipment\WeaponType.cs" />
+    <Compile Include="Identity.cs" />
+    <Compile Include="Items\Item.cs" />
+    <Compile Include="Magic\SchoolSpell.cs" />
+    <Compile Include="Magic\Spell.cs" />
+    <Compile Include="Magic\SpellType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Class Diagramms.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Story\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ITGame.Infrastructure\ITGame.Infrastructure.csproj">
-      <Project>{e00e53f4-9c56-4f22-aad1-c306c51d436f}</Project>
-      <Name>ITGame.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ITGame.Models\ITGame.Models.csproj">
-      <Project>{8731b81a-0be2-4adf-b273-c8727e72b0d3}</Project>
-      <Name>ITGame.Models</Name>
-    </ProjectReference>
+    <Compile Include="Сreature\Actions\ActionPerformedEventArgs.cs" />
+    <Compile Include="Сreature\Actions\ActionType.cs" />
+    <Compile Include="Сreature\Actions\IAction.cs" />
+    <Compile Include="Сreature\Actions\ICanAttack.cs" />
+    <Compile Include="Сreature\Actions\ICanEquip.cs" />
+    <Compile Include="Сreature\Actions\ICanTake.cs" />
+    <Compile Include="Сreature\Actions\IMoveable.cs" />
+    <Compile Include="Сreature\Actions\IRecieveDamage.cs" />
+    <Compile Include="Сreature\Creature.cs" />
+    <Compile Include="Сreature\Humanoid.cs" />
+    <Compile Include="Сreature\HumanoidRace.cs" />
+    <Compile Include="Сreature\SurfaceAffectEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

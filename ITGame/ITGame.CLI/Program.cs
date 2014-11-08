@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ITGame.Infrastructure.Data;
+using ITGame.Infrastructure.Extensions;
+using ITGame.Infrastructure.Parser;
+using ITGame.Models.Environment;
+using ITGame.Models.Equipment;
+using ITGame.Models.Сreature;
+using ITGame.Models.Сreature.Actions;
+using ITGame.UIElements;
+using System;
 using System.Collections;
-using ITGame.CLI.Models.Magic;
-using ITGame.CLI.Models.Equipment;
-using ITGame.CLI.Models.Environment;
-using ITGame.CLI.Infrastructure;
-using ITGame.CLI.Extensions;
-using ITGame.CLI.Models.Сreature;
-using ITGame.CLI.Models.Сreature.Actions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ITGame.CLI
 {
@@ -25,8 +24,7 @@ namespace ITGame.CLI
                   //ToCmd(args);
 
             // if(args.Length != 0)
-            ToCmdAsync(args).Wait();
-
+            //ToCmdAsync(args).Wait();
             // EditEntities();
 
             //ThreadingExample().Wait();
@@ -128,7 +126,7 @@ namespace ITGame.CLI
                     case CmdCommands.create:
                         foreach (CmdData cData in cmdArgs)
                         {
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
                             newEntity.Id = Guid.NewGuid();
 
@@ -146,7 +144,7 @@ namespace ITGame.CLI
                         }
                         foreach (CmdData cData in cmdArgs)
                         {
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
                             newEntity.Id = Guid.NewGuid();
 
@@ -166,7 +164,7 @@ namespace ITGame.CLI
                     case CmdCommands.update:
                         foreach (CmdData cData in cmdArgs)
                         {
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var updatedEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
                             updatedEntity.Id = cData.EntityGuid;
                             try
@@ -185,7 +183,7 @@ namespace ITGame.CLI
                     case CmdCommands.delete:
                         foreach (CmdData cData in cmdArgs)
                         {
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
 
                             EntityRepository.GetInstance(entityType).Delete(cData.EntityGuid);
                             EntityRepository.GetInstance(entityType).SaveChanges();
@@ -196,7 +194,7 @@ namespace ITGame.CLI
                     case CmdCommands.read:
                         foreach (var cData in cmdArgs)
                         {
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var entities = EntityRepository.GetInstance(entityType).GetAll();
 
                             foreach (var entity in entities)
@@ -257,7 +255,7 @@ namespace ITGame.CLI
                         {
                             porgressBar.StartProgress();
 
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var newEntity = await EntityRepository.GetInstance(entityType).CreateAsync(cData.Properties);
                             newEntity.Id = Guid.NewGuid();
 
@@ -281,7 +279,7 @@ namespace ITGame.CLI
                         {
                             porgressBar.StartProgress();
 
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var updatedEntity = await EntityRepository.GetInstance(entityType).CreateAsync(cData.Properties);
                             updatedEntity.Id = cData.EntityGuid;
 
@@ -305,7 +303,7 @@ namespace ITGame.CLI
                         {
                             porgressBar.StartProgress();
 
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
 
                             await EntityRepository.GetInstance(entityType).DeleteAsync(cData.EntityGuid);
                             await EntityRepository.GetInstance(entityType).SaveChangesAsync();
@@ -319,7 +317,7 @@ namespace ITGame.CLI
                         {
                             porgressBar.StartProgress();
 
-                            var entityType = TypeExtension.GetTypeFromCurrentAssembly(cData.EntityType);
+                            var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
                             var entities = await EntityRepository.GetInstance(entityType).GetAllAsync();
 
                             porgressBar.StopProgress();

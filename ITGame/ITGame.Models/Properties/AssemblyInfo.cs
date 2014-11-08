@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ITGame.CLI")]
+[assembly: AssemblyTitle("ITGame.Models")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ITGame.CLI")]
+[assembly: AssemblyProduct("ITGame.Models")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e1bca469-62e2-416b-924d-cf470f1ce1fc")]
+[assembly: Guid("f021faca-3398-4ed0-ae5d-a3c44b65d3be")]
 
 // Version information for an assembly consists of the following four values:
 //
