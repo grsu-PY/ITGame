@@ -1,27 +1,28 @@
 ﻿<Window x:Class="ITGame.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="370.485" Width="822.014">
+        Title="MainWindow" Height="375.485" Width="822.014">
     <Grid Margin="0,0,2,46">
         <Menu HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="814">
-            <MenuItem Header="File">
+            <MenuItem x:Name="menuItem" Header="File">
                 <MenuItem Header="Open" HorizontalAlignment="Left" Width="145"/>
-                <MenuItem Header="Save" HorizontalAlignment="Left" Width="145"/>
-                <MenuItem Header="Save as..." HorizontalAlignment="Left" Width="145"/>
+                <MenuItem x:Name="saveMenuItem" Header="Save" HorizontalAlignment="Left" Width="145" Click="saveMenuItem_Click"/>
+                <MenuItem x:Name="savetoMenuItem" Header="Save as..." HorizontalAlignment="Left" Width="145" Click="savetoMenuItem_Click"/>
                 <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
             <MenuItem Header="Operations">
-                <MenuItem Header="Modify" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True"/>
-                <MenuItem Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True"/>
+                <MenuItem x:Name="modifyMenuItem" Header="Modify" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" Click="modifyMenuItem_Click" IsChecked="True"/>
+                <MenuItem x:Name="readMenuItem" Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" Click="readMenuItem_Click"/>
             </MenuItem>
         </Menu>
-        <GroupBox Header="Modify menu" Margin="0,22,0,-10">
-            <Grid HorizontalAlignment="Left" Height="294" Margin="0,0,-2,-85" VerticalAlignment="Top" Width="804">
+        <GroupBox x:Name="modifyGroupBox" Header="Modify menu" Margin="0,22,0,-8">
+            <Grid HorizontalAlignment="Left" Height="298" Margin="0,0,-4,-35" VerticalAlignment="Top" Width="804">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="12*"/>
-                    <RowDefinition Height="253*"/>
+                    <RowDefinition Height="14*"/>
+                    <RowDefinition Height="303*"/>
+                    <RowDefinition Height="0*"/>
                 </Grid.RowDefinitions>
-                <ComboBox x:Name="entityComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" ToolTip="Creatures" SelectedIndex="0" Grid.RowSpan="2">
+                <ComboBox x:Name="entityComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" ToolTip="Creatures" SelectedIndex="0" Grid.RowSpan="2" Height="22">
                     <ComboBoxItem Content="Humanoid" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Humanoid"/>
                     <ComboBoxItem Content="Weapon" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Weapon"/>
                     <ComboBoxItem Content="Armor" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Armor"/>
@@ -31,13 +32,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </DataGrid>
                 <Button x:Name="loadTableButton" Content="Load" HorizontalAlignment="Left" Margin="706,35,0,0" VerticalAlignment="Top" Width="75" ToolTip="Load table from existing file" Grid.Row="1" Height="30" Click="loadTableButton_Click"/>
-                <ProgressBar HorizontalAlignment="Left" Height="23" Margin="0,250,0,0" Grid.Row="1" VerticalAlignment="Top" Width="794" Value="50"/>
                 <Label Content="Предположительно так:&#xA;Load служит для загрузки таблицы сущностей.&#xA;По умолчанию, при выборе сущности загружается стандартная шапка свойств(Режим создания).&#xD;&#xA;Если нажат Load -  загружается таблица выбранной сущности из файла и к шапке добавляется ID,  &#xA;т.е. этот режим подразумевает удаление, модификация и создание.&#xA;&#xA;Помимо этого в меню File, возможны загрузка файла, и сохранение в файл.&#xA;&#xA;Operations -&gt; Read -  для удобного вывода таблиц." HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top" Grid.Row="1" Width="700" Height="162" Visibility="Hidden"/>
                 <Button x:Name="addRowButton" Content="Add row" HorizontalAlignment="Left" Margin="706,80,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="30" ToolTip="Add row to table" Click="addRowButton_Click"/>
                 <Button x:Name="removeRowButton" Content="Remove row" HorizontalAlignment="Left" Margin="706,125,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="30" ToolTip="Remove selected rows from table" Click="removeRowButton_Click"/>
                 <Button x:Name="removeAllButton" Content="Remove all" HorizontalAlignment="Left" Margin="706,170,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" ToolTip="Remove all rows from table" Height="30" Click="removeAllButton_Click"/>
             </Grid>
         </GroupBox>
-
+        <ProgressBar HorizontalAlignment="Left" Height="20" Margin="6,307,3,-40" VerticalAlignment="Top" Width="794" Value="50"/>
     </Grid>
 </Window>

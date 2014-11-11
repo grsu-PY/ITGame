@@ -1,5 +1,6 @@
 ﻿using ITGame.Infrastructure.Extensions;
 using ITGame.Infrastructure.Data;
+using ITGame.Infrastructure.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Reflection;
 using System.Data;
+using Microsoft.Win32;
 namespace ITGame.GUI
 {
     /// <summary>
@@ -102,12 +104,15 @@ namespace ITGame.GUI
         private void DataGridRemoveRow() 
         {
             int selectedItem = dataGrid.SelectedIndex;
-            var table = dataGrid.ItemsSource as DataView;
-            DataTable dataTable = table.Table;
-            if (selectedItem < table.Count)
+            if (selectedItem != -1)
             {
-                dataTable.Rows.RemoveAt(selectedItem);
-                dataGrid.ItemsSource = dataTable.DefaultView;
+                var table = dataGrid.ItemsSource as DataView;
+                DataTable dataTable = table.Table;
+                if (selectedItem < table.Count)
+                {
+                    dataTable.Rows.RemoveAt(selectedItem);
+                    dataGrid.ItemsSource = dataTable.DefaultView;
+                }
             }
         }
 
@@ -157,6 +162,52 @@ namespace ITGame.GUI
             }
 
             dataGrid.ItemsSource = dataTable.DefaultView;
+        }
+
+        private void readMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            modifyGroupBox.Visibility = Visibility.Hidden;
+            modifyMenuItem.IsChecked = false;
+        }
+
+        private void modifyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            modifyGroupBox.Visibility = Visibility.Visible;
+            readMenuItem.IsChecked = false;
+        }
+
+        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string entity = entityComboBox.SelectedValue.ToString().Replace("System.Windows.Controls.ComboBoxItem: ", "");
+            GuiParser parser = new GuiParser(entity, ((DataView)dataGrid.ItemsSource).Table);
+            List<GuiData> guiArgs = parser.Parse();
+
+            foreach (var gData in guiArgs)
+            {
+                var entityType = TypeExtension.GetTypeFromModelsAssembly(gData.EntityType);
+                var newEntity = EntityRepository.GetInstance(entityType).Create(gData.Properties);
+                if (newEntity.Id == Guid.Empty)
+                    newEntity.Id = Guid.NewGuid();
+
+                try
+                {
+                    EntityRepository.GetInstance(entityType).Add(newEntity);
+                    EntityRepository.GetInstance(entityType).SaveChanges();
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
+            }
+        }
+
+        private void savetoMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sFile = new SaveFileDialog();
+            if (sFile.ShowDialog().HasValue) 
+            {
+                //
+            }
         }
     }
 }

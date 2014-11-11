@@ -51,6 +51,8 @@
     <Compile Include="Parser\CmdData.cs" />
     <Compile Include="Parser\CmdParser.cs" />
     <Compile Include="Parser\ColumnPropertiesHelper.cs" />
+    <Compile Include="Parser\GuiData.cs" />
+    <Compile Include="Parser\GuiParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
