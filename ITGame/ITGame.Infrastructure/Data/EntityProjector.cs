@@ -177,7 +177,7 @@ namespace ITGame.Infrastructure.Data
             }
             else
             {
-                throw new ArgumentException(string.Format("Entity with uniqueidentifier {0} is not exist", entity.Id));
+                throw new ArgumentException(string.Format("Entity with unique identifier {0} is not exist", entity.Id));
             }
         }
 

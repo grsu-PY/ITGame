@@ -21,22 +21,21 @@
                     <RowDefinition Height="12*"/>
                     <RowDefinition Height="253*"/>
                 </Grid.RowDefinitions>
-                <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" ToolTip="Creatures" SelectedIndex="0" Grid.RowSpan="2">
-                    <ComboBoxItem Content="Humanoid" HorizontalAlignment="Left" Width="118"/>
-                    <ComboBoxItem Content="Weapon" HorizontalAlignment="Left" Width="118"/>
-                    <ComboBoxItem Content="Armor" HorizontalAlignment="Left" Width="118"/>
-                    <ComboBoxItem Content="Spell" HorizontalAlignment="Left" Width="118"/>
+                <ComboBox x:Name="entityComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" ToolTip="Creatures" SelectedIndex="0" Grid.RowSpan="2">
+                    <ComboBoxItem Content="Humanoid" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Humanoid"/>
+                    <ComboBoxItem Content="Weapon" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Weapon"/>
+                    <ComboBoxItem Content="Armor" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Armor"/>
+                    <ComboBoxItem Content="Spell" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Spell"/>
                 </ComboBox>
-                <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Height="210" Width="772" Grid.Row="1">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID"/>
-                        <DataGridTextColumn Header="Name"/>
-                        <DataGridCheckBoxColumn Header="Check"/>
-                    </DataGrid.Columns>
+                <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Height="210" Width="677" Grid.Row="1" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.IsDeferredScrollingEnabled="True" CanUserAddRows="True" CanUserDeleteRows="True" CanUserResizeColumns="True" CanUserResizeRows="False" Initialized="dataGrid_Initialized">
+                    <ColumnDefinition Width="Auto"/>
                 </DataGrid>
-                <Button Content="Load" HorizontalAlignment="Left" Margin="156,10,0,0" VerticalAlignment="Top" Width="75" Grid.RowSpan="2"/>
+                <Button x:Name="loadTableButton" Content="Load" HorizontalAlignment="Left" Margin="706,35,0,0" VerticalAlignment="Top" Width="75" ToolTip="Load table from existing file" Grid.Row="1" Height="30" Click="loadTableButton_Click"/>
                 <ProgressBar HorizontalAlignment="Left" Height="23" Margin="0,250,0,0" Grid.Row="1" VerticalAlignment="Top" Width="794" Value="50"/>
-                <Label Content="Предположительно так:&#xA;Load служит для загрузки таблицы сущностей.&#xA;По умолчанию, при выборе сущности загружается стандартная шапка свойств(Режим создания).&#xD;&#xA;Если нажат Load -  загружается таблица выбранной сущности из файла и к шапке добавляется ID,  &#xA;т.е. этот режим подразумевает удаление, модификация и создание.&#xA;&#xA;Помимо этого в меню File, возможны загрузка файла, и сохранение в файл.&#xA;&#xA;Operations -&gt; Read -  для удобного вывода таблиц." HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top" Grid.Row="1" Width="700" Height="162"/>
+                <Label Content="Предположительно так:&#xA;Load служит для загрузки таблицы сущностей.&#xA;По умолчанию, при выборе сущности загружается стандартная шапка свойств(Режим создания).&#xD;&#xA;Если нажат Load -  загружается таблица выбранной сущности из файла и к шапке добавляется ID,  &#xA;т.е. этот режим подразумевает удаление, модификация и создание.&#xA;&#xA;Помимо этого в меню File, возможны загрузка файла, и сохранение в файл.&#xA;&#xA;Operations -&gt; Read -  для удобного вывода таблиц." HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top" Grid.Row="1" Width="700" Height="162" Visibility="Hidden"/>
+                <Button x:Name="addRowButton" Content="Add row" HorizontalAlignment="Left" Margin="706,80,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="30" ToolTip="Add row to table" Click="addRowButton_Click"/>
+                <Button x:Name="removeRowButton" Content="Remove row" HorizontalAlignment="Left" Margin="706,125,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="30" ToolTip="Remove selected rows from table" Click="removeRowButton_Click"/>
+                <Button x:Name="removeAllButton" Content="Remove all" HorizontalAlignment="Left" Margin="706,170,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" ToolTip="Remove all rows from table" Height="30" Click="removeAllButton_Click"/>
             </Grid>
         </GroupBox>
 
