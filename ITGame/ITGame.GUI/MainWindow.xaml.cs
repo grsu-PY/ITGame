@@ -99,12 +99,7 @@ namespace ITGame.GUI
             dataGrid.ItemsSource = dataTable.DefaultView;
         }
 
-        private void addRowButton_Click(object sender, RoutedEventArgs e)
-        {
-            DataGridAddRow();
-        }
-
-        private void removeRowButton_Click(object sender, RoutedEventArgs e)
+        private void DataGridRemoveRow() 
         {
             int selectedItem = dataGrid.SelectedIndex;
             var table = dataGrid.ItemsSource as DataView;
@@ -114,6 +109,16 @@ namespace ITGame.GUI
                 dataTable.Rows.RemoveAt(selectedItem);
                 dataGrid.ItemsSource = dataTable.DefaultView;
             }
+        }
+
+        private void addRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridAddRow();
+        }
+
+        private void removeRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataGridRemoveRow();
         }
 
         private void removeAllButton_Click(object sender, RoutedEventArgs e)
