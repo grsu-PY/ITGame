@@ -152,7 +152,7 @@ namespace ITGame.GUI
                 DataRow drow = dataTable.NewRow();
                 foreach (var prop in properties)
                 {
-                    string propValue = "Unknown";
+                    string propValue = string.Empty;
                     if(prop.GetValue(ent) != null)
                         propValue = prop.GetValue(ent).ToString();
                     drow[prop.Name] = propValue;
