@@ -88,7 +88,7 @@ namespace ITGame.Infrastructure.Data
 
         public void Add(Identity entity)
         {
-            Thread.Sleep(2000);
+            
             if (_entities.ContainsKey(entity.Id))
             {
                 throw new ArgumentException("Duplicated uniqueidentifier values");
@@ -98,7 +98,7 @@ namespace ITGame.Infrastructure.Data
 
         public Identity Create(IDictionary<string, string> values)
         {
-            Thread.Sleep(2000);
+            
             var instance = CreateEntity(values) as Identity;
 
             return instance;
@@ -106,13 +106,13 @@ namespace ITGame.Infrastructure.Data
 
         public void Delete(Guid id)
         {
-            Thread.Sleep(2000);
+            
             _entities.Remove(id);
         }
 
         public void Delete(Identity entity)
         {
-            Thread.Sleep(2000);
+            
             if (_entities.ContainsKey(entity.Id))
             {
                 Delete(entity.Id);
@@ -121,7 +121,7 @@ namespace ITGame.Infrastructure.Data
 
         public Identity Load(Guid id)
         {
-            Thread.Sleep(2000);
+            
             Identity entity;
             if (!_entities.TryGetValue(id, out entity))
             {
@@ -137,7 +137,7 @@ namespace ITGame.Infrastructure.Data
 
         public void SaveChanges()
         {
-            Thread.Sleep(2000);
+            
 
             var table = new StringBuilder();
             var row = new StringBuilder();
@@ -169,8 +169,7 @@ namespace ITGame.Infrastructure.Data
         }
 
         public void Update(Identity entity)
-        {
-            Thread.Sleep(2000);
+        {            
             if (_entities.ContainsKey(entity.Id))
             {
                 _entities[entity.Id] = entity;
@@ -181,15 +180,27 @@ namespace ITGame.Infrastructure.Data
             }
         }
 
+        public void AddOrUpdate(Identity entity)
+        {
+            if (_entities.ContainsKey(entity.Id))
+            {
+                _entities[entity.Id] = entity;
+            }
+            else
+            {
+                _entities.Add(entity.Id, entity);
+            }
+        }
+
         public IEnumerable<Identity> GetAll()
         {
-            Thread.Sleep(2000);
+            
             return _entities.Values;
         }
 
         public IEnumerable<Identity> GetAll(Func<Identity, bool> where)
         {
-            Thread.Sleep(2000);
+            
             return _entities.Values.Where(where);
         }
         

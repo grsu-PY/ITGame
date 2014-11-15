@@ -133,7 +133,7 @@ namespace ITGame.GUI
 
         private void loadTableButton_Click(object sender, RoutedEventArgs e)
         {
-            string entity = entityComboBox.SelectedValue.ToString().Replace("System.Windows.Controls.ComboBoxItem: ", ""); 
+            string entity = entityComboBox.Text;
             var type = TypeExtension.GetTypeFromModelsAssembly(entity);
             var entities = EntityRepository.GetInstance(type).GetAll();
 
@@ -178,27 +178,37 @@ namespace ITGame.GUI
 
         private void saveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string entity = entityComboBox.SelectedValue.ToString().Replace("System.Windows.Controls.ComboBoxItem: ", "");
+            string entity = entityComboBox.Text;
             GuiParser parser = new GuiParser(entity, ((DataView)dataGrid.ItemsSource).Table);
             List<GuiData> guiArgs = parser.Parse();
+            IEntityProjector repository;
+            if (guiArgs.Any())
+            {
+                var entityType = TypeExtension.GetTypeFromModelsAssembly(guiArgs.First().EntityType);
+                repository = EntityRepository.GetInstance(entityType);
+            }
+            else
+            {
+                return;
+            }             
 
             foreach (var gData in guiArgs)
             {
-                var entityType = TypeExtension.GetTypeFromModelsAssembly(gData.EntityType);
-                var newEntity = EntityRepository.GetInstance(entityType).Create(gData.Properties);
+                var newEntity = repository.Create(gData.Properties);
                 if (newEntity.Id == Guid.Empty)
                     newEntity.Id = Guid.NewGuid();
 
                 try
                 {
-                    EntityRepository.GetInstance(entityType).Add(newEntity);
-                    EntityRepository.GetInstance(entityType).SaveChanges();
+                    repository.AddOrUpdate(newEntity);
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message);
                 }
             }
+
+            repository.SaveChanges();
         }
 
         private void savetoMenuItem_Click(object sender, RoutedEventArgs e)
