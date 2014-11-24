@@ -15,7 +15,7 @@
                 <MenuItem x:Name="readMenuItem" Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" Click="readMenuItem_Click"/>
             </MenuItem>
         </Menu>
-        <GroupBox x:Name="modifyGroupBox" Header="Modify menu" Margin="0,22,0,-8">
+        <GroupBox x:Name="modifyGroupBox" Header="Modify menu" Margin="0,22,0,-8" Visibility="Hidden">
             <Grid HorizontalAlignment="Left" Height="298" Margin="0,0,-4,-35" VerticalAlignment="Top" Width="804">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="14*"/>

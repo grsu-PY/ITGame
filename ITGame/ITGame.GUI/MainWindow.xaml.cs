@@ -167,12 +167,16 @@ namespace ITGame.GUI
         private void readMenuItem_Click(object sender, RoutedEventArgs e)
         {
             modifyGroupBox.Visibility = Visibility.Hidden;
+            //readGroupBox.Visibility = Visibility.Visible;
             modifyMenuItem.IsChecked = false;
+            readMenuItem.IsChecked = true;
         }
 
         private void modifyMenuItem_Click(object sender, RoutedEventArgs e)
         {
             modifyGroupBox.Visibility = Visibility.Visible;
+            //readGroupBox.Visibility = Visibility.Hidden;
+            modifyMenuItem.IsChecked = true;
             readMenuItem.IsChecked = false;
         }
 
