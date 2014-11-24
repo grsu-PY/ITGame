@@ -64,6 +64,10 @@ namespace ITGame.Infrastructure.Data
         {
             _ep.Update(entity);
         }
+        public void AddOrUpdate(T entity)
+        {
+            _ep.AddOrUpdate(entity);
+        }
         public async Task UpdateAsync(T entity)
         {
             await _ep.UpdateAsync(entity);
