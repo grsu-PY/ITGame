@@ -79,8 +79,14 @@ namespace ITGame.Models.Magic
 
         public override string ToString()
         {
-            return string.Format("ID {0}, Name {1}, SpellType {2}, Power {3}, Mana Cost {4}",
-                Id, Name, SchoolSpell, MagicalPower, ManaCost);
+            //return string.Format("ID {0}, Name {1}, SpellType {2}, Power {3}, Mana Cost {4}",
+            //    Id, Name, SchoolSpell, MagicalPower, ManaCost);
+
+            return string.Format("Id -> {0}\n"+
+                                 "Spell Type -> {1}\n"+
+                                 "Power -> {2}\n"+
+                                 "Mana Cost -> {3}",
+                                 Id, SchoolSpell, MagicalPower, ManaCost);
         }
     }
 }

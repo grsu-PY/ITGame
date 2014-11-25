@@ -441,9 +441,20 @@ namespace ITGame.Models.Сreature
 
         public override string ToString()
         {
-            return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, Str {5}, Agi {6}, Wis {7}, Con {8}  PAtk {9}, MAtk {10}",
-                Id, Name, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
+            //return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, Str {5}, Agi {6}, Wis {7}, Con {8}  PAtk {9}, MAtk {10}",
+            //    Id, Name, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
+
+            return string.Format("Id -> {0}\n" +
+                                 "Race -> {1}\n" +
+                                 "HP -> {2}\n" +
+                                 "MP -> {3}\n" +
+                                 "Strength -> {4}\n" +
+                                 "Agility -> {5}\n" +
+                                 "Wisdom -> {6}\n" +
+                                 "Constitution -> {7}\n" +
+                                 "Physical Attack -> {8}\n" +
+                                 "Magical Attack -> {9}",
+                                 Id, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
         }
-        
     }
 }

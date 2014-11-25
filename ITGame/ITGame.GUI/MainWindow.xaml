@@ -1,7 +1,8 @@
 ﻿<Window x:Class="ITGame.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="375.485" Width="822.014">
+        Title="MainWindow" Height="375.485" Width="822.014"
+        ResizeMode="NoResize">
     <Grid Margin="0,0,2,46">
         <Menu HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="814">
             <MenuItem x:Name="menuItem" Header="File">
@@ -10,12 +11,12 @@
                 <MenuItem x:Name="savetoMenuItem" Header="Save as..." HorizontalAlignment="Left" Width="145" Click="savetoMenuItem_Click"/>
                 <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
-            <MenuItem Header="Operations">
+            <MenuItem Header="Mode">
                 <MenuItem x:Name="modifyMenuItem" Header="Modify" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" Click="modifyMenuItem_Click" IsChecked="True"/>
                 <MenuItem x:Name="readMenuItem" Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" Click="readMenuItem_Click"/>
             </MenuItem>
         </Menu>
-        <GroupBox x:Name="modifyGroupBox" Header="Modify menu" Margin="0,22,0,-8" Visibility="Hidden">
+        <GroupBox x:Name="modifyGroupBox" Header="Modify menu" Margin="0,22,0,-8">
             <Grid HorizontalAlignment="Left" Height="298" Margin="0,0,-4,-35" VerticalAlignment="Top" Width="804">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="14*"/>
@@ -37,6 +38,33 @@
                 <Button x:Name="removeRowButton" Content="Remove row" HorizontalAlignment="Left" Margin="706,125,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="30" ToolTip="Remove selected rows from table" Click="removeRowButton_Click"/>
                 <Button x:Name="removeAllButton" Content="Remove all" HorizontalAlignment="Left" Margin="706,170,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" ToolTip="Remove all rows from table" Height="30" Click="removeAllButton_Click"/>
             </Grid>
+        </GroupBox>
+        <GroupBox x:Name="readGroupBox" Header="Read menu" Margin="0,22,0,-8" Visibility="Hidden">
+            <ScrollViewer>
+                <Expander Header="Table" FontWeight="Thin" FontSize="20" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Expander Header="Humanoid" FontWeight="Thin" FontSize="18" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Grid.Row="0">
+                            <Grid x:Name="humanoidEGrid"/>
+                        </Expander>
+                        <Expander Header="Weapon" FontWeight="Thin" FontSize="18" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Grid.Row="1">
+                            <Grid x:Name="weaponEGrid"/>
+                        </Expander>
+                        <Expander Header="Armor" FontWeight="Thin" FontSize="18" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Grid.Row="2">
+                            <Grid x:Name="armorEGrid"/>
+                        </Expander>
+                        <Expander Header="Spell" FontWeight="Thin" FontSize="18" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Grid.Row="3">
+                            <Grid x:Name="spellEGrid"/>
+                        </Expander>
+
+                    </Grid>
+                </Expander>
+            </ScrollViewer>
         </GroupBox>
         <ProgressBar HorizontalAlignment="Left" Height="20" Margin="6,307,3,-40" VerticalAlignment="Top" Width="794" Value="50"/>
     </Grid>

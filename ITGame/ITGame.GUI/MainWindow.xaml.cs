@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Reflection;
 using System.Data;
+using System.Resources;
 using Microsoft.Win32;
 namespace ITGame.GUI
 {
@@ -28,6 +29,7 @@ namespace ITGame.GUI
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void ComboBoxItem_Humanoid(object sender, RoutedEventArgs e)
@@ -164,18 +166,54 @@ namespace ITGame.GUI
             dataGrid.ItemsSource = dataTable.DefaultView;
         }
 
+        private void FillExpander(string entity, Grid eGrid) 
+        {
+            var type = TypeExtension.GetTypeFromModelsAssembly(entity);
+            var entities = EntityRepository.GetInstance(type).GetAll();
+
+            int row = 0;
+            foreach (var ent in entities)
+            {
+                eGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
+                var expander = new Expander();
+                expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                expander.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                expander.ExpandDirection = ExpandDirection.Down;
+                expander.Header = (ent.Name != null) ? ent.Name : "Unnamed";
+                expander.SetValue(Grid.RowProperty, row);
+                expander.Margin = new Thickness(20, 0, 0, 0);
+
+                Label eData = new Label();
+                eData.Content = ent.ToString();
+                eData.Margin = new Thickness(20, 0, 0, 0);
+                eData.FontSize = 17;
+                eData.FontWeight = FontWeights.Thin;
+                expander.Content = eData;
+
+                eGrid.Children.Add(expander);
+
+                row++;
+            }
+        }
+
         private void readMenuItem_Click(object sender, RoutedEventArgs e)
         {
             modifyGroupBox.Visibility = Visibility.Hidden;
-            //readGroupBox.Visibility = Visibility.Visible;
+            readGroupBox.Visibility = Visibility.Visible;
             modifyMenuItem.IsChecked = false;
             readMenuItem.IsChecked = true;
+
+            FillExpander("Humanoid", humanoidEGrid);
+            FillExpander("Weapon", weaponEGrid);
+            FillExpander("Armor", armorEGrid);
+            FillExpander("Spell", spellEGrid);
         }
 
         private void modifyMenuItem_Click(object sender, RoutedEventArgs e)
         {
             modifyGroupBox.Visibility = Visibility.Visible;
-            //readGroupBox.Visibility = Visibility.Hidden;
+            readGroupBox.Visibility = Visibility.Hidden;
             modifyMenuItem.IsChecked = true;
             readMenuItem.IsChecked = false;
         }
