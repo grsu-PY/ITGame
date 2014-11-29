@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Data;
 using System.Resources;
 using Microsoft.Win32;
+using System.Collections.ObjectModel;
 namespace ITGame.GUI
 {
     /// <summary>
@@ -26,37 +27,13 @@ namespace ITGame.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Type currentEntityType;
+        private List<string> c = new List<string> { "Humanoid", "Weapon", "Armor", "Spell" };
         public MainWindow()
         {
             InitializeComponent();
-            
+            entityComboBox.ItemsSource = c;
         }
-
-        private void ComboBoxItem_Humanoid(object sender, RoutedEventArgs e)
-        {
-            SetHeaderDataGrid("Humanoid");
-        }
-
-        private void ComboBoxItem_Weapon(object sender, RoutedEventArgs e)
-        {
-            SetHeaderDataGrid("Weapon");
-        }
-
-        private void ComboBoxItem_Armor(object sender, RoutedEventArgs e)
-        {
-            SetHeaderDataGrid("Armor");
-        }
-
-        private void ComboBoxItem_Spell(object sender, RoutedEventArgs e)
-        {
-            SetHeaderDataGrid("Spell");
-        }
-
-        private void dataGrid_Initialized(object sender, EventArgs e)
-        {
-            SetHeaderDataGrid("Humanoid");
-        }
-
         private void SetHeaderDataGrid(string entity) 
         {
             var type = TypeExtension.GetTypeFromModelsAssembly(entity);
@@ -112,8 +89,15 @@ namespace ITGame.GUI
                 DataTable dataTable = table.Table;
                 if (selectedItem < table.Count)
                 {
-                    dataTable.Rows.RemoveAt(selectedItem);
-                    dataGrid.ItemsSource = dataTable.DefaultView;
+                    string id = dataTable.Rows[selectedItem]["Id"] as string;
+                    Guid entityId;
+                    if (Guid.TryParse(id, out entityId))
+                    {
+                        dataTable.Rows.RemoveAt(selectedItem);
+                        dataGrid.ItemsSource = dataTable.DefaultView;
+
+                        EntityRepository.GetInstance(currentEntityType).Delete(entityId);
+                    }
                 }
             }
         }
@@ -204,10 +188,16 @@ namespace ITGame.GUI
             modifyMenuItem.IsChecked = false;
             readMenuItem.IsChecked = true;
 
+            FillAllExpanders();
+        }
+
+        private void FillAllExpanders() 
+        {
             FillExpander("Humanoid", humanoidEGrid);
             FillExpander("Weapon", weaponEGrid);
             FillExpander("Armor", armorEGrid);
             FillExpander("Spell", spellEGrid);
+        
         }
 
         private void modifyMenuItem_Click(object sender, RoutedEventArgs e)
@@ -260,6 +250,13 @@ namespace ITGame.GUI
             {
                 //
             }
+        }
+
+        private void entityComboBox_ChangeEntity(object sender, SelectionChangedEventArgs e)
+        {
+            string type = e.AddedItems[0].ToString();
+            currentEntityType = TypeExtension.GetTypeFromModelsAssembly(type);
+            SetHeaderDataGrid(type);
         }
     }
 }
