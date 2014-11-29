@@ -1,288 +1,237 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     11/29/2014 8:21:12 AM                        */
+/* Created on:     29.11.2014 21:06:15                          */
 /*==============================================================*/
 
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('ARMOR')
+           where  id = object_id('Armor')
             and   type = 'U')
-   drop table ARMOR
+   drop table Armor
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('HUMANOID')
+           where  id = object_id('Humanoid')
             and   type = 'U')
-   drop table HUMANOID
+   drop table Humanoid
 go
 
 if exists (select 1
             from  sysindexes
-           where  id    = object_id('HUMANOID_ARMOR')
-            and   name  = 'HUMANOID_ARMOR2_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index HUMANOID_ARMOR.HUMANOID_ARMOR2_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('HUMANOID_ARMOR')
+           where  id    = object_id('Humanoid_Armor')
             and   name  = 'HUMANOID_ARMOR_FK'
             and   indid > 0
             and   indid < 255)
-   drop index HUMANOID_ARMOR.HUMANOID_ARMOR_FK
+   drop index Humanoid_Armor.HUMANOID_ARMOR_FK
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('HUMANOID_ARMOR')
+           where  id = object_id('Humanoid_Armor')
             and   type = 'U')
-   drop table HUMANOID_ARMOR
+   drop table Humanoid_Armor
 go
 
 if exists (select 1
             from  sysindexes
-           where  id    = object_id('HUMANOID_SPELL')
-            and   name  = 'HUMANOID_SPELL2_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index HUMANOID_SPELL.HUMANOID_SPELL2_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('HUMANOID_SPELL')
+           where  id    = object_id('Humanoid_Spell')
             and   name  = 'HUMANOID_SPELL_FK'
             and   indid > 0
             and   indid < 255)
-   drop index HUMANOID_SPELL.HUMANOID_SPELL_FK
+   drop index Humanoid_Spell.HUMANOID_SPELL_FK
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('HUMANOID_SPELL')
+           where  id = object_id('Humanoid_Spell')
             and   type = 'U')
-   drop table HUMANOID_SPELL
+   drop table Humanoid_Spell
 go
 
 if exists (select 1
             from  sysindexes
-           where  id    = object_id('HUMANOID_WEAPON')
-            and   name  = 'HUMANOID_WEAPON2_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index HUMANOID_WEAPON.HUMANOID_WEAPON2_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('HUMANOID_WEAPON')
+           where  id    = object_id('Humanoid_Weapon')
             and   name  = 'HUMANOID_WEAPON_FK'
             and   indid > 0
             and   indid < 255)
-   drop index HUMANOID_WEAPON.HUMANOID_WEAPON_FK
+   drop index Humanoid_Weapon.HUMANOID_WEAPON_FK
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('HUMANOID_WEAPON')
+           where  id = object_id('Humanoid_Weapon')
             and   type = 'U')
-   drop table HUMANOID_WEAPON
+   drop table Humanoid_Weapon
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('SPELL')
+           where  id = object_id('Spell')
             and   type = 'U')
-   drop table SPELL
+   drop table Spell
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('SURFACE')
+           where  id = object_id('Surface')
             and   type = 'U')
-   drop table SURFACE
+   drop table Surface
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('SURFACERULE')
+           where  id = object_id('SurfaceRule')
             and   type = 'U')
-   drop table SURFACERULE
+   drop table SurfaceRule
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('WEAPON')
+           where  id = object_id('Weapon')
             and   type = 'U')
-   drop table WEAPON
+   drop table Weapon
 go
 
 /*==============================================================*/
-/* Table: ARMOR                                                 */
+/* Table: Armor                                                 */
 /*==============================================================*/
-create table ARMOR (
-   ID                   varchar(36)          not null,
-   ARMORTYPE            varchar(20)          not null,
-   PHYSICALDEF          int                  not null,
-   MAGICALDEF           int                  not null,
-   NAME                 varchar(40)          not null,
-   constraint PK_ARMOR primary key (ID)
+create table Armor (
+   Id                   uniqueidentifier     not null,
+   ArmorType            varchar(20)          not null,
+   PhysicalDef          int                  not null,
+   MagicalDef           int                  not null,
+   Name                 varchar(40)          not null,
+   constraint PK_ARMOR primary key (Id)
 )
 go
 
 /*==============================================================*/
-/* Table: HUMANOID                                              */
+/* Table: Humanoid                                              */
 /*==============================================================*/
-create table HUMANOID (
-   ID                   varchar(36)          not null,
-   HUMANOIDRACE         varchar(20)          not null,
-   WEAPON               varchar(36)          null,
-   ATTACKSPELL          varchar(36)          null,
-   DEFENSIVESPELL       varchar(36)          null,
+create table Humanoid (
+   Id                   uniqueidentifier     not null,
+   HumanoidRace         varchar(20)          not null,
+   Weapon               varchar(36)          null,
+   AttackSpell          varchar(36)          null,
+   DefensiveSpell       varchar(36)          null,
    HP                   int                  not null,
    MP                   int                  not null,
-   STRENGTH             int                  not null,
-   AGILITY              int                  not null,
-   WISDOM               int                  not null,
-   CONSTITUTION         int                  not null,
-   NAME                 varchar(40)          not null,
-   constraint PK_HUMANOID primary key (ID)
+   Strength             int                  not null,
+   Agility              int                  not null,
+   Wisdom               int                  not null,
+   Constitution         int                  not null,
+   Name                 varchar(40)          not null,
+   constraint PK_HUMANOID primary key (Id)
 )
 go
 
 /*==============================================================*/
-/* Table: HUMANOID_ARMOR                                        */
+/* Table: Humanoid_Armor                                        */
 /*==============================================================*/
-create table HUMANOID_ARMOR (
-   ID                   varchar(36)          not null,
-   ARM_ID               varchar(36)          not null,
-   constraint PK_HUMANOID_ARMOR primary key (ID, ARM_ID)
+create table Humanoid_Armor (
+   Humanoid_Id          uniqueidentifier     not null,
+   Armor_Id             uniqueidentifier     not null,
+   constraint PK_HUMANOID_ARMOR primary key (Humanoid_Id, Armor_Id)
 )
 go
 
 /*==============================================================*/
 /* Index: HUMANOID_ARMOR_FK                                     */
 /*==============================================================*/
-create index HUMANOID_ARMOR_FK on HUMANOID_ARMOR (
-ID ASC
+create index HUMANOID_ARMOR_FK on Humanoid_Armor (
+Humanoid_Id ASC
 )
 go
 
 /*==============================================================*/
-/* Index: HUMANOID_ARMOR2_FK                                    */
+/* Table: Humanoid_Spell                                        */
 /*==============================================================*/
-create index HUMANOID_ARMOR2_FK on HUMANOID_ARMOR (
-ARM_ID ASC
-)
-go
-
-/*==============================================================*/
-/* Table: HUMANOID_SPELL                                        */
-/*==============================================================*/
-create table HUMANOID_SPELL (
-   ID                   varchar(36)          not null,
-   SPE_ID               varchar(36)          not null,
-   constraint PK_HUMANOID_SPELL primary key (ID, SPE_ID)
+create table Humanoid_Spell (
+   Humanoid_Id          uniqueidentifier     not null,
+   Spell_Id             uniqueidentifier     not null,
+   constraint PK_HUMANOID_SPELL primary key (Humanoid_Id, Spell_Id)
 )
 go
 
 /*==============================================================*/
 /* Index: HUMANOID_SPELL_FK                                     */
 /*==============================================================*/
-create index HUMANOID_SPELL_FK on HUMANOID_SPELL (
-ID ASC
+create index HUMANOID_SPELL_FK on Humanoid_Spell (
+Humanoid_Id ASC
 )
 go
 
 /*==============================================================*/
-/* Index: HUMANOID_SPELL2_FK                                    */
+/* Table: Humanoid_Weapon                                       */
 /*==============================================================*/
-create index HUMANOID_SPELL2_FK on HUMANOID_SPELL (
-SPE_ID ASC
-)
-go
-
-/*==============================================================*/
-/* Table: HUMANOID_WEAPON                                       */
-/*==============================================================*/
-create table HUMANOID_WEAPON (
-   ID                   varchar(36)          not null,
-   WEA_ID               varchar(36)          not null,
-   constraint PK_HUMANOID_WEAPON primary key (ID, WEA_ID)
+create table Humanoid_Weapon (
+   Humanoid_Id          uniqueidentifier     not null,
+   Weapon_Id            uniqueidentifier     not null,
+   constraint PK_HUMANOID_WEAPON primary key (Humanoid_Id, Weapon_Id)
 )
 go
 
 /*==============================================================*/
 /* Index: HUMANOID_WEAPON_FK                                    */
 /*==============================================================*/
-create index HUMANOID_WEAPON_FK on HUMANOID_WEAPON (
-ID ASC
+create index HUMANOID_WEAPON_FK on Humanoid_Weapon (
+Humanoid_Id ASC
 )
 go
 
 /*==============================================================*/
-/* Index: HUMANOID_WEAPON2_FK                                   */
+/* Table: Spell                                                 */
 /*==============================================================*/
-create index HUMANOID_WEAPON2_FK on HUMANOID_WEAPON (
-WEA_ID ASC
+create table Spell (
+   Id                   uniqueidentifier     not null,
+   SpellType            varchar(20)          not null,
+   SchoolSpell          varchar(20)          not null,
+   MagicalPower         int                  not null,
+   ManaCost             int                  not null,
+   TotalDuration        int                  not null,
+   Name                 varchar(40)          not null,
+   constraint PK_SPELL primary key (Id)
 )
 go
 
 /*==============================================================*/
-/* Table: SPELL                                                 */
+/* Table: Surface                                               */
 /*==============================================================*/
-create table SPELL (
-   ID                   varchar(36)          not null,
-   SPELLTYPE            varchar(20)          not null,
-   SCHOOLSPELL          varchar(20)          not null,
-   MAGICALPOWER         int                  not null,
-   MANACOST             int                  not null,
-   TOTALDURATION        int                  not null,
-   NAME                 varchar(40)          not null,
-   constraint PK_SPELL primary key (ID)
+create table Surface (
+   CurrentSurfaceType   varchar(40)          not null,
+   HumanoidRace         varchar(20)          not null,
+   constraint PK_SURFACE primary key nonclustered (CurrentSurfaceType)
 )
 go
 
 /*==============================================================*/
-/* Table: SURFACE                                               */
+/* Table: SurfaceRule                                           */
 /*==============================================================*/
-create table SURFACE (
-   CURRENTSURFACETYPE   varchar(40)          not null,
-   HUMANOIDRACE         varchar(20)          not null,
-   constraint PK_SURFACE primary key nonclustered (CURRENTSURFACETYPE)
-)
-go
-
-/*==============================================================*/
-/* Table: SURFACERULE                                           */
-/*==============================================================*/
-create table SURFACERULE (
-   CURRENTSURFACETYPE   varchar(40)          not null,
-   HUMANOIDRACE         varchar(20)          not null,
+create table SurfaceRule (
+   CurrentSurfaceType   varchar(40)          not null,
+   HumanoidRace         varchar(20)          not null,
    HP                   int                  not null,
    MP                   int                  not null,
-   STRENGTH             int                  not null,
-   WISDOM               int                  not null,
-   AGILITY              int                  not null,
-   CONSTITUTION         int                  not null,
-   constraint PK_SURFACERULE primary key (CURRENTSURFACETYPE)
+   Strength             int                  not null,
+   Wisdom               int                  not null,
+   Agility              int                  not null,
+   Constitution         int                  not null,
+   constraint PK_SURFACERULE primary key (CurrentSurfaceType)
 )
 go
 
 /*==============================================================*/
-/* Table: WEAPON                                                */
+/* Table: Weapon                                                */
 /*==============================================================*/
-create table WEAPON (
-   ID                   varchar(36)          not null,
-   WEAPONTYPE           varchar(20)          not null,
-   PHYSICALATTACK       int                  not null,
-   MAGICALATTACK        int                  not null,
-   NAME                 varchar(40)          not null,
-   constraint PK_WEAPON primary key (ID)
+create table Weapon (
+   Id                   uniqueidentifier     not null,
+   WeaponType           varchar(20)          not null,
+   PhysicalAttack       int                  not null,
+   MagicalAttack        int                  not null,
+   Name                 varchar(40)          not null,
+   constraint PK_WEAPON primary key (Id)
 )
 go
 
