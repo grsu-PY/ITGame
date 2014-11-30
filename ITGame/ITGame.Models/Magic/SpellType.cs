@@ -1,9 +1,11 @@
 ﻿
 namespace ITGame.Models.Magic
 {
-    public enum SpellType 
+    [System.Flags]
+    public enum SpellType : byte
     {
-        AttackSpell,
-        DefensiveSpell
+        None = (byte)0,
+        AttackSpell = (byte)1,
+        DefensiveSpell = (byte)2
     }
 }

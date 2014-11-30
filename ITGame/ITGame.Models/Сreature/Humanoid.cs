@@ -10,7 +10,7 @@ namespace ITGame.Models.Сreature
 {
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
-        protected HumanoidRace humanoidRace;
+        protected HumanoidRaceType humanoidRace;
 
         protected Dictionary<Guid, Item> items;
         protected Dictionary<string, Weapon> weapons;
@@ -145,7 +145,7 @@ namespace ITGame.Models.Сreature
         }
 
         [Column]
-        public HumanoidRace HumanoidRace
+        public HumanoidRaceType HumanoidRace
         {
             get
             {
@@ -280,7 +280,7 @@ namespace ITGame.Models.Сreature
         {
             switch (HumanoidRace)
             {
-                case HumanoidRace.Dwarf:
+                case HumanoidRaceType.Dwarf:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -299,7 +299,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Elf:
+                case HumanoidRaceType.Elf:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -318,7 +318,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Human:
+                case HumanoidRaceType.Human:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -337,7 +337,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Orc:
+                case HumanoidRaceType.Orc:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -365,7 +365,7 @@ namespace ITGame.Models.Сreature
         {
             switch (HumanoidRace)
             {
-                case HumanoidRace.Dwarf:
+                case HumanoidRaceType.Dwarf:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -382,7 +382,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Elf:
+                case HumanoidRaceType.Elf:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -399,7 +399,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Human:
+                case HumanoidRaceType.Human:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -416,7 +416,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Orc:
+                case HumanoidRaceType.Orc:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:

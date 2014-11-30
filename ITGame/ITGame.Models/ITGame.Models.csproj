@@ -67,7 +67,7 @@
     <Compile Include="Сreature\Actions\IRecieveDamage.cs" />
     <Compile Include="Сreature\Creature.cs" />
     <Compile Include="Сreature\Humanoid.cs" />
-    <Compile Include="Сreature\HumanoidRace.cs" />
+    <Compile Include="Сreature\HumanoidRaceType.cs" />
     <Compile Include="Сreature\SurfaceAffectEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,10 +1,12 @@
 ﻿
 namespace ITGame.Models.Magic
 {
-    public enum SchoolSpell {
-        Shadow,
-        Arcane,
-        Fire,
-        None
+    [System.Flags]
+    public enum SchoolSpell : byte
+    {
+        None = (byte)0,
+        Shadow = (byte)1,
+        Arcane = (byte)2,
+        Fire = (byte)4
     }
 }
