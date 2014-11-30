@@ -18,6 +18,9 @@ namespace ITGame.CLI
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
+            //WorkWithDb();
+
+
             // SurfaceOnAction();
 
             // if(args.Length != 0)
@@ -30,6 +33,29 @@ namespace ITGame.CLI
             //ThreadingExample().Wait();
 
             // Console.ReadKey();
+        }
+
+        private static void WorkWithDb()
+        {
+            ////////////////////////////////////////////////////////////////////////////////////
+            ///Все типы имеют полное имя, чтоб было видно из какого пространства имен они взяты.
+            ///DBConnector.ITGameDBModels.Armor для работы с базой
+            ///ITGame.Models.Equipment.Armor для работы в приложении
+            ///И так для всех типов, которые должны хранится в базе. Или почти для всех.. хз ;)
+            ////////////////////////////////////////////////////////////////////////////////////
+            var armor = new DBConnector.ITGameDBModels.Armor
+            {
+                ArmorType = (byte)ITGame.Models.Equipment.ArmorType.Body,
+                Equipped = true,
+                Id = Guid.NewGuid(),
+                MagicalDef = 23,
+                PhysicalDef = 43,
+                Weight = 100,
+                Name = "Good Name"
+            };
+
+            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().Add(armor);
+            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().SaveChanges();
         }
 
         private static async Task ThreadingExample()
@@ -381,8 +407,8 @@ namespace ITGame.CLI
 
             IEnumerable<Creature> creatures = new List<Creature>
             {
-                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRace.Elf},
-                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRace.Dwarf}
+                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRaceType.Elf},
+                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRaceType.Dwarf}
             };
             foreach (var cr in creatures)
             {

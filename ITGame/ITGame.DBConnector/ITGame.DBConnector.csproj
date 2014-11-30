@@ -29,11 +29,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -49,6 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBRepository.cs" />
+    <Compile Include="EntityDBProjector.cs" />
+    <Compile Include="ITGameDBModels\Armor.cs" />
+    <Compile Include="ITGameDBModels\Character.cs" />
+    <Compile Include="ITGameDBModels\Humanoid.cs" />
+    <Compile Include="ITGameDBModels\HumanoidRace.cs" />
+    <Compile Include="ITGameDBModels\ITGameDBContext.cs" />
+    <Compile Include="ITGameDBModels\Spell.cs" />
+    <Compile Include="ITGameDBModels\Surface.cs" />
+    <Compile Include="ITGameDBModels\SurfaceRule.cs" />
+    <Compile Include="ITGameDBModels\Weapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -58,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -66,6 +83,16 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ITGame.Infrastructure\ITGame.Infrastructure.csproj">
+      <Project>{e00e53f4-9c56-4f22-aad1-c306c51d436f}</Project>
+      <Name>ITGame.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITGame.Models\ITGame.Models.csproj">
+      <Project>{8731b81a-0be2-4adf-b273-c8727e72b0d3}</Project>
+      <Name>ITGame.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

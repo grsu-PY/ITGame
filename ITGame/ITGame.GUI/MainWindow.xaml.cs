@@ -33,6 +33,31 @@ namespace ITGame.GUI
         {
             InitializeComponent();
             entityComboBox.ItemsSource = c;
+
+            WorkWithDb();
+        }
+
+        private static void WorkWithDb()
+        {
+            ////////////////////////////////////////////////////////////////////////////////////
+            ///Все типы имеют полное имя, чтоб было видно из какого пространства имен они взяты.
+            ///DBConnector.ITGameDBModels.Armor для работы с базой
+            ///ITGame.Models.Equipment.Armor для работы в приложении
+            ///И так для всех типов, которые должны хранится в базе. Или почти для всех.. хз ;)
+            ////////////////////////////////////////////////////////////////////////////////////
+            var armor = new DBConnector.ITGameDBModels.Armor
+            {
+                ArmorType = (byte)ITGame.Models.Equipment.ArmorType.Body,
+                Equipped = true,
+                Id = Guid.NewGuid(),
+                MagicalDef = 23,
+                PhysicalDef = 43,
+                Weight = 100,
+                Name = "Good Name"
+            };
+
+            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().Add(armor);
+            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().SaveChanges();
         }
         private void SetHeaderDataGrid(string entity) 
         {
