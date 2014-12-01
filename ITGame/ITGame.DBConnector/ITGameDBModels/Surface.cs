@@ -1,5 +1,7 @@
 namespace ITGame.DBConnector.ITGameDBModels
 {
+    using ITGame.Models.Environment;
+    using ITGame.Models.Ñreature;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -10,10 +12,10 @@ namespace ITGame.DBConnector.ITGameDBModels
     public partial class Surface
     {
         [Key]
-        public byte CurrentSurfaceType { get; set; }
+        public SurfaceType CurrentSurfaceType { get; set; }
 
-        public byte HumanoidRaceType { get; set; }
-
+        public HumanoidRaceType HumanoidRaceType { get; set; }
+        
         public virtual SurfaceRule SurfaceRule { get; set; }
     }
 }

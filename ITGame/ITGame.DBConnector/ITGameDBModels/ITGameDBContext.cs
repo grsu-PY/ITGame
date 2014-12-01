@@ -37,8 +37,9 @@ namespace ITGame.DBConnector.ITGameDBModels
                 .IsUnicode(false);
 
             modelBuilder.Entity<Character>()
-                .HasOptional(e => e.Humanoid)
-                .WithRequired(e => e.Character);
+                .HasMany(e => e.Humanoids)
+                .WithRequired(e => e.Character)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Humanoid>()
                 .Property(e => e.Name)
@@ -46,24 +47,19 @@ namespace ITGame.DBConnector.ITGameDBModels
 
             modelBuilder.Entity<Humanoid>()
                 .HasMany(e => e.Armors)
-                .WithMany(e => e.Humanoid)
+                .WithMany(e => e.Humanoids)
                 .Map(m => m.ToTable("Hum_Armor"));
 
             modelBuilder.Entity<HumanoidRace>()
                 .Property(e => e.Name)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<HumanoidRace>()
-                .HasMany(e => e.Humanoid)
-                .WithRequired(e => e.HumanoidRace)
-                .WillCascadeOnDelete(false);
-
+            
             modelBuilder.Entity<Spell>()
                 .Property(e => e.Name)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Spell>()
-                .HasMany(e => e.Humanoid)
+                .HasMany(e => e.Humanoids)
                 .WithMany(e => e.Spells)
                 .Map(m => m.ToTable("Hum_Spell"));
 
@@ -76,8 +72,8 @@ namespace ITGame.DBConnector.ITGameDBModels
                 .IsUnicode(false);
 
             modelBuilder.Entity<Weapon>()
-                .HasMany(e => e.Humanoid)
-                .WithMany(e => e.Weapon)
+                .HasMany(e => e.Humanoids)
+                .WithMany(e => e.Weapons)
                 .Map(m => m.ToTable("Hum_Weapon"));
         }
     }

@@ -1,5 +1,6 @@
 namespace ITGame.DBConnector.ITGameDBModels
 {
+    using ITGame.Models.Ñreature;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -9,13 +10,8 @@ namespace ITGame.DBConnector.ITGameDBModels
     [Table("HumanoidRace")]
     public partial class HumanoidRace
     {
-        public HumanoidRace()
-        {
-            Humanoid = new HashSet<Humanoid>();
-        }
-
         [Key]
-        public byte HumanoidRaceType { get; set; }
+        public HumanoidRaceType HumanoidRaceType { get; set; }
 
         public int Strength { get; set; }
 
@@ -28,7 +24,5 @@ namespace ITGame.DBConnector.ITGameDBModels
         [Required]
         [StringLength(40)]
         public string Name { get; set; }
-
-        public virtual ICollection<Humanoid> Humanoid { get; set; }
     }
 }

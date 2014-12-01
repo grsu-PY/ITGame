@@ -1,5 +1,6 @@
 namespace ITGame.DBConnector.ITGameDBModels
 {
+    using ITGame.Models.Magic;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -11,14 +12,14 @@ namespace ITGame.DBConnector.ITGameDBModels
     {
         public Spell()
         {
-            Humanoid = new HashSet<Humanoid>();
+            Humanoids = new HashSet<Humanoid>();
         }
 
         public Guid Id { get; set; }
 
-        public byte SpellType { get; set; }
+        public SpellType SpellType { get; set; }
 
-        public byte SchoolSpell { get; set; }
+        public SchoolSpell SchoolSpell { get; set; }
 
         public int MagicalPower { get; set; }
 
@@ -32,6 +33,6 @@ namespace ITGame.DBConnector.ITGameDBModels
 
         public bool Equipped { get; set; }
 
-        public virtual ICollection<Humanoid> Humanoid { get; set; }
+        public virtual ICollection<Humanoid> Humanoids { get; set; }
     }
 }

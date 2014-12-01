@@ -20,6 +20,8 @@ using System.Data;
 using System.Resources;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using ITGame.DBConnector;
+using ITGame.Models.Сreature;
 namespace ITGame.GUI
 {
     /// <summary>
@@ -47,7 +49,7 @@ namespace ITGame.GUI
             ////////////////////////////////////////////////////////////////////////////////////
             var armor = new DBConnector.ITGameDBModels.Armor
             {
-                ArmorType = (byte)ITGame.Models.Equipment.ArmorType.Body,
+                ArmorType = ITGame.Models.Equipment.ArmorType.Body,
                 Equipped = true,
                 Id = Guid.NewGuid(),
                 MagicalDef = 23,
@@ -56,9 +58,85 @@ namespace ITGame.GUI
                 Name = "Good Name"
             };
 
-            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().Add(armor);
-            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().SaveChanges();
+            Guid charId;
+            bool wasNull = false;
+            var characterDB = DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().GetAll().FirstOrDefault();
+            if (characterDB == null)
+            {
+                wasNull = true;
+                var _charId = Guid.NewGuid();
+                characterDB = new DBConnector.ITGameDBModels.Character
+                {
+                    Id = _charId,
+                    Name = "aliaksei  " + _charId.ToString().Substring(0, 10),//из-за ограничения в 40 char в базе для стринги, обрезаю строку
+                    Password = "password",
+                    Role = 1
+                };
+            }
+            charId = characterDB.Id;
+
+            var humanoid = new DBConnector.ITGameDBModels.Humanoid
+            {
+                Id = Guid.NewGuid(),
+                CharacterId = charId,
+                Name = "der4mInc  " + charId.ToString().Substring(0, 10),
+                Level = 1,
+                Strength = 10,
+                Wisdom = 20,
+                Constitution = 10,
+                HumanoidRaceType = HumanoidRaceType.Human,
+                Agility = 10
+            };
+            humanoid.Armors.Add(armor);
+            characterDB.Humanoids.Add(humanoid);
+            armor.Humanoids.Add(humanoid);
+            if (wasNull)
+            {
+                DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Add(characterDB);
+            }
+            else
+            {
+                DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Update(characterDB);
+            }
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().SaveChanges();
+
+            #region Add Fixed Races
+            /* //Run only one time
+            var Races = new List<DBConnector.ITGameDBModels.HumanoidRace>
+            {
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Human,
+                    Name="Human"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Elf,
+                    Name="Elf"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Dwarf,
+                    Name="Dwarf"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Orc,
+                    Name="Orc"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.None,
+                    Name="None"
+                },
+            };
+
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().DbSet.AddRange(Races);
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().SaveChanges();
+            */
+            #endregion
         }
+
         private void SetHeaderDataGrid(string entity) 
         {
             var type = TypeExtension.GetTypeFromModelsAssembly(entity);

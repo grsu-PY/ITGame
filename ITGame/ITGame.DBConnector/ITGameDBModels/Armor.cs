@@ -1,5 +1,6 @@
 namespace ITGame.DBConnector.ITGameDBModels
 {
+    using ITGame.Models.Equipment;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -11,12 +12,12 @@ namespace ITGame.DBConnector.ITGameDBModels
     {
         public Armor()
         {
-            Humanoid = new HashSet<Humanoid>();
+            Humanoids = new HashSet<Humanoid>();
         }
 
         public Guid Id { get; set; }
 
-        public byte ArmorType { get; set; }
+        public ArmorType ArmorType { get; set; }
 
         public int PhysicalDef { get; set; }
 
@@ -30,6 +31,6 @@ namespace ITGame.DBConnector.ITGameDBModels
 
         public bool Equipped { get; set; }
 
-        public virtual ICollection<Humanoid> Humanoid { get; set; }
+        public virtual ICollection<Humanoid> Humanoids { get; set; }
     }
 }

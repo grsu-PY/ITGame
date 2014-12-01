@@ -1,5 +1,6 @@
 namespace ITGame.DBConnector.ITGameDBModels
 {
+    using ITGame.Models.Ñreature;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -13,12 +14,14 @@ namespace ITGame.DBConnector.ITGameDBModels
         {
             Armors = new HashSet<Armor>();
             Spells = new HashSet<Spell>();
-            Weapon = new HashSet<Weapon>();
+            Weapons = new HashSet<Weapon>();
         }
 
         public Guid Id { get; set; }
 
-        public byte HumanoidRaceType { get; set; }
+        public Guid CharacterId { get; set; }
+        
+        public HumanoidRaceType HumanoidRaceType { get; set; }
 
         public int HP { get; set; }
 
@@ -40,12 +43,10 @@ namespace ITGame.DBConnector.ITGameDBModels
 
         public virtual Character Character { get; set; }
 
-        public virtual HumanoidRace HumanoidRace { get; set; }
-
         public virtual ICollection<Armor> Armors { get; set; }
 
         public virtual ICollection<Spell> Spells { get; set; }
 
-        public virtual ICollection<Weapon> Weapon { get; set; }
+        public virtual ICollection<Weapon> Weapons { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     {
         public Weapon()
         {
-            Humanoid = new HashSet<Humanoid>();
+            Humanoids = new HashSet<Humanoid>();
         }
 
         public Guid Id { get; set; }
@@ -30,6 +30,6 @@ namespace ITGame.DBConnector.ITGameDBModels
 
         public bool Equipped { get; set; }
 
-        public virtual ICollection<Humanoid> Humanoid { get; set; }
+        public virtual ICollection<Humanoid> Humanoids { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ITGame.Infrastructure.Data;
+﻿using ITGame.DBConnector;
+using ITGame.Infrastructure.Data;
 using ITGame.Infrastructure.Extensions;
 using ITGame.Infrastructure.Parser;
 using ITGame.Models.Environment;
@@ -7,6 +8,7 @@ using ITGame.Models.Сreature;
 using ITGame.Models.Сreature.Actions;
 using ITGame.UIElements;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,13 +20,13 @@ namespace ITGame.CLI
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
-            //WorkWithDb();
+            WorkWithDb();
 
 
             // SurfaceOnAction();
 
             // if(args.Length != 0)
-                  //ToCmd(args);
+            //ToCmd(args);
 
             // if(args.Length != 0)
             //ToCmdAsync(args).Wait();
@@ -32,7 +34,7 @@ namespace ITGame.CLI
 
             //ThreadingExample().Wait();
 
-            // Console.ReadKey();
+            Console.ReadKey();
         }
 
         private static void WorkWithDb()
@@ -45,7 +47,7 @@ namespace ITGame.CLI
             ////////////////////////////////////////////////////////////////////////////////////
             var armor = new DBConnector.ITGameDBModels.Armor
             {
-                ArmorType = (byte)ITGame.Models.Equipment.ArmorType.Body,
+                ArmorType = ITGame.Models.Equipment.ArmorType.Body,
                 Equipped = true,
                 Id = Guid.NewGuid(),
                 MagicalDef = 23,
@@ -54,16 +56,91 @@ namespace ITGame.CLI
                 Name = "Good Name"
             };
 
-            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().Add(armor);
-            DBConnector.DBRepository.GetInstance<DBConnector.ITGameDBModels.Armor>().SaveChanges();
+            Guid charId;
+            bool wasNull = false;
+            var characterDB = DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().GetAll().FirstOrDefault();
+            if (characterDB == null)
+            {
+                wasNull = true;
+                var _charId = Guid.NewGuid();
+                characterDB = new DBConnector.ITGameDBModels.Character
+                {
+                    Id = _charId,
+                    Name = "aliaksei  " + _charId.ToString().Substring(0, 10),//из-за ограничения в 40 char в базе для стринги, обрезаю строку
+                    Password = "password",
+                    Role = 1
+                };
+            }
+            charId = characterDB.Id;
+
+            var humanoid = new DBConnector.ITGameDBModels.Humanoid
+            {
+                Id = Guid.NewGuid(),
+                CharacterId = charId,
+                Name = "der4mInc  " + charId.ToString().Substring(0, 10),
+                Level = 1,
+                Strength = 10,
+                Wisdom = 20,
+                Constitution = 10,
+                HumanoidRaceType = HumanoidRaceType.Human,
+                Agility = 10
+            };
+            humanoid.Armors.Add(armor);
+            characterDB.Humanoids.Add(humanoid);
+            armor.Humanoids.Add(humanoid);
+            if (wasNull)
+            {
+                DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Add(characterDB);
+            }
+            else
+            {
+                DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Update(characterDB);
+            }
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().SaveChanges();
+
+            #region Add Fixed Races
+            /* //Run only one time
+            var Races = new List<DBConnector.ITGameDBModels.HumanoidRace>
+            {
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Human,
+                    Name="Human"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Elf,
+                    Name="Elf"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Dwarf,
+                    Name="Dwarf"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Orc,
+                    Name="Orc"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.None,
+                    Name="None"
+                },
+            };
+
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().DbSet.AddRange(Races);
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().SaveChanges();
+            */
+            #endregion
         }
 
         private static async Task ThreadingExample()
-        {            
+        {
             var dict1 = new Dictionary<string, string>();
             dict1.Add("Agility", "101");
             dict1.Add("HumanoidRace", "Human");
-            
+
             var repo = EntityRepository.GetInstance<Humanoid>();
             var repo2 = EntityRepository.GetInstance<Armor>();
             var bar = new ProgressBar();
@@ -87,7 +164,7 @@ namespace ITGame.CLI
             var dict1 = new Dictionary<string, string>();
             dict1.Add("Agility", "101");
             dict1.Add("HumanoidRace", "Human");
-            
+
             var human = EntityRepository.GetInstance<Humanoid>().Create(dict1);
             human.Id = Guid.NewGuid();
 
@@ -110,7 +187,7 @@ namespace ITGame.CLI
             EntityRepository.GetInstance<Humanoid>().SaveChanges();
             EntityRepository.GetInstance<Armor>().SaveChanges();
         }
-             
+
         static void ToCmd(string[] args)
         {
             #region Закомменченые комманды
@@ -147,7 +224,7 @@ namespace ITGame.CLI
                 List<CmdData> cmdArgs = parser.Parse();
                 CmdCommands command = cmdArgs[0].Command;
 
-                switch (command) 
+                switch (command)
                 {
                     case CmdCommands.create:
                         foreach (CmdData cData in cmdArgs)
@@ -232,7 +309,7 @@ namespace ITGame.CLI
                     default:
                         break;
                 }
-                
+
             }
         }
         static async Task ToCmdAsync(string[] args)
@@ -260,7 +337,7 @@ namespace ITGame.CLI
             //args[10] = "-a";
             //args[11] = "Gloves,10,2";
             //args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            
+
             #endregion
 
             CmdParser parser = new CmdParser(args);
@@ -274,7 +351,7 @@ namespace ITGame.CLI
 
                 Console.WriteLine();
 
-                switch (command) 
+                switch (command)
                 {
                     case CmdCommands.create:
                         foreach (CmdData cData in cmdArgs)
@@ -395,13 +472,13 @@ namespace ITGame.CLI
         static void ResetConsoleColor()
         {
             Console.ForegroundColor = defaultColor;
-        }      
+        }
 
         /// <summary>
         /// Поверхность в действии
         /// </summary>
         public static void SurfaceOnAction()
-        {            
+        {
             var surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
             surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
 
@@ -425,7 +502,7 @@ namespace ITGame.CLI
             {
                 Console.WriteLine(cr.Name + " - " + cr.Wisdom);
             }
-            
+
         }
 
     }

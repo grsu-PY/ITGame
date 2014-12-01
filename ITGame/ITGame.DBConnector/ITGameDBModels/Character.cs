@@ -9,6 +9,10 @@ namespace ITGame.DBConnector.ITGameDBModels
     [Table("Character")]
     public partial class Character
     {
+        public Character()
+        {
+            Humanoids = new HashSet<Humanoid>();
+        }
         public Guid Id { get; set; }
 
         [Required]
@@ -20,6 +24,6 @@ namespace ITGame.DBConnector.ITGameDBModels
 
         public byte Role { get; set; }
 
-        public virtual Humanoid Humanoid { get; set; }
+        public virtual ICollection<Humanoid> Humanoids { get; set; }
     }
 }

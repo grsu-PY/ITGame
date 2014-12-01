@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     30.11.2014 19:40:48                          */
+/* Created on:     01.12.2014 22:12:40                          */
 /*==============================================================*/
 
 
@@ -51,13 +51,6 @@ if exists (select 1
    where r.fkeyid = object_id('Humanoid') and o.name = 'FK_HUMANOID_CHARACTER')
 alter table Humanoid
    drop constraint FK_HUMANOID_CHARACTER
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('Humanoid') and o.name = 'FK_HUMANOID_HUMANOID_RACE')
-alter table Humanoid
-   drop constraint FK_HUMANOID_HUMANOID_RACE
 go
 
 if exists (select 1
@@ -163,6 +156,15 @@ if exists (select 1
            where  id = object_id('Hum_Weapon')
             and   type = 'U')
    drop table Hum_Weapon
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('Humanoid')
+            and   name  = 'CHARACTER_INDEX_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index Humanoid.CHARACTER_INDEX_FK
 go
 
 if exists (select 1
@@ -334,6 +336,7 @@ go
 /*==============================================================*/
 create table Humanoid (
    Id                   uniqueidentifier     not null,
+   CharacterId          uniqueidentifier     not null,
    HumanoidRaceType     tinyint              not null,
    HP                   int                  not null,
    MP                   int                  not null,
@@ -345,6 +348,14 @@ create table Humanoid (
    Level                tinyint              not null default 1
       constraint CKC_LEVEL_HUMANOID check (Level >= 1),
    constraint PK_HUMANOID primary key (Id)
+)
+go
+
+/*==============================================================*/
+/* Index: CHARACTER_INDEX_FK                                    */
+/*==============================================================*/
+create index CHARACTER_INDEX_FK on Humanoid (
+CharacterId ASC
 )
 go
 
@@ -464,13 +475,8 @@ alter table Hum_Weapon
 go
 
 alter table Humanoid
-   add constraint FK_HUMANOID_CHARACTER foreign key (Id)
+   add constraint FK_HUMANOID_CHARACTER foreign key (CharacterId)
       references Character (Id)
-go
-
-alter table Humanoid
-   add constraint FK_HUMANOID_HUMANOID_RACE foreign key (HumanoidRaceType)
-      references HumanoidRace (HumanoidRaceType)
 go
 
 alter table SurfaceRule
