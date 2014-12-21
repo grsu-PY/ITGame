@@ -45,6 +45,7 @@
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\IEntityProjector.cs" />
     <Compile Include="Data\IEntityProjector`.cs" />
+    <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\ObjectBuilder.cs" />
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Parser\CmdCommands.cs" />

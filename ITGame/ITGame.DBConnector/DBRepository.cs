@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITGame.Infrastructure.Data;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace ITGame.DBConnector
 {
-    public static class DBRepository
+    public class DBRepository : IEntityRepository
     {
-        public static EntityDBProjector<T> GetInstance<T>() where T : class,new()
-        {
-            return new EntityDBProjector<T>(Context);
-        }
-
         private static DbContext _context;
 
         public static DbContext Context
@@ -26,6 +22,16 @@ namespace ITGame.DBConnector
                 }
                 return _context;
             }
+        }
+
+        public IEntityProjector GetInstance(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntityProjector<TEntity> GetInstance<TEntity>() where TEntity : class, Models.Identity, new()
+        {
+            return new EntityDBProjector<TEntity>(Context);
         }
     }
 }

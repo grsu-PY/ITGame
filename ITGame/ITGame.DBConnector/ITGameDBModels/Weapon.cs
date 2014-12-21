@@ -7,7 +7,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Weapon")]
-    public partial class Weapon
+    public partial class Weapon : ITGame.Models.Identity
     {
         public Weapon()
         {

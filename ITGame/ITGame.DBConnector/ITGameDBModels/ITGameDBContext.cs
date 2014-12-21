@@ -53,7 +53,8 @@ namespace ITGame.DBConnector.ITGameDBModels
             modelBuilder.Entity<HumanoidRace>()
                 .Property(e => e.Name)
                 .IsUnicode(false);
-            
+            modelBuilder.Entity<HumanoidRace>().Ignore(x => x.Id);
+
             modelBuilder.Entity<Spell>()
                 .Property(e => e.Name)
                 .IsUnicode(false);
@@ -66,6 +67,11 @@ namespace ITGame.DBConnector.ITGameDBModels
             modelBuilder.Entity<Surface>()
                 .HasOptional(e => e.SurfaceRule)
                 .WithRequired(e => e.Surface);
+            modelBuilder.Entity<Surface>().Ignore(x => x.Id);
+            modelBuilder.Entity<Surface>().Ignore(x => x.Name);
+
+            modelBuilder.Entity<SurfaceRule>().Ignore(x => x.Id);
+            modelBuilder.Entity<SurfaceRule>().Ignore(x => x.Name);
 
             modelBuilder.Entity<Weapon>()
                 .Property(e => e.Name)

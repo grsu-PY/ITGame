@@ -9,6 +9,11 @@ namespace ITGame.Infrastructure.Data
 {
     internal static class ObjectBuilder
     {
+        private static IEntityRepository _repository;
+        static ObjectBuilder()
+        {
+            _repository = new EntityRepository();
+        }
         public static object CreateObject(Type type, IDictionary<string, string> values)
         {
             var instance = Activator.CreateInstance(type);
@@ -85,7 +90,7 @@ namespace ITGame.Infrastructure.Data
 
         private static void BuildIdentity(Type type, string value, out object typedValue)
         {
-            typedValue = EntityRepository.GetInstance(type).Load(BuidlGuid(value));
+            typedValue = _repository.GetInstance(type).Load(BuidlGuid(value));
         }
 
         private static void BuildEnum(Type type, string value, out object typedValue)

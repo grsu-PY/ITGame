@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ITGame.Infrastructure.Data
 {
-    public static class EntityRepository
+    public class EntityRepository : IEntityRepository
     {        
         private static readonly string _dbName;
         private static readonly string _dbPath;
@@ -41,12 +41,12 @@ namespace ITGame.Infrastructure.Data
         public static string PATH { get { return _dbPath; } }
 
 
-        public static IEntityProjector<T> GetInstance<T>() where T : class,Identity, new()
+        public IEntityProjector<TEntity> GetInstance<TEntity>() where TEntity : class, Identity, new()
         {
-            return new EntityProjector<T>(GetInstance(typeof(T)));
+            return new EntityProjector<TEntity>(GetInstance(typeof(TEntity)));
         }
 
-        public static IEntityProjector GetInstance(Type type)
+        public IEntityProjector GetInstance(Type type)
         {
             return EntityRepositoryBase.GetInstance(type);
         }

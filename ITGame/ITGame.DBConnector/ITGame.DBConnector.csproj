@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="DBRepository.cs" />
     <Compile Include="EntityDBProjector.cs" />
+    <Compile Include="EntityDBProjector`.cs" />
     <Compile Include="ITGameDBModels\Armor.cs" />
     <Compile Include="ITGameDBModels\Character.cs" />
     <Compile Include="ITGameDBModels\Humanoid.cs" />

@@ -8,7 +8,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Humanoid")]
-    public partial class Humanoid
+    public partial class Humanoid : ITGame.Models.Identity
     {
         public Humanoid()
         {

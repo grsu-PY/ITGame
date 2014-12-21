@@ -31,6 +31,13 @@ namespace ITGame.GUI
     {
         private Type currentEntityType;
         private List<string> c = new List<string> { "Humanoid", "Weapon", "Armor", "Spell" };
+        private static IEntityRepository _repository;
+        private static IEntityRepository _dbrepository;
+        static MainWindow()
+        {
+            _repository = new EntityRepository();
+            _dbrepository = new DBRepository();
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -60,7 +67,7 @@ namespace ITGame.GUI
 
             Guid charId;
             bool wasNull = false;
-            var characterDB = DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().GetAll().FirstOrDefault();
+            var characterDB = _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().GetAll().FirstOrDefault();
             if (characterDB == null)
             {
                 wasNull = true;
@@ -92,13 +99,13 @@ namespace ITGame.GUI
             armor.Humanoids.Add(humanoid);
             if (wasNull)
             {
-                DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Add(characterDB);
+                _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().Add(characterDB);
             }
             else
             {
-                DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Update(characterDB);
+                _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().Update(characterDB);
             }
-            DBRepository.GetInstance<DBConnector.ITGameDBModels.Character>().SaveChanges();
+            _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().SaveChanges();
 
             #region Add Fixed Races
             /* //Run only one time
@@ -199,7 +206,7 @@ namespace ITGame.GUI
                         dataTable.Rows.RemoveAt(selectedItem);
                         dataGrid.ItemsSource = dataTable.DefaultView;
 
-                        EntityRepository.GetInstance(currentEntityType).Delete(entityId);
+                        _repository.GetInstance(currentEntityType).Delete(entityId);
                     }
                 }
             }
@@ -224,7 +231,7 @@ namespace ITGame.GUI
         {
             string entity = entityComboBox.Text;
             var type = TypeExtension.GetTypeFromModelsAssembly(entity);
-            var entities = EntityRepository.GetInstance(type).GetAll();
+            var entities = _repository.GetInstance(type).GetAll();
 
             var properties = TypeExtension.GetSetGetProperties(type);
 
@@ -256,7 +263,7 @@ namespace ITGame.GUI
         private void FillExpander(string entity, Grid eGrid) 
         {
             var type = TypeExtension.GetTypeFromModelsAssembly(entity);
-            var entities = EntityRepository.GetInstance(type).GetAll();
+            var entities = _repository.GetInstance(type).GetAll();
 
             int row = 0;
             foreach (var ent in entities)
@@ -320,7 +327,7 @@ namespace ITGame.GUI
             if (guiArgs.Any())
             {
                 var entityType = TypeExtension.GetTypeFromModelsAssembly(guiArgs.First().EntityType);
-                repository = EntityRepository.GetInstance(entityType);
+                repository = _repository.GetInstance(entityType);
             }
             else
             {

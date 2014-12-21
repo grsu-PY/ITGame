@@ -9,7 +9,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("SurfaceRule")]
-    public partial class SurfaceRule
+    public partial class SurfaceRule : ITGame.Models.Identity
     {
         [Key]
         public SurfaceType CurrentSurfaceType { get; set; }
@@ -29,5 +29,32 @@ namespace ITGame.DBConnector.ITGameDBModels
         public int Constitution { get; set; }
 
         public virtual Surface Surface { get; set; }
+
+        [Obsolete]
+        [ScaffoldColumn(false)]
+        public Guid Id
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        [Obsolete]
+        [ScaffoldColumn(false)]
+        public string Name
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

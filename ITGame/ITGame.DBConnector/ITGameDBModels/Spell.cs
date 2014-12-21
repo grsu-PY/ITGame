@@ -8,7 +8,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Spell")]
-    public partial class Spell
+    public partial class Spell : ITGame.Models.Identity
     {
         public Spell()
         {

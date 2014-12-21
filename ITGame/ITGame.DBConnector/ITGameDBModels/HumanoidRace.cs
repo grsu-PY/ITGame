@@ -8,7 +8,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("HumanoidRace")]
-    public partial class HumanoidRace
+    public partial class HumanoidRace : ITGame.Models.Identity
     {
         [Key]
         public HumanoidRaceType HumanoidRaceType { get; set; }
@@ -24,5 +24,19 @@ namespace ITGame.DBConnector.ITGameDBModels
         [Required]
         [StringLength(40)]
         public string Name { get; set; }
+
+        [Obsolete]
+        [ScaffoldColumn(false)]
+        public Guid Id
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

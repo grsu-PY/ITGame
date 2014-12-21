@@ -1,4 +1,5 @@
 ﻿using ITGame.Infrastructure.Data;
+using ITGame.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,26 +10,30 @@ using System.Threading.Tasks;
 
 namespace ITGame.DBConnector
 {
-    public class EntityDBProjector
+    public class EntityDBProjector<T> : IEntityProjector<T> where T : class, new()
     {
         private readonly DbContext _context;
-        private readonly Type _entityType;
-        public EntityDBProjector(DbContext context, Type entityType)
+        public EntityDBProjector(DbContext context)
         {
             _context = context;
             _context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
-        public DbSet DbSet { get { return _context.Set(_entityType); } }
-        public void Add(object entity)
+        public DbSet<T> DbSet { get { return _context.Set<T>(); } }
+        public void Add(T entity)
         {
             DbSet.Add(entity);
+        }
+
+        public T Create(IDictionary<string, string> values)
+        {
+            throw new NotImplementedException();
         }
 
         public void Delete(Guid id)
         {
             try
             {
-                object item = DbSet.Find(id);
+                T item = DbSet.Find(id);
                 DbSet.Remove(item);
             }
             catch (Exception)
@@ -38,7 +43,7 @@ namespace ITGame.DBConnector
             }
         }
 
-        public void Delete(object entity)
+        public void Delete(T entity)
         {
             try
             {
@@ -51,11 +56,11 @@ namespace ITGame.DBConnector
             }
         }
 
-        public object Load(Guid id)
+        public T Load(Guid id)
         {
             try
             {
-                object item = DbSet.Find(id);
+                T item = DbSet.Find(id);
                 return item;
             }
             catch (Exception)
@@ -65,9 +70,9 @@ namespace ITGame.DBConnector
             }
         }
 
-        public bool TryLoad(Guid id, out object value)
+        public bool TryLoad(Guid id, out T value)
         {
-            object item = null;
+            T item = null;
             try
             {
                 item = DbSet.Find(id);
@@ -88,12 +93,12 @@ namespace ITGame.DBConnector
             _context.SaveChanges();
         }
 
-        public void Update(object entity)
+        public void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void AddOrUpdate(object entity)
+        public void AddOrUpdate(T entity)
         {
             var entry = _context.Entry(entity);
             if (entry == null)
@@ -106,27 +111,27 @@ namespace ITGame.DBConnector
             }
         }
 
-        public IEnumerable<object> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return new List<object>();
+            return DbSet.ToList();
         }
 
-        public IEnumerable<object> GetAll(Func<object, bool> where)
+        public IEnumerable<T> GetAll(Func<T, bool> where)
         {
-            return new List<object>();
+            return DbSet.Where(where).ToList();
         }
 
-        public Task<object> CreateAsync(IDictionary<string, string> values)
+        public Task<T> CreateAsync(IDictionary<string, string> values)
         {
             throw new NotImplementedException();
         }
 
-        public async Task AddAsync(object entity)
+        public async Task AddAsync(T entity)
         {
             await AddAsync(entity, CancellationToken.None);
         }
 
-        public async Task AddAsync(object entity, CancellationToken cancellationToken)
+        public async Task AddAsync(T entity, CancellationToken cancellationToken)
         {
             await Task.Factory.StartNew(() => DbSet.Add(entity), cancellationToken);
         }
@@ -139,7 +144,7 @@ namespace ITGame.DBConnector
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task DeleteAsync(object entity)
+        public Task DeleteAsync(T entity)
         {
             throw new NotImplementedException();
         }
@@ -149,25 +154,24 @@ namespace ITGame.DBConnector
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(object entity)
+        public Task UpdateAsync(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<object> LoadAsync(Guid id)
+        public async Task<T> LoadAsync(Guid id)
         {
             return await DbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<object>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await DbSet.ToListAsync();
         }
 
-        public Task<IEnumerable<object>> GetAllAsync(Func<object, bool> where)
+        public Task<IEnumerable<T>> GetAllAsync(Func<T, bool> where)
         {
             throw new NotImplementedException();
         }
     }
-    
 }

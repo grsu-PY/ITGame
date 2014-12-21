@@ -21,6 +21,13 @@ namespace ITGame.Infrastructure.Extensions
                 .GetTypes()
                 .SingleOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
         }
+        public static Type GetTypeFromDBConnectorAssembly(string typeName)
+        {
+            return Assembly
+                .LoadFrom("ITGame.DBConnector.dll")
+                .GetTypes()
+                .SingleOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
+        }
         public static IEnumerable<PropertyInfo> GetSetGetProperties(this Type type)
         {
             return type.GetProperties().GetSetGetProperties();
