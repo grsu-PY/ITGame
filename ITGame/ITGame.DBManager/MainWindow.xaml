@@ -1,0 +1,75 @@
+﻿<Window x:Class="ITGame.DBManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModel="clr-namespace:ITGame.DBManager.ViewModels"
+        xmlns:selectors="clr-namespace:ITGame.DBManager.DataTemplateSelectors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="380" MinHeight="380" Width="740" MinWidth="740"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <selectors:MainGridDataTemplateSelector x:Key="MainGridDataTemplateSelector"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto">
+            <MenuItem x:Name="menuItem" Header="File">
+                <MenuItem Header="Open" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem x:Name="saveMenuItem" Header="Save" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem x:Name="savetoMenuItem" Header="Save as..." HorizontalAlignment="Left" Width="145"/>
+                <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145"/>
+            </MenuItem>
+            <MenuItem Header="Mode">
+                <MenuItem x:Name="modifyMenuItem" Header="Modify" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="readMenuItem" Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True"/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="entityComboBox" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                          ItemsSource="{Binding EntityViewModelTypes}" 
+                          SelectedItem="{Binding SelectedEntityType}"
+                          SelectedIndex="1"
+                          Margin="10,10,0,0"
+                          HorizontalAlignment="Left" VerticalAlignment="Top" 
+                          Width="120" Height="22"
+                          />
+            <Grid Grid.Row="1" Grid.Column="0" MinWidth="700">
+                <ContentPresenter 
+                        Content="{Binding EntityViewModel}"
+                        ContentTemplateSelector="{StaticResource ResourceKey=MainGridDataTemplateSelector}"/>
+            </Grid>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+                <Button x:Name="loadTableButton" Content="Load"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Width="75" ToolTip="Load table from existing file" Height="30"/>                
+                <Button x:Name="addRowButton" Content="Add row"
+                            HorizontalAlignment="Left" VerticalAlignment="Top" 
+                            Width="75" Height="30" ToolTip="Add row to table"/>
+                <Button x:Name="removeRowButton" Content="Remove row"
+                            HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Width="75" Height="30" ToolTip="Remove selected rows from table"/>
+                <Button x:Name="removeAllButton" Content="Remove all" 
+                            HorizontalAlignment="Left" VerticalAlignment="Top" 
+                            Width="75" ToolTip="Remove all rows from table" Height="30"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</Window>
