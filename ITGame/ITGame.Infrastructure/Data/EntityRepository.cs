@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ITGame.Infrastructure.Data
 {
-    public class EntityRepository : IEntityRepository
+    public class EntityRepository<TEntityProjector> : IEntityRepository where TEntityProjector : EntityProjector
     {        
         private static readonly string _dbName;
         private static readonly string _dbPath;
@@ -60,7 +60,7 @@ namespace ITGame.Infrastructure.Data
                 IEntityProjector ep;
                 if (!_eps.TryGetValue(type, out ep))
                 {
-                    ep = new EntityProjector(type);
+                    ep = Activator.CreateInstance(typeof (TEntityProjector), type) as TEntityProjector;
                     _eps.Add(type, ep);
                 }
 

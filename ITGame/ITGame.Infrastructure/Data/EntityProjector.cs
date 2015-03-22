@@ -20,7 +20,7 @@ namespace ITGame.Infrastructure.Data
         private readonly string _tableName;
         private readonly string _tablePath;
 
-        public EntityProjector(Type type)
+        protected EntityProjector(Type type)
         {
             lock (_lockObj)
             {
@@ -29,7 +29,7 @@ namespace ITGame.Infrastructure.Data
 
                 _tableName = type.Name;
 
-                _tablePath = Path.Combine(EntityRepository.PATH, _tableName + EntityRepository.EXT);
+                _tablePath = Path.Combine(EntityRepository<EntityProjector>.PATH, _tableName + EntityRepository<EntityProjector>.EXT);
 
                 if (!File.Exists(_tablePath))
                 {
@@ -39,12 +39,28 @@ namespace ITGame.Infrastructure.Data
                 LoadTable();
             }
         }
+
+        protected IDictionary<Guid, Identity> Entities
+        {
+            get { return _entities; }
+        }
+
+        protected Type EntityType
+        {
+            get { return _entityType; }
+        }
+
         private void InitTable()
+        {
+            InitTableInternal();
+        }
+
+        protected virtual void InitTableInternal()
         {
             var propertiesNames = _entityType
                 .GetSetGetProperties()
                 .Select(p => p.Name)
-                .Aggregate((s1, s2) => s1 + EntityRepository.DELIM + s2);
+                .Aggregate((s1, s2) => s1 + EntityRepository<EntityProjector>.DELIM + s2);
 
             using (var writer = File.CreateText(_tablePath))
             {
@@ -55,12 +71,17 @@ namespace ITGame.Infrastructure.Data
 
         private void LoadTable()
         {
+            LoadTableInternal();
+        }
+
+        protected virtual void LoadTableInternal()
+        {
             var rows = File.ReadAllLines(_tablePath);
-            var propNames = rows[0].Split(EntityRepository.DELIM.ToCharArray());
+            var propNames = rows[0].Split(EntityRepository<EntityProjector>.DELIM.ToCharArray());
 
             for (int i = 1; i < rows.Length; i++)
             {
-                var propValues = rows[i].Split(EntityRepository.DELIM.ToCharArray());
+                var propValues = rows[i].Split(EntityRepository<EntityProjector>.DELIM.ToCharArray());
                 var dict = new Dictionary<string, string>();
 
                 for (int j = 0; j < propNames.Length && j < propValues.Length; j++)
@@ -68,7 +89,7 @@ namespace ITGame.Infrastructure.Data
                     dict.Add(propNames[j], propValues[j]);
                 }
 
-                var entity = CreateEntity(dict) as Identity;
+                var entity = CreateEntityInternal(dict) as Identity;
 
                 if (entity != null && !_entities.ContainsKey(entity.Id))
                 {
@@ -81,7 +102,7 @@ namespace ITGame.Infrastructure.Data
             }
         }
 
-        private object CreateEntity(IDictionary<string, string> values)
+        protected virtual object CreateEntityInternal(IDictionary<string, string> values)
         {
             return ObjectBuilder.CreateObject( _entityType, values);
         }
@@ -99,7 +120,7 @@ namespace ITGame.Infrastructure.Data
         public Identity Create(IDictionary<string, string> values)
         {
             
-            var instance = CreateEntity(values) as Identity;
+            var instance = CreateEntityInternal(values) as Identity;
 
             return instance;
         }
@@ -135,7 +156,7 @@ namespace ITGame.Infrastructure.Data
             return _entities.TryGetValue(id, out value);
         }
 
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
             
 
@@ -146,7 +167,7 @@ namespace ITGame.Infrastructure.Data
 
             var propertiesNames = properties
                 .Select(p => p.Name)
-                .Aggregate((s1, s2) => s1 + EntityRepository.DELIM + s2);
+                .Aggregate((s1, s2) => s1 + EntityRepository<EntityProjector>.DELIM + s2);
 
             table.AppendLine(propertiesNames);
 
@@ -159,7 +180,7 @@ namespace ITGame.Infrastructure.Data
                     var column = ObjectBuilder.ToColumnValue(entity, prop);
 
                     row.Append(column);
-                    row.Append(EntityRepository.DELIM);
+                    row.Append(EntityRepository<EntityProjector>.DELIM);
                 }
                 row.Remove(row.Length - 1, 1);
                 table.AppendLine(row.ToString());
@@ -288,5 +309,4 @@ namespace ITGame.Infrastructure.Data
                    );
         }
     }
-
 }

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\EntityProjector.cs" />
+    <Compile Include="Data\EntityProjectorXml.cs" />
     <Compile Include="Data\EntityProjector`.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\IEntityProjector.cs" />

@@ -12,7 +12,7 @@ namespace ITGame.Infrastructure.Data
         private static IEntityRepository _repository;
         static ObjectBuilder()
         {
-            _repository = new EntityRepository();
+            _repository = new EntityRepository<EntityProjector>();
         }
         public static object CreateObject(Type type, IDictionary<string, string> values)
         {

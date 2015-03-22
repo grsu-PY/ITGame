@@ -35,7 +35,7 @@ namespace ITGame.GUI
         private static IEntityRepository _dbrepository;
         static MainWindow()
         {
-            _repository = new EntityRepository();
+            _repository = new EntityRepository<EntityProjector>();
             _dbrepository = new DBRepository();
         }
         public MainWindow()

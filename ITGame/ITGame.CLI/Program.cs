@@ -24,7 +24,7 @@ namespace ITGame.CLI
         {
             WorkWithDb();
 
-            _repository = new EntityRepository();
+            _repository = new EntityRepository<EntityProjector>();
             _dbRepository = new DBRepository();
             // SurfaceOnAction();
 
