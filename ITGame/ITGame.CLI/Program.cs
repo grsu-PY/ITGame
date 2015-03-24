@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ITGame.CLI
@@ -18,13 +19,16 @@ namespace ITGame.CLI
     class Program
     {
         private static IEntityRepository _repository;
+        private static IEntityRepository _repositoryXML;
         private static IEntityRepository _dbRepository;
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
-            WorkWithDb();
+            TwoReposTest();
+            //WorkWithDb();
 
             _repository = new EntityRepository<EntityProjector>();
+            _repositoryXML = new EntityRepository<EntityProjectorXml>();
             _dbRepository = new DBRepository();
             // SurfaceOnAction();
 
@@ -38,6 +42,23 @@ namespace ITGame.CLI
             //ThreadingExample().Wait();
 
             Console.ReadKey();
+        }
+
+        private static void TwoReposTest()
+        {
+            var hums = _repository.GetInstance<Humanoid>();
+            var humsXML = _repositoryXML.GetInstance<Humanoid>();
+
+            var hum = new Humanoid() {Name = "hum"};
+            var humXML = new Humanoid() {Name = "humXML"};
+
+            hums.Add(hum);
+            humsXML.Add(humXML);
+
+            var hums2 = _repository.GetInstance<Humanoid>();
+            var hum2 = hums2.GetAll(x => x.Name == "humXML").FirstOrDefault();
+
+            Debug.Assert(hum2 == null);
         }
 
         private static void WorkWithDb()

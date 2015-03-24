@@ -20,7 +20,7 @@ namespace ITGame.Infrastructure.Data
         private readonly string _tableName;
         private readonly string _tablePath;
 
-        protected EntityProjector(Type type)
+        public EntityProjector(Type type)
         {
             lock (_lockObj)
             {
