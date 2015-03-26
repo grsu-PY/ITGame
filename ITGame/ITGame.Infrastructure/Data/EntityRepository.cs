@@ -10,15 +10,12 @@ namespace ITGame.Infrastructure.Data
     {        
         private static readonly string _dbName;
         private static readonly string _dbPath;
-        private static readonly string ext;
         private static readonly string delim = ";";
         private const string DBFileDelim = "DBFileDelim";
-        private const string DBFileExt = "DBFileExt";
         private const string DBLocation = "DBLocation";
         static EntityRepository()
         {
             var dbPath = ConfigurationManager.AppSettings[DBLocation];
-            ext = ConfigurationManager.AppSettings[DBFileExt];
             delim = ConfigurationManager.AppSettings[DBFileDelim];
 
             if (string.IsNullOrEmpty(dbPath) || string.IsNullOrWhiteSpace(dbPath))
@@ -36,7 +33,6 @@ namespace ITGame.Infrastructure.Data
 
         }
 
-        public static string EXT { get { return ext; } }
         public static string DELIM { get { return delim; } }
         public static string PATH { get { return _dbPath; } }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace ITGame.Infrastructure.Extensions
 {
@@ -16,10 +17,7 @@ namespace ITGame.Infrastructure.Extensions
         }
         public static Type GetTypeFromModelsAssembly(string typeName)
         {
-            return Assembly
-                .LoadFrom("ITGame.Models.dll")
-                .GetTypes()
-                .SingleOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
+            return GetTypesFromModelAssembly().SingleOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
         }
         public static Type GetTypeFromDBConnectorAssembly(string typeName)
         {
@@ -28,6 +26,17 @@ namespace ITGame.Infrastructure.Extensions
                 .GetTypes()
                 .SingleOrDefault(t => string.Compare(t.Name, typeName, true) == 0);
         }
+
+        public static IEnumerable<Type> GetTypesFromModelAssembly()
+        {
+            return Assembly.LoadFrom("ITGame.Models.dll").GetTypes();
+        }
+
+        public static IEnumerable<Type> GetDataContractTypesFromModelsAssembly()
+        {
+            return GetTypesFromModelAssembly().Where(x => x.GetCustomAttributes().OfType<DataContractAttribute>().Any());
+        }
+
         public static IEnumerable<PropertyInfo> GetSetGetProperties(this Type type)
         {
             return type.GetProperties().GetSetGetProperties();

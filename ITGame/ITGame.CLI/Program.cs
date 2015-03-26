@@ -24,11 +24,13 @@ namespace ITGame.CLI
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
-            TwoReposTest();
             //WorkWithDb();
 
             _repository = new EntityRepository<EntityProjector>();
             _repositoryXML = new EntityRepository<EntityProjectorXml>();
+
+            TwoReposTest();
+
             _dbRepository = new DBRepository();
             // SurfaceOnAction();
 
@@ -49,8 +51,8 @@ namespace ITGame.CLI
             var hums = _repository.GetInstance<Humanoid>();
             var humsXML = _repositoryXML.GetInstance<Humanoid>();
 
-            var hum = new Humanoid() {Name = "hum"};
-            var humXML = new Humanoid() {Name = "humXML"};
+            var hum = new Humanoid() { Name = "hum", Id = Guid.NewGuid() };
+            var humXML = new Humanoid() { Name = "humXML", Id = Guid.NewGuid() };
 
             hums.Add(hum);
             humsXML.Add(humXML);
@@ -58,7 +60,10 @@ namespace ITGame.CLI
             var hums2 = _repository.GetInstance<Humanoid>();
             var hum2 = hums2.GetAll(x => x.Name == "humXML").FirstOrDefault();
 
+
             Debug.Assert(hum2 == null);
+
+            humsXML.SaveChanges();
         }
 
         private static void WorkWithDb()

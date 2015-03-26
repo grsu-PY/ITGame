@@ -12,37 +12,38 @@ namespace ITGame.Infrastructure.Data
 {
     public class EntityProjector : IEntityProjector
     {
-        private readonly IDictionary<Guid, Identity> _entities;
+        #region Fields
+        private const string EXSTENSION = ".csv";
         private readonly Type _entityType;
 
         private readonly object _lockObj = new object();
 
         private readonly string _tableName;
         private readonly string _tablePath;
+        #endregion
 
         public EntityProjector(Type type)
         {
             lock (_lockObj)
             {
                 _entityType = type;
-                _entities = new Dictionary<Guid, Identity>();
+                EntitiesContainer = new EntitiesContainer(_entityType.FullName, InitializeEntities);
 
                 _tableName = type.Name;
 
-                _tablePath = Path.Combine(EntityRepository<EntityProjector>.PATH, _tableName + EntityRepository<EntityProjector>.EXT);
-
-                if (!File.Exists(_tablePath))
-                {
-                    InitTable();
-                }
-
-                LoadTable();
+                _tablePath = Path.Combine(EntityRepository<EntityProjector>.PATH, _tableName + Extension);
             }
+        }
+
+        #region Properties
+        protected virtual string Extension
+        {
+            get { return EXSTENSION; }
         }
 
         protected IDictionary<Guid, Identity> Entities
         {
-            get { return _entities; }
+            get { return EntitiesContainer.Entities; }
         }
 
         protected Type EntityType
@@ -50,12 +51,26 @@ namespace ITGame.Infrastructure.Data
             get { return _entityType; }
         }
 
-        private void InitTable()
+        protected string TablePath
         {
-            InitTableInternal();
+            get { return _tablePath; }
         }
 
-        protected virtual void InitTableInternal()
+        protected EntitiesContainer EntitiesContainer { get; set; }
+
+        #endregion
+
+        private IDictionary<Guid, Identity> InitializeEntities()
+        {
+            if (!File.Exists(_tablePath))
+            {
+                InitTable();
+            }
+
+            return LoadTable();
+        }
+        
+        protected virtual void InitTable()
         {
             var propertiesNames = _entityType
                 .GetSetGetProperties()
@@ -65,17 +80,12 @@ namespace ITGame.Infrastructure.Data
             using (var writer = File.CreateText(_tablePath))
             {
                 writer.WriteLine(propertiesNames);
-            };
-
+            }
         }
 
-        private void LoadTable()
+        protected virtual IDictionary<Guid, Identity> LoadTable()
         {
-            LoadTableInternal();
-        }
-
-        protected virtual void LoadTableInternal()
-        {
+            var localEntities = new Dictionary<Guid, Identity>();
             var rows = File.ReadAllLines(_tablePath);
             var propNames = rows[0].Split(EntityRepository<EntityProjector>.DELIM.ToCharArray());
 
@@ -91,15 +101,16 @@ namespace ITGame.Infrastructure.Data
 
                 var entity = CreateEntityInternal(dict) as Identity;
 
-                if (entity != null && !_entities.ContainsKey(entity.Id))
+                if (entity != null && !localEntities.ContainsKey(entity.Id))
                 {
-                    _entities.Add(entity.Id, entity);
+                    localEntities.Add(entity.Id, entity);
                 }
                 else
                 {
                     throw new ApplicationException("Duplicated uniqueidentifier values");
                 }
             }
+            return localEntities; 
         }
 
         protected virtual object CreateEntityInternal(IDictionary<string, string> values)
@@ -110,11 +121,11 @@ namespace ITGame.Infrastructure.Data
         public void Add(Identity entity)
         {
             
-            if (_entities.ContainsKey(entity.Id))
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
                 throw new ArgumentException("Duplicated uniqueidentifier values");
             }
-            _entities.Add(entity.Id, entity);
+            EntitiesContainer.Entities.Add(entity.Id, entity);
         }
 
         public Identity Create(IDictionary<string, string> values)
@@ -128,13 +139,13 @@ namespace ITGame.Infrastructure.Data
         public void Delete(Guid id)
         {
             
-            _entities.Remove(id);
+            EntitiesContainer.Entities.Remove(id);
         }
 
         public void Delete(Identity entity)
         {
             
-            if (_entities.ContainsKey(entity.Id))
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
                 Delete(entity.Id);
             }
@@ -144,7 +155,7 @@ namespace ITGame.Infrastructure.Data
         {
             
             Identity entity;
-            if (!_entities.TryGetValue(id, out entity))
+            if (!EntitiesContainer.Entities.TryGetValue(id, out entity))
             {
                 throw new ArgumentException(string.Format("There is no value with id {0}", id));
             }
@@ -153,7 +164,7 @@ namespace ITGame.Infrastructure.Data
 
         public bool TryLoad(Guid id, out Identity value)
         {
-            return _entities.TryGetValue(id, out value);
+            return EntitiesContainer.Entities.TryGetValue(id, out value);
         }
 
         public virtual void SaveChanges()
@@ -171,7 +182,7 @@ namespace ITGame.Infrastructure.Data
 
             table.AppendLine(propertiesNames);
 
-            foreach (var entity in _entities.Values)
+            foreach (var entity in EntitiesContainer.Entities.Values)
             {
                 row.Clear();
 
@@ -191,9 +202,9 @@ namespace ITGame.Infrastructure.Data
 
         public void Update(Identity entity)
         {            
-            if (_entities.ContainsKey(entity.Id))
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
-                _entities[entity.Id] = entity;
+                EntitiesContainer.Entities[entity.Id] = entity;
             }
             else
             {
@@ -203,26 +214,26 @@ namespace ITGame.Infrastructure.Data
 
         public void AddOrUpdate(Identity entity)
         {
-            if (_entities.ContainsKey(entity.Id))
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
-                _entities[entity.Id] = entity;
+                EntitiesContainer.Entities[entity.Id] = entity;
             }
             else
             {
-                _entities.Add(entity.Id, entity);
+                EntitiesContainer.Entities.Add(entity.Id, entity);
             }
         }
 
         public IEnumerable<Identity> GetAll()
         {
             
-            return _entities.Values;
+            return EntitiesContainer.Entities.Values;
         }
 
         public IEnumerable<Identity> GetAll(Func<Identity, bool> where)
         {
             
-            return _entities.Values.Where(where);
+            return EntitiesContainer.Entities.Values.Where(where);
         }
         
         private T1 ThreadSafeFunc<T1>(Func<T1> func)
