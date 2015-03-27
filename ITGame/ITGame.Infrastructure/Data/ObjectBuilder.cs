@@ -7,14 +7,14 @@ using System.Reflection;
 
 namespace ITGame.Infrastructure.Data
 {
-    internal static class ObjectBuilder
+    public class ObjectBuilder
     {
-        private static IEntityRepository _repository;
-        static ObjectBuilder()
+        private readonly IEntityRepository _repository;
+        public ObjectBuilder(IEntityRepository repository)
         {
-            _repository = new EntityRepository<EntityProjector>();
+            _repository = repository;
         }
-        public static object CreateObject(Type type, IDictionary<string, string> values)
+        public object CreateObject(Type type, IDictionary<string, string> values)
         {
             var instance = Activator.CreateInstance(type);
 
@@ -30,7 +30,7 @@ namespace ITGame.Infrastructure.Data
             return instance;
         }
 
-        private static void SetPropertyValueOf(object instance, PropertyInfo property, string value)
+        private  void SetPropertyValueOf(object instance, PropertyInfo property, string value)
         {
             object typedValue;
             var type = property.PropertyType;
@@ -88,7 +88,7 @@ namespace ITGame.Infrastructure.Data
             return id;
         }
 
-        private static void BuildIdentity(Type type, string value, out object typedValue)
+        private void BuildIdentity(Type type, string value, out object typedValue)
         {
             typedValue = _repository.GetInstance(type).Load(BuidlGuid(value));
         }
@@ -103,7 +103,7 @@ namespace ITGame.Infrastructure.Data
             typedValue = Convert.ChangeType(value, type);
         }
 
-        public static string ToColumnValue(object instance, PropertyInfo property)
+        public string ToColumnValue(object instance, PropertyInfo property)
         {
             string column;
 

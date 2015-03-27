@@ -44,19 +44,19 @@ namespace ITGame.Infrastructure.Data
 
         public IEntityProjector GetInstance(Type type)
         {
-            return EntityRepositoryBase.GetInstance(type);
+            return EntityRepositoryBase.GetInstance(type, this);
         }
 
         private static class EntityRepositoryBase
         {
             private static readonly IDictionary<Type, IEntityProjector> _eps = new Dictionary<Type, IEntityProjector>();
 
-            public static IEntityProjector GetInstance(Type type)
+            public static IEntityProjector GetInstance(Type type, IEntityRepository repository)
             {
                 IEntityProjector ep;
                 if (!_eps.TryGetValue(type, out ep))
                 {
-                    ep = Activator.CreateInstance(typeof (TEntityProjector), type) as TEntityProjector;
+                    ep = Activator.CreateInstance(typeof(TEntityProjector), type, repository) as TEntityProjector;
                     _eps.Add(type, ep);
                 }
 

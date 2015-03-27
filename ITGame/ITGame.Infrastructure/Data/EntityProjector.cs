@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ITGame.Infrastructure.Data
@@ -20,13 +19,17 @@ namespace ITGame.Infrastructure.Data
 
         private readonly string _tableName;
         private readonly string _tablePath;
+        private readonly ObjectBuilder _objectBuilder;
+
         #endregion
 
-        public EntityProjector(Type type)
+        public EntityProjector(Type type, IEntityRepository repository)
         {
             lock (_lockObj)
             {
                 _entityType = type;
+                _objectBuilder = new ObjectBuilder(repository);
+
                 EntitiesContainer = new EntitiesContainer(_entityType.FullName, InitializeEntities);
 
                 _tableName = type.Name;
@@ -39,6 +42,11 @@ namespace ITGame.Infrastructure.Data
         protected virtual string Extension
         {
             get { return EXSTENSION; }
+        }
+
+        protected ObjectBuilder Builder
+        {
+            get { return _objectBuilder; }
         }
 
         protected IDictionary<Guid, Identity> Entities
@@ -115,7 +123,7 @@ namespace ITGame.Infrastructure.Data
 
         protected virtual object CreateEntityInternal(IDictionary<string, string> values)
         {
-            return ObjectBuilder.CreateObject( _entityType, values);
+            return Builder.CreateObject(_entityType, values);
         }
 
         public void Add(Identity entity)
@@ -188,7 +196,7 @@ namespace ITGame.Infrastructure.Data
 
                 foreach (var prop in properties)
                 {
-                    var column = ObjectBuilder.ToColumnValue(entity, prop);
+                    var column = Builder.ToColumnValue(entity, prop);
 
                     row.Append(column);
                     row.Append(EntityRepository<EntityProjector>.DELIM);

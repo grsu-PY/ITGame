@@ -13,14 +13,14 @@ namespace ITGame.Infrastructure.Data
     public class EntityProjectorXml : EntityProjector
     {
         private const string EXTENSION = ".xml";
-        private static IEnumerable<Type> KnownTypes;
+        private IEnumerable<Type> KnownTypes;
 
 //        static EntityProjectorXml()
 //        {
 //            KnownTypes = TypeExtension.GetTypesFromModelAssembly();//.GetDataContractTypesFromModelsAssembly();
 //        }
 
-        public EntityProjectorXml(Type type) : base(type)
+        public EntityProjectorXml(Type type, IEntityRepository repository) : base(type, repository)
         {
             KnownTypes = new[] {type};
         }
