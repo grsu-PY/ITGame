@@ -30,5 +30,11 @@ namespace ITGame.Infrastructure.Data
             EntityType = entityType;
             _lazyEntities = new Lazy<IDictionary<Guid, Identity>>(dictionaryInitializer);
         }
+
+        public EntitiesContainer(string entityType)
+        {
+            EntityType = entityType;
+            Entities = new Dictionary<Guid, Identity>();
+        }
     }
 }

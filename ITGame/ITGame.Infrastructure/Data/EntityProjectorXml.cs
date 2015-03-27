@@ -32,7 +32,7 @@ namespace ITGame.Infrastructure.Data
 
         protected override void InitTable()
         {
-            Serialize(EntitiesContainer);
+            Serialize(new EntitiesContainer(EntityType.FullName));
         }
 
         protected override IDictionary<Guid, Identity> LoadTable()
