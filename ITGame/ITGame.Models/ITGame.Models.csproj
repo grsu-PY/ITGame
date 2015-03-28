@@ -57,18 +57,18 @@
     <Compile Include="Magic\Spell.cs" />
     <Compile Include="Magic\SpellType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Сreature\Actions\ActionPerformedEventArgs.cs" />
-    <Compile Include="Сreature\Actions\ActionType.cs" />
-    <Compile Include="Сreature\Actions\IAction.cs" />
-    <Compile Include="Сreature\Actions\ICanAttack.cs" />
-    <Compile Include="Сreature\Actions\ICanEquip.cs" />
-    <Compile Include="Сreature\Actions\ICanTake.cs" />
-    <Compile Include="Сreature\Actions\IMoveable.cs" />
-    <Compile Include="Сreature\Actions\IRecieveDamage.cs" />
-    <Compile Include="Сreature\Creature.cs" />
-    <Compile Include="Сreature\Humanoid.cs" />
-    <Compile Include="Сreature\HumanoidRaceType.cs" />
-    <Compile Include="Сreature\SurfaceAffectEventArgs.cs" />
+    <Compile Include="Creature\Actions\ActionPerformedEventArgs.cs" />
+    <Compile Include="Creature\Actions\ActionType.cs" />
+    <Compile Include="Creature\Actions\IAction.cs" />
+    <Compile Include="Creature\Actions\ICanAttack.cs" />
+    <Compile Include="Creature\Actions\ICanEquip.cs" />
+    <Compile Include="Creature\Actions\ICanTake.cs" />
+    <Compile Include="Creature\Actions\IMoveable.cs" />
+    <Compile Include="Creature\Actions\IRecieveDamage.cs" />
+    <Compile Include="Creature\Creature.cs" />
+    <Compile Include="Creature\Humanoid.cs" />
+    <Compile Include="Creature\HumanoidRaceType.cs" />
+    <Compile Include="Creature\SurfaceAffectEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
