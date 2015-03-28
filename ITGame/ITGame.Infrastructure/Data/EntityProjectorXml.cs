@@ -50,11 +50,19 @@ namespace ITGame.Infrastructure.Data
         {
             using (var fileStream = new FileStream(TablePath, FileMode.Create))
             {
-                using (var dictionaryWriter = XmlDictionaryWriter.CreateTextWriter(fileStream, Encoding.UTF8))
+                var settings = new XmlWriterSettings()
                 {
-                    var dataContractSerializer = new DataContractSerializer(obj.GetType(), KnownTypes);
+                    Indent = true,
+                    ConformanceLevel = ConformanceLevel.Auto
+                };
+                using (var xmlWriter = XmlWriter.Create(fileStream, settings))
+                {
+                    using (var dictionaryWriter = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter))
+                    {
+                        var dataContractSerializer = new DataContractSerializer(obj.GetType(), KnownTypes);
 
-                    dataContractSerializer.WriteObject(dictionaryWriter, obj);
+                        dataContractSerializer.WriteObject(dictionaryWriter, obj);
+                    }
                 }
 
             }
@@ -65,11 +73,14 @@ namespace ITGame.Infrastructure.Data
             T obj;
             using (var fileStream = new FileStream(TablePath, FileMode.Open))
             {
-                using (var dictionaryReader = XmlDictionaryReader.CreateTextReader(fileStream, Encoding.UTF8, new XmlDictionaryReaderQuotas(), reader => { }))
+                using (var xmlReader = XmlReader.Create(fileStream))
                 {
-                    var dataContractSerializer = new DataContractSerializer(typeof (T), KnownTypes);
+                    using (var dictionaryReader = XmlDictionaryReader.CreateDictionaryReader(xmlReader))
+                    {
+                        var dataContractSerializer = new DataContractSerializer(typeof (T), KnownTypes);
 
-                    obj = (T)dataContractSerializer.ReadObject(dictionaryReader);
+                        obj = (T) dataContractSerializer.ReadObject(dictionaryReader);
+                    }
                 }
 
             }
