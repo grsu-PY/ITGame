@@ -5,9 +5,11 @@ using ITGame.Models.Magic;
 using ITGame.Models.Сreature.Actions;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace ITGame.Models.Сreature
 {
+    [DataContract]
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
         protected HumanoidRaceType humanoidRace;
@@ -250,8 +252,18 @@ namespace ITGame.Models.Сreature
         }
 
         [Column]
+        [DataMember(Name = "Weapon")]
+        public Guid WeaponID { get; set; }
+        [DataMember(Name = "AttackSpell")]
+        public Guid AttackSpellID { get; set; }
+        [DataMember(Name = "DefensiveSpell")]
+        public Guid DefensiveSpellID { get; set; }
+
+        [IgnoreDataMember]
         public Weapon Weapon { get { return weapon; } set { weapon = value; } }
+        [IgnoreDataMember]
         public Spell AttackSpell { get { return attackSpell; } set { attackSpell = value; } }
+        [IgnoreDataMember]
         public Spell DefensiveSpell { get { return defensiveSpell; } set { defensiveSpell = value; } }
 
         protected override void OnActionPerformed(ActionPerformedEventArgs e)
