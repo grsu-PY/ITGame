@@ -1,13 +1,6 @@
-﻿using ITGame.DBConnector;
-using ITGame.DBManager.Data;
+﻿using ITGame.DBManager.Data;
 using ITGame.DBManager.ViewModels;
 using ITGame.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ITGame.DBManager
@@ -21,7 +14,7 @@ namespace ITGame.DBManager
         {
             base.OnStartup(e);
 
-            var viewmodel = new MainViewModel(new DBRepository(), new EntityViewModelBuilder());
+            var viewmodel = new MainViewModel(new EntityRepository<EntityProjectorXml>(), new EntityViewModelBuilder());
 
             var window = new MainWindow { DataContext = viewmodel };
 

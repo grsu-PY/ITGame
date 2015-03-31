@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class ArmorsViewModel : EntitiesViewModel<Armor>
+    public class ArmorsViewModel : EntitiesViewModel<Models.Equipment.Armor>
     {
         public ArmorsViewModel(IEntityRepository repository)
             : base(repository)
