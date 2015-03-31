@@ -156,7 +156,7 @@ namespace ITGame.Infrastructure.Parser
             var index = rline.IndexOf("_.");
             rline = rline.Replace("_.", "");
             rline = rline.Insert(index, "_");
-            while (GetComa(rline) != cparm - 1) rline = rline.Insert(index, "_,");
+            while (GetComa(rline) <= cparm - 1) rline = rline.Insert(index, "_,");
 
             return rline;
         }

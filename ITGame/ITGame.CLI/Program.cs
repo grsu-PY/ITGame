@@ -1,4 +1,5 @@
-﻿using ITGame.Infrastructure.Data;
+﻿using ITGame.DBConnector;
+using ITGame.Infrastructure.Data;
 using ITGame.Infrastructure.Extensions;
 using ITGame.Infrastructure.Parser;
 using ITGame.Models.Environment;
@@ -7,21 +8,34 @@ using ITGame.Models.Сreature;
 using ITGame.Models.Сreature.Actions;
 using ITGame.UIElements;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ITGame.CLI
 {
     class Program
     {
+        private static IEntityRepository _repository;
+        private static IEntityRepository _repositoryXML;
+        private static IEntityRepository _dbRepository;
         private static ConsoleColor defaultColor = Console.ForegroundColor;
         static void Main(string[] args)
         {
+            //WorkWithDb();
+
+            _repository = new EntityRepository<EntityProjector>();
+            _repositoryXML = new EntityRepository<EntityProjectorXml>();
+
+            TwoReposTest();
+
+            _dbRepository = new DBRepository();
             // SurfaceOnAction();
 
             // if(args.Length != 0)
-                  //ToCmd(args);
+            //ToCmd(args);
 
             // if(args.Length != 0)
             //ToCmdAsync(args).Wait();
@@ -29,17 +43,135 @@ namespace ITGame.CLI
 
             //ThreadingExample().Wait();
 
-            // Console.ReadKey();
+            Console.ReadKey();
+        }
+
+        private static void TwoReposTest()
+        {
+            var hums = _repository.GetInstance<Humanoid>();
+            var humsXML = _repositoryXML.GetInstance<Humanoid>();
+
+            var hum = new Humanoid() { Name = "hum", Id = Guid.NewGuid() };
+            var humXML = new Humanoid() { Name = "humXML", Id = Guid.NewGuid() };
+
+            hums.Add(hum);
+            humsXML.Add(humXML);
+
+            var hums2 = _repository.GetInstance<Humanoid>();
+            var hum2 = hums2.GetAll(x => x.Name == "humXML").FirstOrDefault();
+
+
+            Debug.Assert(hum2 == null);
+
+            humsXML.SaveChanges();
+        }
+
+        private static void WorkWithDb()
+        {
+            ////////////////////////////////////////////////////////////////////////////////////
+            ///Все типы имеют полное имя, чтоб было видно из какого пространства имен они взяты.
+            ///DBConnector.ITGameDBModels.Armor для работы с базой
+            ///ITGame.Models.Equipment.Armor для работы в приложении
+            ///И так для всех типов, которые должны хранится в базе. Или почти для всех.. хз ;)
+            ////////////////////////////////////////////////////////////////////////////////////
+            var armor = new DBConnector.ITGameDBModels.Armor
+            {
+                ArmorType = ITGame.Models.Equipment.ArmorType.Body,
+                Equipped = true,
+                Id = Guid.NewGuid(),
+                MagicalDef = 23,
+                PhysicalDef = 43,
+                Weight = 100,
+                Name = "Good Name"
+            };
+
+            Guid charId;
+            bool wasNull = false;
+            var characterDB = _dbRepository.GetInstance<DBConnector.ITGameDBModels.Character>().GetAll().FirstOrDefault();
+            if (characterDB == null)
+            {
+                wasNull = true;
+                var _charId = Guid.NewGuid();
+                characterDB = new DBConnector.ITGameDBModels.Character
+                {
+                    Id = _charId,
+                    Name = "aliaksei  " + _charId.ToString().Substring(0, 10),//из-за ограничения в 40 char в базе для стринги, обрезаю строку
+                    Password = "password",
+                    Role = 1
+                };
+            }
+            charId = characterDB.Id;
+
+            var humanoid = new DBConnector.ITGameDBModels.Humanoid
+            {
+                Id = Guid.NewGuid(),
+                CharacterId = charId,
+                Name = "der4mInc  " + charId.ToString().Substring(0, 10),
+                Level = 1,
+                Strength = 10,
+                Wisdom = 20,
+                Constitution = 10,
+                HumanoidRaceType = HumanoidRaceType.Human,
+                Agility = 10
+            };
+            humanoid.Armors.Add(armor);
+            characterDB.Humanoids.Add(humanoid);
+            armor.Humanoids.Add(humanoid);
+            if (wasNull)
+            {
+                _dbRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Add(characterDB);
+            }
+            else
+            {
+                _dbRepository.GetInstance<DBConnector.ITGameDBModels.Character>().Update(characterDB);
+            }
+            _dbRepository.GetInstance<DBConnector.ITGameDBModels.Character>().SaveChanges();
+
+            #region Add Fixed Races
+            /* //Run only one time
+            var Races = new List<DBConnector.ITGameDBModels.HumanoidRace>
+            {
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Human,
+                    Name="Human"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Elf,
+                    Name="Elf"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Dwarf,
+                    Name="Dwarf"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.Orc,
+                    Name="Orc"
+                },
+                new DBConnector.ITGameDBModels.HumanoidRace
+                {
+                    HumanoidRaceType=HumanoidRaceType.None,
+                    Name="None"
+                },
+            };
+
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().DbSet.AddRange(Races);
+            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().SaveChanges();
+            */
+            #endregion
         }
 
         private static async Task ThreadingExample()
-        {            
+        {
             var dict1 = new Dictionary<string, string>();
             dict1.Add("Agility", "101");
             dict1.Add("HumanoidRace", "Human");
-            
-            var repo = EntityRepository.GetInstance<Humanoid>();
-            var repo2 = EntityRepository.GetInstance<Armor>();
+
+            var repo = _repository.GetInstance<Humanoid>();
+            var repo2 = _repository.GetInstance<Armor>();
             var bar = new ProgressBar();
 
             bar.StartProgress();
@@ -61,13 +193,13 @@ namespace ITGame.CLI
             var dict1 = new Dictionary<string, string>();
             dict1.Add("Agility", "101");
             dict1.Add("HumanoidRace", "Human");
-            
-            var human = EntityRepository.GetInstance<Humanoid>().Create(dict1);
+
+            var human = _repository.GetInstance<Humanoid>().Create(dict1);
             human.Id = Guid.NewGuid();
 
             var arm = new Armor { ArmorType = ArmorType.Body, Id = Guid.NewGuid(), MagicalDef = 32 };
 
-            EntityRepository.GetInstance<Armor>().Add(arm);
+            _repository.GetInstance<Armor>().Add(arm);
 
 
             var dict2 = new Dictionary<string, string>();
@@ -75,16 +207,16 @@ namespace ITGame.CLI
             dict2.Add("Strength", "50");
             dict2.Add("HumanoidRace", "Dwarf");
 
-            var dwarf = EntityRepository.GetInstance<Humanoid>().Create(dict2);
+            var dwarf = _repository.GetInstance<Humanoid>().Create(dict2);
             dwarf.Id = Guid.NewGuid();
 
-            EntityRepository.GetInstance<Humanoid>().Add(human);
-            EntityRepository.GetInstance<Humanoid>().Add(dwarf);
+            _repository.GetInstance<Humanoid>().Add(human);
+            _repository.GetInstance<Humanoid>().Add(dwarf);
 
-            EntityRepository.GetInstance<Humanoid>().SaveChanges();
-            EntityRepository.GetInstance<Armor>().SaveChanges();
+            _repository.GetInstance<Humanoid>().SaveChanges();
+            _repository.GetInstance<Armor>().SaveChanges();
         }
-             
+
         static void ToCmd(string[] args)
         {
             #region Закомменченые комманды
@@ -121,19 +253,19 @@ namespace ITGame.CLI
                 List<CmdData> cmdArgs = parser.Parse();
                 CmdCommands command = cmdArgs[0].Command;
 
-                switch (command) 
+                switch (command)
                 {
                     case CmdCommands.create:
                         foreach (CmdData cData in cmdArgs)
                         {
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            var newEntity = _repository.GetInstance(entityType).Create(cData.Properties);
                             newEntity.Id = Guid.NewGuid();
 
                             try
                             {
-                                EntityRepository.GetInstance(entityType).Add(newEntity);
-                                EntityRepository.GetInstance(entityType).SaveChanges();
+                                _repository.GetInstance(entityType).Add(newEntity);
+                                _repository.GetInstance(entityType).SaveChanges();
 
                                 Console.WriteLine("{0} created\n", cData.EntityType);
                             }
@@ -145,13 +277,13 @@ namespace ITGame.CLI
                         foreach (CmdData cData in cmdArgs)
                         {
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var newEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            var newEntity = _repository.GetInstance(entityType).Create(cData.Properties);
                             newEntity.Id = Guid.NewGuid();
 
                             try
                             {
-                                EntityRepository.GetInstance(entityType).Add(newEntity);
-                                EntityRepository.GetInstance(entityType).SaveChanges();
+                                _repository.GetInstance(entityType).Add(newEntity);
+                                _repository.GetInstance(entityType).SaveChanges();
 
                                 Console.WriteLine("{0} created\n", cData.EntityType);
                             }
@@ -165,12 +297,12 @@ namespace ITGame.CLI
                         foreach (CmdData cData in cmdArgs)
                         {
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var updatedEntity = EntityRepository.GetInstance(entityType).Create(cData.Properties);
+                            var updatedEntity = _repository.GetInstance(entityType).Create(cData.Properties);
                             updatedEntity.Id = cData.EntityGuid;
                             try
                             {
-                                EntityRepository.GetInstance(entityType).Update(updatedEntity);
-                                EntityRepository.GetInstance(entityType).SaveChanges();
+                                _repository.GetInstance(entityType).Update(updatedEntity);
+                                _repository.GetInstance(entityType).SaveChanges();
 
                                 Console.WriteLine("Entity of type {0} with id {1} have just successfully been updated", cData.EntityType, cData.EntityGuid);
                             }
@@ -185,8 +317,8 @@ namespace ITGame.CLI
                         {
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
 
-                            EntityRepository.GetInstance(entityType).Delete(cData.EntityGuid);
-                            EntityRepository.GetInstance(entityType).SaveChanges();
+                            _repository.GetInstance(entityType).Delete(cData.EntityGuid);
+                            _repository.GetInstance(entityType).SaveChanges();
 
                             Console.WriteLine("Entity of type {0} with id {1} have just successfully been deleted", cData.EntityType, cData.EntityGuid);
                         }
@@ -195,7 +327,7 @@ namespace ITGame.CLI
                         foreach (var cData in cmdArgs)
                         {
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var entities = EntityRepository.GetInstance(entityType).GetAll();
+                            var entities = _repository.GetInstance(entityType).GetAll();
 
                             foreach (var entity in entities)
                             {
@@ -206,7 +338,7 @@ namespace ITGame.CLI
                     default:
                         break;
                 }
-                
+
             }
         }
         static async Task ToCmdAsync(string[] args)
@@ -234,7 +366,7 @@ namespace ITGame.CLI
             //args[10] = "-a";
             //args[11] = "Gloves,10,2";
             //args[12] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            
+
             #endregion
 
             CmdParser parser = new CmdParser(args);
@@ -248,7 +380,7 @@ namespace ITGame.CLI
 
                 Console.WriteLine();
 
-                switch (command) 
+                switch (command)
                 {
                     case CmdCommands.create:
                         foreach (CmdData cData in cmdArgs)
@@ -256,13 +388,13 @@ namespace ITGame.CLI
                             porgressBar.StartProgress();
 
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var newEntity = await EntityRepository.GetInstance(entityType).CreateAsync(cData.Properties);
+                            var newEntity = await _repository.GetInstance(entityType).CreateAsync(cData.Properties);
                             newEntity.Id = Guid.NewGuid();
 
                             try
                             {
-                                await EntityRepository.GetInstance(entityType).AddAsync(newEntity);
-                                await EntityRepository.GetInstance(entityType).SaveChangesAsync();
+                                await _repository.GetInstance(entityType).AddAsync(newEntity);
+                                await _repository.GetInstance(entityType).SaveChangesAsync();
 
                                 porgressBar.StopProgress();
                                 Console.WriteLine("{0} created\n", cData.EntityType);
@@ -280,13 +412,13 @@ namespace ITGame.CLI
                             porgressBar.StartProgress();
 
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var updatedEntity = await EntityRepository.GetInstance(entityType).CreateAsync(cData.Properties);
+                            var updatedEntity = await _repository.GetInstance(entityType).CreateAsync(cData.Properties);
                             updatedEntity.Id = cData.EntityGuid;
 
                             try
                             {
-                                await EntityRepository.GetInstance(entityType).UpdateAsync(updatedEntity);
-                                await EntityRepository.GetInstance(entityType).SaveChangesAsync();
+                                await _repository.GetInstance(entityType).UpdateAsync(updatedEntity);
+                                await _repository.GetInstance(entityType).SaveChangesAsync();
 
                                 porgressBar.StopProgress();
                                 Console.WriteLine("Entity of type {0} with id {1} have just successfully been updated", cData.EntityType, cData.EntityGuid);
@@ -305,8 +437,8 @@ namespace ITGame.CLI
 
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
 
-                            await EntityRepository.GetInstance(entityType).DeleteAsync(cData.EntityGuid);
-                            await EntityRepository.GetInstance(entityType).SaveChangesAsync();
+                            await _repository.GetInstance(entityType).DeleteAsync(cData.EntityGuid);
+                            await _repository.GetInstance(entityType).SaveChangesAsync();
 
                             porgressBar.StopProgress();
                             Console.WriteLine("Entity of type {0} with id {1} have just successfully been deleted", cData.EntityType, cData.EntityGuid);
@@ -318,7 +450,7 @@ namespace ITGame.CLI
                             porgressBar.StartProgress();
 
                             var entityType = TypeExtension.GetTypeFromModelsAssembly(cData.EntityType);
-                            var entities = await EntityRepository.GetInstance(entityType).GetAllAsync();
+                            var entities = await _repository.GetInstance(entityType).GetAllAsync();
 
                             porgressBar.StopProgress();
 
@@ -369,20 +501,20 @@ namespace ITGame.CLI
         static void ResetConsoleColor()
         {
             Console.ForegroundColor = defaultColor;
-        }      
+        }
 
         /// <summary>
         /// Поверхность в действии
         /// </summary>
         public static void SurfaceOnAction()
-        {            
+        {
             var surfaceRules = new Dictionary<SurfaceType, SurfaceRule>();
             surfaceRules.Add(SurfaceType.Ground, new SurfaceRule { HP = 50 });
 
             IEnumerable<Creature> creatures = new List<Creature>
             {
-                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRace.Elf},
-                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRace.Dwarf}
+                new Humanoid{Name="Legolas",HumanoidRace=HumanoidRaceType.Elf},
+                new Humanoid{Name="Ahaha",HumanoidRace=HumanoidRaceType.Dwarf}
             };
             foreach (var cr in creatures)
             {
@@ -399,7 +531,7 @@ namespace ITGame.CLI
             {
                 Console.WriteLine(cr.Name + " - " + cr.Wisdom);
             }
-            
+
         }
 
     }

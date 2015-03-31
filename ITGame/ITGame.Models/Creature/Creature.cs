@@ -2,10 +2,11 @@
 using ITGame.Models.Magic;
 using ITGame.Models.Сreature.Actions;
 using System;
+using System.Runtime.Serialization;
 
 namespace ITGame.Models.Сreature
 {
-
+    [DataContract]
     public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity
     {
         private string name;

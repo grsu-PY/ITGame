@@ -15,6 +15,7 @@ namespace ITGame.Infrastructure.Data
         bool TryLoad(Guid id, out Identity value);
         void SaveChanges();
         void Update(Identity entity);
+        void AddOrUpdate(Identity entity);
 
         IEnumerable<Identity> GetAll();
         IEnumerable<Identity> GetAll(Func<Identity, bool> where);

@@ -1,11 +1,12 @@
 ﻿
 namespace ITGame.Models.Environment
 {
-    public enum SurfaceType
+    public enum SurfaceType : byte
     {
-        Ground,
-        Water,
-        Lava,
-        Swamp
+        None = (byte)0,
+        Ground = (byte)1,
+        Water = (byte)2,
+        Lava = (byte)4,
+        Swamp = (byte)8
     }
 }

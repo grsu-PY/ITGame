@@ -5,12 +5,14 @@ using ITGame.Models.Magic;
 using ITGame.Models.Сreature.Actions;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace ITGame.Models.Сreature
 {
+    [DataContract]
     public class Humanoid : Creature, ICanEquip, ICanTake
     {
-        protected HumanoidRace humanoidRace;
+        protected HumanoidRaceType humanoidRace;
 
         protected Dictionary<Guid, Item> items;
         protected Dictionary<string, Weapon> weapons;
@@ -145,7 +147,7 @@ namespace ITGame.Models.Сreature
         }
 
         [Column]
-        public HumanoidRace HumanoidRace
+        public HumanoidRaceType HumanoidRace
         {
             get
             {
@@ -250,8 +252,18 @@ namespace ITGame.Models.Сreature
         }
 
         [Column]
+        [DataMember(Name = "Weapon")]
+        public Guid WeaponID { get; set; }
+        [DataMember(Name = "AttackSpell")]
+        public Guid AttackSpellID { get; set; }
+        [DataMember(Name = "DefensiveSpell")]
+        public Guid DefensiveSpellID { get; set; }
+
+        [IgnoreDataMember]
         public Weapon Weapon { get { return weapon; } set { weapon = value; } }
+        [IgnoreDataMember]
         public Spell AttackSpell { get { return attackSpell; } set { attackSpell = value; } }
+        [IgnoreDataMember]
         public Spell DefensiveSpell { get { return defensiveSpell; } set { defensiveSpell = value; } }
 
         protected override void OnActionPerformed(ActionPerformedEventArgs e)
@@ -280,7 +292,7 @@ namespace ITGame.Models.Сreature
         {
             switch (HumanoidRace)
             {
-                case HumanoidRace.Dwarf:
+                case HumanoidRaceType.Dwarf:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -299,7 +311,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Elf:
+                case HumanoidRaceType.Elf:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -318,7 +330,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Human:
+                case HumanoidRaceType.Human:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -337,7 +349,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Orc:
+                case HumanoidRaceType.Orc:
                     switch (e.surfaceType)
                     {
                         case SurfaceType.Ground:
@@ -365,7 +377,7 @@ namespace ITGame.Models.Сreature
         {
             switch (HumanoidRace)
             {
-                case HumanoidRace.Dwarf:
+                case HumanoidRaceType.Dwarf:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -382,7 +394,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Elf:
+                case HumanoidRaceType.Elf:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -399,7 +411,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Human:
+                case HumanoidRaceType.Human:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -416,7 +428,7 @@ namespace ITGame.Models.Сreature
                             break;
                     }
                     break;
-                case HumanoidRace.Orc:
+                case HumanoidRaceType.Orc:
                     switch (_lastSurfaceType)
                     {
                         case SurfaceType.Ground:
@@ -441,9 +453,20 @@ namespace ITGame.Models.Сreature
 
         public override string ToString()
         {
-            return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, Str {5}, Agi {6}, Wis {7}, Con {8}  PAtk {9}, MAtk {10}",
-                Id, Name, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
+            //return string.Format("ID {0}, Name {1}, Race {2}, HP {3}, MP {4}, Str {5}, Agi {6}, Wis {7}, Con {8}  PAtk {9}, MAtk {10}",
+            //    Id, Name, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
+
+            return string.Format("Id -> {0}\n" +
+                                 "Race -> {1}\n" +
+                                 "HP -> {2}\n" +
+                                 "MP -> {3}\n" +
+                                 "Strength -> {4}\n" +
+                                 "Agility -> {5}\n" +
+                                 "Wisdom -> {6}\n" +
+                                 "Constitution -> {7}\n" +
+                                 "Physical Attack -> {8}\n" +
+                                 "Magical Attack -> {9}",
+                                 Id, HumanoidRace, HP, MP, Strength, Agility, Wisdom, Constitution, PhysicalAttack, MagicalAttack);
         }
-        
     }
 }

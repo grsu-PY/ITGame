@@ -1,10 +1,10 @@
 ﻿
 namespace ITGame.Models.Equipment
 {
-    public enum EquipmentType
+    public enum EquipmentType : byte
     {
-        Weapon,
-        Armor,
-        None,
+        None = (byte)0,
+        Weapon = (byte)1,
+        Armor = (byte)2,
     }
 }

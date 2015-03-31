@@ -25,8 +25,14 @@ namespace ITGame.Models.Equipment
 
         public override string ToString()
         {
-            return string.Format("ID {0}, Name {1}, WeaponType {2}, PAtk {3}, MAtk {4}",
-                Id, Name, WeaponType, PhysicalAttack, MagicalAttack);
+            //return string.Format("ID {0}, Name {1}, WeaponType {2}, PAtk {3}, MAtk {4}",
+            //    Id, Name, WeaponType, PhysicalAttack, MagicalAttack);
+
+            return string.Format("Id -> {0}\n"+
+                                 "Weapon Type -> {1}\n"+
+                                 "Physical Attack -> {2}\n"+
+                                 "Magical Attack -> {3}",
+                                 Id, WeaponType, PhysicalAttack, MagicalAttack);
         }
     }
 }

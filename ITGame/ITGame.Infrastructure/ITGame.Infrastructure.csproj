@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,17 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\EntitiesContainer.cs" />
     <Compile Include="Data\EntityProjector.cs" />
+    <Compile Include="Data\EntityProjectorXml.cs" />
     <Compile Include="Data\EntityProjector`.cs" />
     <Compile Include="Data\EntityRepository.cs" />
     <Compile Include="Data\IEntityProjector.cs" />
     <Compile Include="Data\IEntityProjector`.cs" />
+    <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\ObjectBuilder.cs" />
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Parser\CmdCommands.cs" />
     <Compile Include="Parser\CmdData.cs" />
     <Compile Include="Parser\CmdParser.cs" />
     <Compile Include="Parser\ColumnPropertiesHelper.cs" />
+    <Compile Include="Parser\GuiData.cs" />
+    <Compile Include="Parser\GuiParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

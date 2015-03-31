@@ -5,62 +5,101 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ITGame.Infrastructure.Data
 {
     public class EntityProjector : IEntityProjector
     {
-        private readonly IDictionary<Guid, Identity> _entities;
+        #region Fields
+        private const string EXSTENSION = ".csv";
         private readonly Type _entityType;
 
         private readonly object _lockObj = new object();
 
         private readonly string _tableName;
         private readonly string _tablePath;
+        private readonly ObjectBuilder _objectBuilder;
 
-        public EntityProjector(Type type)
+        #endregion
+
+        public EntityProjector(Type type, IEntityRepository repository)
         {
             lock (_lockObj)
             {
                 _entityType = type;
-                _entities = new Dictionary<Guid, Identity>();
+                _objectBuilder = new ObjectBuilder(repository);
+
+                EntitiesContainer = new EntitiesContainer(_entityType.FullName, InitializeEntities);
 
                 _tableName = type.Name;
 
-                _tablePath = Path.Combine(EntityRepository.PATH, _tableName + EntityRepository.EXT);
-
-                if (!File.Exists(_tablePath))
-                {
-                    InitTable();
-                }
-
-                LoadTable();
+                _tablePath = Path.Combine(EntityRepository<EntityProjector>.PATH, _tableName + Extension);
             }
         }
-        private void InitTable()
+
+        #region Properties
+        protected virtual string Extension
+        {
+            get { return EXSTENSION; }
+        }
+
+        protected ObjectBuilder Builder
+        {
+            get { return _objectBuilder; }
+        }
+
+        protected IDictionary<Guid, Identity> Entities
+        {
+            get { return EntitiesContainer.Entities; }
+        }
+
+        protected Type EntityType
+        {
+            get { return _entityType; }
+        }
+
+        protected string TablePath
+        {
+            get { return _tablePath; }
+        }
+
+        protected EntitiesContainer EntitiesContainer { get; set; }
+
+        #endregion
+
+        private IDictionary<Guid, Identity> InitializeEntities()
+        {
+            if (!File.Exists(_tablePath))
+            {
+                InitTable();
+            }
+
+            return LoadTable();
+        }
+        
+        protected virtual void InitTable()
         {
             var propertiesNames = _entityType
                 .GetSetGetProperties()
                 .Select(p => p.Name)
-                .Aggregate((s1, s2) => s1 + EntityRepository.DELIM + s2);
+                .Aggregate((s1, s2) => s1 + EntityRepository<EntityProjector>.DELIM + s2);
 
             using (var writer = File.CreateText(_tablePath))
             {
                 writer.WriteLine(propertiesNames);
-            };
-
+            }
         }
 
-        private void LoadTable()
+        protected virtual IDictionary<Guid, Identity> LoadTable()
         {
+            var localEntities = new Dictionary<Guid, Identity>();
             var rows = File.ReadAllLines(_tablePath);
-            var propNames = rows[0].Split(EntityRepository.DELIM.ToCharArray());
+            var propNames = rows[0].Split(EntityRepository<EntityProjector>.DELIM.ToCharArray());
 
             for (int i = 1; i < rows.Length; i++)
             {
-                var propValues = rows[i].Split(EntityRepository.DELIM.ToCharArray());
+                var propValues = rows[i].Split(EntityRepository<EntityProjector>.DELIM.ToCharArray());
                 var dict = new Dictionary<string, string>();
 
                 for (int j = 0; j < propNames.Length && j < propValues.Length; j++)
@@ -68,52 +107,53 @@ namespace ITGame.Infrastructure.Data
                     dict.Add(propNames[j], propValues[j]);
                 }
 
-                var entity = CreateEntity(dict) as Identity;
+                var entity = CreateEntityInternal(dict) as Identity;
 
-                if (entity != null && !_entities.ContainsKey(entity.Id))
+                if (entity != null && !localEntities.ContainsKey(entity.Id))
                 {
-                    _entities.Add(entity.Id, entity);
+                    localEntities.Add(entity.Id, entity);
                 }
                 else
                 {
                     throw new ApplicationException("Duplicated uniqueidentifier values");
                 }
             }
+            return localEntities; 
         }
 
-        private object CreateEntity(IDictionary<string, string> values)
+        protected virtual object CreateEntityInternal(IDictionary<string, string> values)
         {
-            return ObjectBuilder.CreateObject( _entityType, values);
+            return Builder.CreateObject(_entityType, values);
         }
 
         public void Add(Identity entity)
         {
-            Thread.Sleep(2000);
-            if (_entities.ContainsKey(entity.Id))
+            
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
                 throw new ArgumentException("Duplicated uniqueidentifier values");
             }
-            _entities.Add(entity.Id, entity);
+            EntitiesContainer.Entities.Add(entity.Id, entity);
         }
 
         public Identity Create(IDictionary<string, string> values)
         {
-            Thread.Sleep(2000);
-            var instance = CreateEntity(values) as Identity;
+            
+            var instance = CreateEntityInternal(values) as Identity;
 
             return instance;
         }
 
         public void Delete(Guid id)
         {
-            Thread.Sleep(2000);
-            _entities.Remove(id);
+            
+            EntitiesContainer.Entities.Remove(id);
         }
 
         public void Delete(Identity entity)
         {
-            Thread.Sleep(2000);
-            if (_entities.ContainsKey(entity.Id))
+            
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
                 Delete(entity.Id);
             }
@@ -121,9 +161,9 @@ namespace ITGame.Infrastructure.Data
 
         public Identity Load(Guid id)
         {
-            Thread.Sleep(2000);
+            
             Identity entity;
-            if (!_entities.TryGetValue(id, out entity))
+            if (!EntitiesContainer.Entities.TryGetValue(id, out entity))
             {
                 throw new ArgumentException(string.Format("There is no value with id {0}", id));
             }
@@ -132,12 +172,12 @@ namespace ITGame.Infrastructure.Data
 
         public bool TryLoad(Guid id, out Identity value)
         {
-            return _entities.TryGetValue(id, out value);
+            return EntitiesContainer.Entities.TryGetValue(id, out value);
         }
 
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
-            Thread.Sleep(2000);
+            
 
             var table = new StringBuilder();
             var row = new StringBuilder();
@@ -146,20 +186,20 @@ namespace ITGame.Infrastructure.Data
 
             var propertiesNames = properties
                 .Select(p => p.Name)
-                .Aggregate((s1, s2) => s1 + EntityRepository.DELIM + s2);
+                .Aggregate((s1, s2) => s1 + EntityRepository<EntityProjector>.DELIM + s2);
 
             table.AppendLine(propertiesNames);
 
-            foreach (var entity in _entities.Values)
+            foreach (var entity in EntitiesContainer.Entities.Values)
             {
                 row.Clear();
 
                 foreach (var prop in properties)
                 {
-                    var column = ObjectBuilder.ToColumnValue(entity, prop);
+                    var column = Builder.ToColumnValue(entity, prop);
 
                     row.Append(column);
-                    row.Append(EntityRepository.DELIM);
+                    row.Append(EntityRepository<EntityProjector>.DELIM);
                 }
                 row.Remove(row.Length - 1, 1);
                 table.AppendLine(row.ToString());
@@ -169,28 +209,39 @@ namespace ITGame.Infrastructure.Data
         }
 
         public void Update(Identity entity)
-        {
-            Thread.Sleep(2000);
-            if (_entities.ContainsKey(entity.Id))
+        {            
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
             {
-                _entities[entity.Id] = entity;
+                EntitiesContainer.Entities[entity.Id] = entity;
             }
             else
             {
-                throw new ArgumentException(string.Format("Entity with uniqueidentifier {0} is not exist", entity.Id));
+                throw new ArgumentException(string.Format("Entity with unique identifier {0} is not exist", entity.Id));
+            }
+        }
+
+        public void AddOrUpdate(Identity entity)
+        {
+            if (EntitiesContainer.Entities.ContainsKey(entity.Id))
+            {
+                EntitiesContainer.Entities[entity.Id] = entity;
+            }
+            else
+            {
+                EntitiesContainer.Entities.Add(entity.Id, entity);
             }
         }
 
         public IEnumerable<Identity> GetAll()
         {
-            Thread.Sleep(2000);
-            return _entities.Values;
+            
+            return EntitiesContainer.Entities.Values;
         }
 
         public IEnumerable<Identity> GetAll(Func<Identity, bool> where)
         {
-            Thread.Sleep(2000);
-            return _entities.Values.Where(where);
+            
+            return EntitiesContainer.Entities.Values.Where(where);
         }
         
         private T1 ThreadSafeFunc<T1>(Func<T1> func)
@@ -277,5 +328,4 @@ namespace ITGame.Infrastructure.Data
                    );
         }
     }
-
 }
