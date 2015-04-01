@@ -10,7 +10,7 @@ namespace ITGame.Models.Entities
 
         public HumanoidRaceType HumanoidRaceType { get; set; }
         
-        public virtual SurfaceRule SurfaceRule { get; set; }
+        public SurfaceRule SurfaceRule { get; set; }
 
         public Guid Id { get; set; }
 

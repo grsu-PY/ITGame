@@ -13,6 +13,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ITGame.Infrastructure.Mapping;
+using ITGame.Models.Entities;
+using Armor = ITGame.Models.Equipment.Armor;
+using Humanoid = ITGame.Models.Сreature.Humanoid;
+using Surface = ITGame.Models.Environment.Surface;
+using SurfaceRule = ITGame.Models.Environment.SurfaceRule;
+using Weapon = ITGame.Models.Equipment.Weapon;
 
 namespace ITGame.CLI
 {
@@ -30,6 +37,7 @@ namespace ITGame.CLI
             _repositoryXML = new EntityRepository<EntityProjectorXml>();
 
             TwoReposTest();
+            MappingTest();
 
             _dbRepository = new DBRepository();
             // SurfaceOnAction();
@@ -44,6 +52,45 @@ namespace ITGame.CLI
             //ThreadingExample().Wait();
 
             Console.ReadKey();
+        }
+        
+        private static void MappingTest()
+        {
+            var hum = new Humanoid() { Name = "hum", Id = Guid.NewGuid() };
+            var armor1 = new Armor
+            {
+                ArmorType = ArmorType.Body,
+                Id = Guid.NewGuid(),
+                MagicalDef = 23,
+                PhysicalDef = 43,
+                Weight = 100,
+                Name = "Good Name 1"
+            };
+            var armor2 = new Armor
+            {
+                ArmorType = ArmorType.Body,
+                Id = Guid.NewGuid(),
+                MagicalDef = 23,
+                PhysicalDef = 43,
+                Weight = 100,
+                Name = "Good Name 2"
+            };
+            var weap1 = new Weapon() {EquipmentType = EquipmentType.Weapon, Id = Guid.NewGuid(), Name = "weap1"};
+            var weap2 = new Weapon() {EquipmentType = EquipmentType.Weapon, Id = Guid.NewGuid(), Name = "weap2"};
+
+            hum.Equip(weap1);
+            hum.Equip(weap2);
+            hum.Equip(armor1);
+            hum.Equip(armor2);
+
+            Debug.Assert(hum.Armors.Count() == 2);
+            Debug.Assert(hum.Weapons.Count() == 2);
+
+            var humCopy = hum.Map<Models.Entities.Humanoid>();
+            
+            Debug.Assert(hum != null);
+            Debug.Assert(humCopy.Armors.Count() == 2);
+            Debug.Assert(humCopy.Weapons.Count() == 2);
         }
 
         private static void TwoReposTest()

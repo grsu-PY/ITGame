@@ -5,6 +5,7 @@ using ITGame.Models.Magic;
 using ITGame.Models.Сreature.Actions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace ITGame.Models.Сreature
@@ -14,10 +15,10 @@ namespace ITGame.Models.Сreature
     {
         protected HumanoidRaceType humanoidRace;
 
-        protected Dictionary<Guid, Item> items;
-        protected Dictionary<string, Weapon> weapons;
-        protected Dictionary<string, Armor> armors;
-        protected Dictionary<string, Spell> spells;
+        protected readonly List<Item> items;
+        protected readonly List<Weapon> weapons;
+        protected readonly List<Armor> armors;
+        protected readonly List<Spell> spells;
 
         protected Armor body;
         protected Armor boots;
@@ -29,12 +30,21 @@ namespace ITGame.Models.Сreature
         protected Spell attackSpell;
         protected Spell defensiveSpell;
 
+        public Humanoid()
+        {
+            weapons = new List<Weapon>();
+            armors = new List<Armor>();
+            spells = new List<Spell>();
+            items = new List<Item>();
+        }
+
         public void Equip(Equipment.Equipment equipment)
         {
             switch (equipment.EquipmentType)
             {
                 case EquipmentType.Weapon:
                     weapon = equipment as Weapon;
+                    weapons.Add(weapon);
                     break;
                 case EquipmentType.Armor:
                     var armor = equipment as Armor;
@@ -42,21 +52,25 @@ namespace ITGame.Models.Сreature
                     {
                         case ArmorType.Body:
                             body = armor;
+                            armors.Add(armor);
                             pDef += body.PhysicalDef;
                             mDef += body.MagicalDef;
                             break;
                         case ArmorType.Boots:
                             boots = armor;
+                            armors.Add(armor);
                             pDef += boots.PhysicalDef;
                             mDef += boots.MagicalDef;
                             break;
                         case ArmorType.Gloves:
                             gloves = armor;
+                            armors.Add(armor);
                             pDef += gloves.PhysicalDef;
                             mDef += gloves.MagicalDef;
                             break;
                         case ArmorType.Helmet:
                             helmet = armor;
+                            armors.Add(armor);
                             pDef += helmet.PhysicalDef;
                             mDef += helmet.MagicalDef;
                             break;
@@ -126,17 +140,16 @@ namespace ITGame.Models.Сreature
                 return;
             }
 
-            items.Add(item.Id, item);
+            items.Add(item);
         }
 
         public void Drop(Guid itemId)
         {
-            Item item;
-            var exist = items.TryGetValue(itemId, out item);
-            if (exist)
+            var item = items.FirstOrDefault(x => x.Id == itemId);
+            if (item != null)
             {
                 weight -= item.Weight;
-                items.Remove(itemId);
+                items.Remove(item);
             }
         }
 
@@ -265,6 +278,21 @@ namespace ITGame.Models.Сreature
         public Spell AttackSpell { get { return attackSpell; } set { attackSpell = value; } }
         [IgnoreDataMember]
         public Spell DefensiveSpell { get { return defensiveSpell; } set { defensiveSpell = value; } }
+
+        public IEnumerable<Weapon> Weapons
+        {
+            get { return weapons; }
+        }
+
+        public IEnumerable<Armor> Armors
+        {
+            get { return armors; }
+        }
+
+        public IEnumerable<Spell> Spells
+        {
+            get { return spells; }
+        }
 
         protected override void OnActionPerformed(ActionPerformedEventArgs e)
         {

@@ -59,6 +59,7 @@
     <Compile Include="Data\IEntityRepository.cs" />
     <Compile Include="Data\ObjectBuilder.cs" />
     <Compile Include="Extensions\TypeExtension.cs" />
+    <Compile Include="Mapping\EntitiesMapper.cs" />
     <Compile Include="Parser\CmdCommands.cs" />
     <Compile Include="Parser\CmdData.cs" />
     <Compile Include="Parser\CmdParser.cs" />
@@ -68,14 +69,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ITGame.Models.Entities\ITGame.Models.Entities.csproj">
+      <Project>{349C059E-B480-4A36-BB7D-D275852B8E2E}</Project>
+      <Name>ITGame.Models.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITGame.Models\ITGame.Models.csproj">
       <Project>{8731b81a-0be2-4adf-b273-c8727e72b0d3}</Project>
       <Name>ITGame.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapping\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Parser\CmdExamples\create.PNG" />
     <Content Include="Parser\CmdExamples\delete.PNG" />
