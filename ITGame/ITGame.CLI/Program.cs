@@ -50,10 +50,13 @@ namespace ITGame.CLI
         {
             var hums = _repository.GetInstance<Humanoid>();
             var humsXML = _repositoryXML.GetInstance<Humanoid>();
+            var weapsXML = _repositoryXML.GetInstance<Weapon>();
 
+            var weapXML = new Weapon() {EquipmentType = EquipmentType.Weapon, Id = Guid.NewGuid(), Name = "weapXML"};
             var hum = new Humanoid() { Name = "hum", Id = Guid.NewGuid() };
-            var humXML = new Humanoid() { Name = "humXML", Id = Guid.NewGuid() };
+            var humXML = new Humanoid() { Name = "humXML", Id = Guid.NewGuid(), Weapon = weapXML, WeaponID = weapXML.Id };
 
+            weapsXML.Add(weapXML);
             hums.Add(hum);
             humsXML.Add(humXML);
 
@@ -63,6 +66,7 @@ namespace ITGame.CLI
 
             Debug.Assert(hum2 == null);
 
+            weapsXML.SaveChanges();
             humsXML.SaveChanges();
         }
 
