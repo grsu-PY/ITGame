@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ITGame.Models.Environment
 {
-    public static class Surface
+    public class Surface
     {
         private static readonly IDictionary<SurfaceType, SurfaceRule> _surfaceRules;
 

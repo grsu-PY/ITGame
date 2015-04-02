@@ -1,31 +1,47 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using ITGame.Models.Entities.Attributes;
 using ITGame.Models.Equipment;
 
 namespace ITGame.Models.Entities
 {
-
+    [DataContract]
     public class Armor : Identity
     {
         public Armor()
         {
-            Humanoids = new HashSet<Guid>();
+            HumanoidIds = new HashSet<Guid>();
+
+            Humanoids = new HashSet<Humanoid>();
         }
 
+        [DataMember]
         public Guid Id { get; set; }
 
+        [DataMember]
         public ArmorType ArmorType { get; set; }
 
+        [DataMember]
         public int PhysicalDef { get; set; }
 
+        [DataMember]
         public int MagicalDef { get; set; }
 
+        [DataMember]
         public string Name { get; set; }
 
+        [DataMember]
         public int Weight { get; set; }
 
+        [DataMember]
         public bool Equipped { get; set; }
 
-        public ICollection<Guid> Humanoids { get; set; }
+        [DataMember]
+        [ForeignKey(typeof(Humanoid), IsCollection = true)]
+        public ICollection<Guid> HumanoidIds { get; set; }
+
+        [IgnoreDataMember]
+        public ICollection<Humanoid> Humanoids { get; set; }
     }
 }

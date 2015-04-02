@@ -86,11 +86,16 @@ namespace ITGame.CLI
             Debug.Assert(hum.Armors.Count() == 2);
             Debug.Assert(hum.Weapons.Count() == 2);
 
+            var armor1Copy = armor1.Map<Models.Entities.Armor>();
+            var armor2Copy = armor2.Map<Models.Entities.Armor>();
+            var weap1Copy = weap1.Map<Models.Entities.Weapon>();
+            var weap2Copy = weap2.Map<Models.Entities.Weapon>();
+
             var humCopy = hum.Map<Models.Entities.Humanoid>();
-            
-            Debug.Assert(hum != null);
-            Debug.Assert(humCopy.Armors.Count() == 2);
-            Debug.Assert(humCopy.Weapons.Count() == 2);
+
+            Debug.Assert(humCopy != null);
+            Debug.Assert(humCopy.ArmorIds.Count() == 2);
+            Debug.Assert(humCopy.WeaponIds.Count() == 2);
         }
 
         private static void TwoReposTest()

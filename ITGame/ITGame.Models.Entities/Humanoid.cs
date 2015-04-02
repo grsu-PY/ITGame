@@ -1,46 +1,80 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using ITGame.Models.Entities.Attributes;
 using ITGame.Models.Ñreature;
 
 namespace ITGame.Models.Entities
 {
+    [DataContract]
     public class Humanoid : Identity
     {
         public Humanoid()
         {
-            Armors = new HashSet<Guid>();
-            Spells = new HashSet<Guid>();
-            Weapons = new HashSet<Guid>();
+            ArmorIds = new HashSet<Guid>();
+            SpellIds = new HashSet<Guid>();
+            WeaponIds = new HashSet<Guid>();
+
+            Armors = new HashSet<Armor>();
+            Spells = new HashSet<Spell>();
+            Weapons = new HashSet<Weapon>();
         }
 
+        [DataMember]
         public Guid Id { get; set; }
 
+        [DataMember, ForeignKey(typeof(Character))]
         public Guid CharacterId { get; set; }
-        
-        public HumanoidRaceType HumanoidRaceType { get; set; }
 
-        public int HP { get; set; }
-
-        public int MP { get; set; }
-
-        public int Strength { get; set; }
-
-        public int Agility { get; set; }
-
-        public int Wisdom { get; set; }
-
-        public int Constitution { get; set; }
-
-        public string Name { get; set; }
-
-        public byte Level { get; set; }
-
+        [IgnoreDataMember]
         public Character Character { get; set; }
 
-        public ICollection<Guid> Armors { get; set; }
+        [DataMember]
+        public HumanoidRaceType HumanoidRaceType { get; set; }
 
-        public ICollection<Guid> Spells { get; set; }
+        [DataMember]
+        public int HP { get; set; }
 
-        public ICollection<Guid> Weapons { get; set; }
+        [DataMember]
+        public int MP { get; set; }
+
+        [DataMember]
+        public int Strength { get; set; }
+
+        [DataMember]
+        public int Agility { get; set; }
+
+        [DataMember]
+        public int Wisdom { get; set; }
+
+        [DataMember]
+        public int Constitution { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public byte Level { get; set; }
+
+        [DataMember]
+        [ForeignKey(typeof(Armor), IsCollection = true)]
+        public ICollection<Guid> ArmorIds { get; set; }
+
+        [IgnoreDataMember]
+        public ICollection<Armor> Armors { get; set; }
+
+        [DataMember]
+        [ForeignKey(typeof(Spell), IsCollection = true)]
+        public ICollection<Guid> SpellIds { get; set; }
+
+        [IgnoreDataMember]
+        public ICollection<Spell> Spells { get; set; }
+
+        [DataMember]
+        [ForeignKey(typeof(Weapon), IsCollection = true)]
+        public ICollection<Guid> WeaponIds { get; set; }
+
+        [IgnoreDataMember]
+        public ICollection<Weapon> Weapons { get; set; }
     }
 }

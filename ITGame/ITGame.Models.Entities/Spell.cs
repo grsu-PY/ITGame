@@ -1,32 +1,50 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using ITGame.Models.Entities.Attributes;
 using ITGame.Models.Magic;
 
 namespace ITGame.Models.Entities
 {
+    [DataContract]
     public class Spell : Identity
     {
         public Spell()
         {
-            Humanoids = new HashSet<Guid>();
+            HumanoidIds = new HashSet<Guid>();
+
+            Humanoids = new HashSet<Humanoid>();
         }
 
+        [DataMember]
         public Guid Id { get; set; }
 
+        [DataMember]
         public SpellType SpellType { get; set; }
 
+        [DataMember]
         public SchoolSpell SchoolSpell { get; set; }
 
+        [DataMember]
         public int MagicalPower { get; set; }
 
+        [DataMember]
         public int ManaCost { get; set; }
 
+        [DataMember]
         public int TotalDuration { get; set; }
 
+        [DataMember]
         public string Name { get; set; }
 
+        [DataMember]
         public bool Equipped { get; set; }
 
-        public ICollection<Guid> Humanoids { get; set; }
+        [DataMember]
+        [ForeignKey(typeof(Humanoid), IsCollection = true)]
+        public ICollection<Guid> HumanoidIds { get; set; }
+
+        [IgnoreDataMember]
+        public ICollection<Humanoid> Humanoids { get; set; }
     }
 }
