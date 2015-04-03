@@ -33,13 +33,14 @@ namespace ITGame.CLI
         {
             //WorkWithDb();
 
+            _dbRepository = new DBRepository();
             _repository = new EntityRepository<EntityProjector>();
             _repositoryXML = new EntityRepository<EntityProjectorXml>();
 
-            TwoReposTest();
             MappingTest();
+            ReposWithAttributedPropertiesTest();
+            //TwoReposTest();
 
-            _dbRepository = new DBRepository();
             // SurfaceOnAction();
 
             // if(args.Length != 0)
@@ -113,6 +114,31 @@ namespace ITGame.CLI
             humsXML.Add(humXML);
 
             var hums2 = _repository.GetInstance<Humanoid>();
+            var hum2 = hums2.GetAll(x => x.Name == "humXML").FirstOrDefault();
+
+
+            Debug.Assert(hum2 == null);
+
+            weapsXML.SaveChanges();
+            humsXML.SaveChanges();
+        }
+
+        private static void ReposWithAttributedPropertiesTest()
+        {
+            var hums = _repository.GetInstance<Models.Entities.Humanoid>();
+            var humsXML = _repositoryXML.GetInstance<Models.Entities.Humanoid>();
+            var weapsXML = _repositoryXML.GetInstance<Models.Entities.Weapon>();
+
+            var weapXML = new Weapon() {EquipmentType = EquipmentType.Weapon, Id = Guid.NewGuid(), Name = "weapXML"};
+            var hum = new Humanoid() { Name = "hum", Id = Guid.NewGuid() };
+            var humXML = new Humanoid() { Name = "humXML", Id = Guid.NewGuid() };
+            humXML.Equip(weapXML);
+
+            weapsXML.Add(weapXML.Map<Models.Entities.Weapon>());
+            hums.Add(hum.Map<Models.Entities.Humanoid>());
+            humsXML.Add(humXML.Map<Models.Entities.Humanoid>());
+
+            var hums2 = _repository.GetInstance<Models.Entities.Humanoid>();
             var hum2 = hums2.GetAll(x => x.Name == "humXML").FirstOrDefault();
 
 

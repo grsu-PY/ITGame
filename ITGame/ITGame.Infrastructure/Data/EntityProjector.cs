@@ -19,12 +19,14 @@ namespace ITGame.Infrastructure.Data
 
         private readonly string _tableName;
         private readonly string _tablePath;
+        private readonly IEntityRepository _repository;
         private readonly ObjectBuilder _objectBuilder;
 
         #endregion
 
         public EntityProjector(Type type, IEntityRepository repository)
         {
+            _repository = repository;
             lock (_lockObj)
             {
                 _entityType = type;
@@ -65,6 +67,11 @@ namespace ITGame.Infrastructure.Data
         }
 
         protected EntitiesContainer EntitiesContainer { get; set; }
+
+        protected IEntityRepository Repository
+        {
+            get { return _repository; }
+        }
 
         #endregion
 
