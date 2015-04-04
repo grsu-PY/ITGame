@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\EnumToCollectionConverter.cs" />
     <Compile Include="DataTemplateSelectors\MainGridDataTemplateSelector.cs" />
     <Compile Include="Data\EntityViewModelBuilder.cs" />
     <Compile Include="Data\IEntityViewModelBuilder.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\EntitiesViewModel.cs" />
     <Compile Include="ViewModels\HumanoidsViewModel.cs" />
+    <Compile Include="ViewModels\IEntitiesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="DataTemplates\ArmorsViewModel.DataTemplate.xaml">
       <SubType>Designer</SubType>

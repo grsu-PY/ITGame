@@ -23,7 +23,7 @@
         <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto">
             <MenuItem x:Name="menuItem" Header="File">
                 <MenuItem Header="Open" HorizontalAlignment="Left" Width="145"/>
-                <MenuItem x:Name="saveMenuItem" Header="Save" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem x:Name="saveMenuItem" Header="Save" HorizontalAlignment="Left" Width="145" Command="{Binding EntityViewModel.CommandSaveEntities}"/>
                 <MenuItem x:Name="savetoMenuItem" Header="Save as..." HorizontalAlignment="Left" Width="145"/>
                 <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
@@ -42,9 +42,10 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <ComboBox x:Name="entityComboBox" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                          ItemsSource="{Binding EntityViewModelTypes}" 
-                          SelectedItem="{Binding SelectedEntityType}"
+                          ItemsSource="{Binding EntityViewModelTypes}"
                           SelectedIndex="1"
+                          SelectedValue="{Binding SelectedEntityType}" 
+                          DisplayMemberPath="Name" SelectedValuePath="Value"
                           Margin="10,10,0,0"
                           HorizontalAlignment="Left" VerticalAlignment="Top" 
                           Width="120" Height="22"
@@ -58,16 +59,20 @@
                 <Button x:Name="loadTableButton" Content="Load"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Width="75" ToolTip="Load table from existing file" Height="30"/>                
+                        Width="75" ToolTip="Load table from existing file" Height="30"
+                        Command="{Binding EntityViewModel.CommandLoadEntities}" />                
                 <Button x:Name="addRowButton" Content="Add row"
                             HorizontalAlignment="Left" VerticalAlignment="Top" 
-                            Width="75" Height="30" ToolTip="Add row to table"/>
+                            Width="75" Height="30" ToolTip="Add row to table"
+                        Command="{Binding EntityViewModel.CommandCreateEntity}" />
                 <Button x:Name="removeRowButton" Content="Remove row"
                             HorizontalAlignment="Left" VerticalAlignment="Top"
-                            Width="75" Height="30" ToolTip="Remove selected rows from table"/>
+                            Width="75" Height="30" ToolTip="Remove selected rows from table"
+                        Command="{Binding EntityViewModel.CommandDeleteEntity}" />
                 <Button x:Name="removeAllButton" Content="Remove all" 
                             HorizontalAlignment="Left" VerticalAlignment="Top" 
-                            Width="75" ToolTip="Remove all rows from table" Height="30"/>
+                            Width="75" ToolTip="Remove all rows from table" Height="30"
+                        Command="{Binding EntityViewModel.CommandDeleteAllEntities}" />
             </StackPanel>
 
         </Grid>

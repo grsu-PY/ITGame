@@ -12,15 +12,15 @@ namespace ITGame.DBManager.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private static IList<Type> _entityViewModelTypes = new List<Type>() 
-        { 
-            typeof(HumanoidsViewModel), 
-            typeof(ArmorsViewModel) 
+        private readonly static IList<NameValueItem<Type>> _entityViewModelTypes = new List<NameValueItem<Type>>()
+        {
+            new NameValueItem<Type> {Name = "Humanoids", Value = typeof (HumanoidsViewModel)},
+            new NameValueItem<Type> {Name = "Armors", Value = typeof (ArmorsViewModel)},
         };
 
         private Type _selectedEntityType;
-        private IEntityRepository _repository;
-        private IEntityViewModelBuilder _entityViewModelBuilder;
+        private readonly IEntityRepository _repository;
+        private readonly IEntityViewModelBuilder _entityViewModelBuilder;
 
         public MainViewModel(IEntityRepository repository, IEntityViewModelBuilder entityViewModelBuilder)
         {
@@ -28,7 +28,7 @@ namespace ITGame.DBManager.ViewModels
             _entityViewModelBuilder = entityViewModelBuilder;
         }
 
-        public IList<Type> EntityViewModelTypes
+        public IList<NameValueItem<Type>> EntityViewModelTypes
         {
             get { return _entityViewModelTypes; }
         }
@@ -40,14 +40,14 @@ namespace ITGame.DBManager.ViewModels
             {
                 _selectedEntityType = value;
 
-                EntityViewModel = _entityViewModelBuilder.Resolve(_selectedEntityType, _repository);
+                EntityViewModel = _entityViewModelBuilder.Resolve(_selectedEntityType, _repository) as IEntitiesViewModel;
                 RaisePropertyChanged();
             }
         }
 
-        private object _entityViewModel;
+        private IEntitiesViewModel _entityViewModel;
 
-        public object EntityViewModel
+        public IEntitiesViewModel EntityViewModel
         {
             get { return _entityViewModel; }
             set

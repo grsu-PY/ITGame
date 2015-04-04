@@ -21,9 +21,9 @@ namespace ITGame.DBManager.ViewModels
 
         }
 
-        public ObservableCollection<NameValueItem<HumanoidRaceType>> HumanoidRacesList
+        public IEnumerable<NameValueItem<object>> HumanoidRacesList
         {
-            get { return _humanoidRacesList; }
+            get { return NameValueEnumCollections.GetCollection(typeof(HumanoidRaceType)); }
         }
         
     }
