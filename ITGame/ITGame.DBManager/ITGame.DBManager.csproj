@@ -131,6 +131,10 @@
       <Project>{e00e53f4-9c56-4f22-aad1-c306c51d436f}</Project>
       <Name>ITGame.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ITGame.Models.Entities\ITGame.Models.Entities.csproj">
+      <Project>{349c059e-b480-4a36-bb7d-d275852b8e2e}</Project>
+      <Name>ITGame.Models.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITGame.Models\ITGame.Models.csproj">
       <Project>{8731b81a-0be2-4adf-b273-c8727e72b0d3}</Project>
       <Name>ITGame.Models</Name>

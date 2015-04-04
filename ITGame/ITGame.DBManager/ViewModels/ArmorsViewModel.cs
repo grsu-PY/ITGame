@@ -1,5 +1,4 @@
-﻿using ITGame.DBConnector.ITGameDBModels;
-using ITGame.Infrastructure.Data;
+﻿using ITGame.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class ArmorsViewModel : EntitiesViewModel<Models.Equipment.Armor>
+    public class ArmorsViewModel : EntitiesViewModel<Models.Entities.Armor>
     {
         public ArmorsViewModel(IEntityRepository repository)
             : base(repository)
