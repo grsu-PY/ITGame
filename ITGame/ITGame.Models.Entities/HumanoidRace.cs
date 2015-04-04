@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using ITGame.Infrastructure.Data;
 using ITGame.Models.Ñreature;
 
 namespace ITGame.Models.Entities

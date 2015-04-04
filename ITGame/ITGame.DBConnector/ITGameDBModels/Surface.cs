@@ -1,3 +1,5 @@
+using ITGame.Infrastructure.Data;
+
 namespace ITGame.DBConnector.ITGameDBModels
 {
     using ITGame.Models.Environment;
@@ -9,7 +11,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Surface")]
-    public partial class Surface : ITGame.Models.Identity
+    public partial class Surface : Identity
     {
         [Key]
         public SurfaceType CurrentSurfaceType { get; set; }

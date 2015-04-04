@@ -1,5 +1,4 @@
-﻿using ITGame.Models;
-using System;
+﻿using System;
 namespace ITGame.Infrastructure.Data
 {
     public interface IEntityRepository

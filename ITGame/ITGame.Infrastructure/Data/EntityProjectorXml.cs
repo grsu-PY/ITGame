@@ -8,9 +8,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using ITGame.Infrastructure.Extensions;
-using ITGame.Models;
-using ITGame.Models.Entities.Attributes;
-using ITGame.Models.Environment;
 
 namespace ITGame.Infrastructure.Data
 {

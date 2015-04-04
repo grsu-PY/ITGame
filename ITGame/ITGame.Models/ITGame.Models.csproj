@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnAttribute.cs" />
     <Compile Include="Damage.cs" />
     <Compile Include="Environment\Surface.cs" />
     <Compile Include="Environment\SurfaceRule.cs" />
@@ -52,7 +51,6 @@
     <Compile Include="Equipment\ITakeable.cs" />
     <Compile Include="Equipment\Weapon.cs" />
     <Compile Include="Equipment\WeaponType.cs" />
-    <Compile Include="Identity.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Magic\SchoolSpell.cs" />
     <Compile Include="Magic\Spell.cs" />
@@ -70,6 +68,12 @@
     <Compile Include="Creature\Humanoid.cs" />
     <Compile Include="Creature\HumanoidRaceType.cs" />
     <Compile Include="Creature\SurfaceAffectEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ITGame.Infrastructure\ITGame.Infrastructure.csproj">
+      <Project>{E00E53F4-9C56-4F22-AAD1-C306C51D436F}</Project>
+      <Name>ITGame.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.Serialization;
-using ITGame.Models.Entities.Attributes;
+using ITGame.Infrastructure.Data;
 using ITGame.Models.Environment;
 using ITGame.Models.Ñreature;
 

@@ -1,3 +1,5 @@
+using ITGame.Infrastructure.Data;
+
 namespace ITGame.DBConnector.ITGameDBModels
 {
     using ITGame.Models.Magic;
@@ -8,7 +10,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Spell")]
-    public partial class Spell : ITGame.Models.Identity
+    public partial class Spell : Identity
     {
         public Spell()
         {

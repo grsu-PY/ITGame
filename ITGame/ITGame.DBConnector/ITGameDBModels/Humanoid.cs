@@ -1,3 +1,5 @@
+using ITGame.Infrastructure.Data;
+
 namespace ITGame.DBConnector.ITGameDBModels
 {
     using ITGame.Models.Ñreature;
@@ -8,7 +10,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Humanoid")]
-    public partial class Humanoid : ITGame.Models.Identity
+    public partial class Humanoid : Identity
     {
         public Humanoid()
         {

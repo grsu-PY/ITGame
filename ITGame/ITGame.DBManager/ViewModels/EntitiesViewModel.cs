@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public abstract class EntitiesViewModel<TEntity> : BaseViewModel where TEntity : class, ITGame.Models.Identity, new()
+    public abstract class EntitiesViewModel<TEntity> : BaseViewModel where TEntity : class, Identity, new()
     {
         protected ObservableCollection<TEntity> _entities;
         private IEntityProjector<TEntity> _dbContext;

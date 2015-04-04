@@ -1,3 +1,5 @@
+using ITGame.Infrastructure.Data;
+
 namespace ITGame.DBConnector.ITGameDBModels
 {
     using ITGame.Models.Equipment;
@@ -8,7 +10,7 @@ namespace ITGame.DBConnector.ITGameDBModels
     using System.Data.Entity.Spatial;
 
     [Table("Armor")]
-    public partial class Armor : ITGame.Models.Identity
+    public partial class Armor : Identity
     {
         public Armor()
         {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using ITGame.Models.Entities.Attributes;
+using ITGame.Infrastructure.Data;
 using ITGame.Models.Equipment;
 
 namespace ITGame.Models.Entities

@@ -1,12 +1,10 @@
-﻿using ITGame.Models.Equipment;
-using ITGame.Models.Magic;
-using ITGame.Models.Сreature;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using ITGame.Infrastructure.Extensions;
 
 namespace ITGame.Infrastructure.Parser
 {
@@ -264,10 +262,10 @@ namespace ITGame.Infrastructure.Parser
         };
         private readonly Dictionary<string, int> _ecountParam = new Dictionary<string, int>
         {
-            {"-h", typeof(Humanoid).GetColumnProperties().Count()},
-            {"-w", typeof(Weapon).GetColumnProperties().Count()},
-            {"-a", typeof(Armor).GetColumnProperties().Count()},
-            {"-s", typeof(Spell).GetColumnProperties().Count()}
+            {"-h", TypeExtension.GetTypeFromModelsAssembly("Humanoid").GetColumnProperties().Count()},
+            {"-w", TypeExtension.GetTypeFromModelsAssembly("Weapon").GetColumnProperties().Count()},
+            {"-a", TypeExtension.GetTypeFromModelsAssembly("Armor").GetColumnProperties().Count()},
+            {"-s", TypeExtension.GetTypeFromModelsAssembly("Spell").GetColumnProperties().Count()}
         };
 
         private enum helpPart

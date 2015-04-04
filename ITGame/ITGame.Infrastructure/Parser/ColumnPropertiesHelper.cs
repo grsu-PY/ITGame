@@ -1,31 +1,27 @@
 ﻿using ITGame.Infrastructure.Extensions;
-using ITGame.Models;
-using ITGame.Models.Equipment;
-using ITGame.Models.Magic;
-using ITGame.Models.Сreature;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ITGame.Infrastructure.Data;
 
 namespace ITGame.Infrastructure.Parser
 {
     public static class ColumnPropertiesHelper
     {
-        private static readonly Type[] entities = { typeof(Humanoid), typeof(Weapon), typeof(Armor), typeof(Spell) };
-
-        public static Hashtable GetHashTable() 
-        {
-            Hashtable rTable = new Hashtable();
-
-            foreach (Type entityType in entities) 
-            {
-                rTable.Add(entityType.Name, GetPropertiesNames(entityType));
-            }
-
-            return rTable;
-        }
+//        private static readonly Type[] entities = { typeof(Humanoid), typeof(Weapon), typeof(Armor), typeof(Spell) };
+//
+//        public static Hashtable GetHashTable() 
+//        {
+//            Hashtable rTable = new Hashtable();
+//
+//            foreach (Type entityType in entities) 
+//            {
+//                rTable.Add(entityType.Name, GetPropertiesNames(entityType));
+//            }
+//
+//            return rTable;
+//        }
 
         public static IEnumerable<string> GetPropertiesNames(Type entityType)
         {

@@ -1,4 +1,6 @@
 ﻿
+using ITGame.Infrastructure.Data;
+
 namespace ITGame.Models.Equipment
 {
     public class Weapon : Equipment

@@ -2,7 +2,7 @@
 using System.Linq;
 using AutoMapper;
 
-namespace ITGame.Infrastructure.Mapping
+namespace ITGame.Models.Entities.Mapping
 {
     public static class EntitiesMapper
     {

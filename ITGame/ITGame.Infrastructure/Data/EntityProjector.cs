@@ -1,5 +1,4 @@
 ﻿using ITGame.Infrastructure.Extensions;
-using ITGame.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

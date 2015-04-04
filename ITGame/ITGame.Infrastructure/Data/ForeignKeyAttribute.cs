@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ITGame.Models.Entities.Attributes
+namespace ITGame.Infrastructure.Data
 {
     public class ForeignKeyAttribute : Attribute
     {

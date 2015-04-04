@@ -3,6 +3,7 @@ using ITGame.Models.Magic;
 using ITGame.Models.Сreature.Actions;
 using System;
 using System.Runtime.Serialization;
+using ITGame.Infrastructure.Data;
 
 namespace ITGame.Models.Сreature
 {

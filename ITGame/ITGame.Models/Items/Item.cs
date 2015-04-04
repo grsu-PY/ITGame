@@ -1,8 +1,9 @@
 ﻿using System;
+using ITGame.Infrastructure.Data;
 
 namespace ITGame.Models.Items
 {
-    public abstract class Item : ITGame.Models.Identity
+    public abstract class Item : Identity
     {
         public Guid Id { get; set; }
 

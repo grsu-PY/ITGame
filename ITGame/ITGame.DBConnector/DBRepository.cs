@@ -29,7 +29,7 @@ namespace ITGame.DBConnector
             throw new NotImplementedException();
         }
 
-        public IEntityProjector<TEntity> GetInstance<TEntity>() where TEntity : class, Models.Identity, new()
+        public IEntityProjector<TEntity> GetInstance<TEntity>() where TEntity : class, Identity, new()
         {
             return new EntityDBProjector<TEntity>(Context);
         }
