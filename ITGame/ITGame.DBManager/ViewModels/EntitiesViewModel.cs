@@ -41,9 +41,13 @@ namespace ITGame.DBManager.ViewModels
         {
             foreach (var entity in Entities)
             {
+                if (entity.Id == Guid.Empty)
+                {
+                    entity.Id = Guid.NewGuid();
+                }
                 _entitiesContext.AddOrUpdate(entity);
             }
-             _entitiesContext.SaveChanges();
+            _entitiesContext.SaveChanges();
         }
 
         private void LoadEntities(object o)

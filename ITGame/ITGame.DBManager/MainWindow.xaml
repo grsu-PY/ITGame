@@ -6,7 +6,7 @@
         xmlns:selectors="clr-namespace:ITGame.DBManager.DataTemplateSelectors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="380" MinHeight="380" Width="740" MinWidth="740"
+        Title="MainWindow" Height="380" MinHeight="380" Width="800" MinWidth="800"
         d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
         >
     <Window.Resources>
@@ -18,6 +18,7 @@
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto">
@@ -35,32 +36,18 @@
         <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <ComboBox x:Name="entityComboBox" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                          ItemsSource="{Binding EntityViewModelTypes}"
-                          SelectedIndex="1"
-                          SelectedValue="{Binding SelectedEntityType}" 
-                          DisplayMemberPath="Name" SelectedValuePath="Value"
-                          Margin="10,10,0,0"
-                          HorizontalAlignment="Left" VerticalAlignment="Top" 
-                          Width="120" Height="22"
-                          />
-            <Grid Grid.Row="1" Grid.Column="0" MinWidth="700">
-                <ContentPresenter 
-                        Content="{Binding EntityViewModel}"
-                        ContentTemplateSelector="{StaticResource ResourceKey=MainGridDataTemplateSelector}"/>
-            </Grid>
-            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                 <Button x:Name="loadTableButton" Content="Load"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Width="75" ToolTip="Load table from existing file" Height="30"
-                        Command="{Binding EntityViewModel.CommandLoadEntities}" />                
+                        Command="{Binding EntityViewModel.CommandLoadEntities}" />
                 <Button x:Name="addRowButton" Content="Add row"
                             HorizontalAlignment="Left" VerticalAlignment="Top" 
                             Width="75" Height="30" ToolTip="Add row to table"
@@ -74,7 +61,21 @@
                             Width="75" ToolTip="Remove all rows from table" Height="30"
                         Command="{Binding EntityViewModel.CommandDeleteAllEntities}" />
             </StackPanel>
-
+            <ListBox x:Name="entityComboBox" Grid.Row="1" Grid.Column="0"
+                          ItemsSource="{Binding EntityViewModelTypes}"
+                          SelectedIndex="1"
+                          SelectedValue="{Binding SelectedEntityType}" 
+                          DisplayMemberPath="Name" SelectedValuePath="Value"
+                          Margin="10"
+                          HorizontalAlignment="Left" VerticalAlignment="Top" 
+                          />
+            <Grid Grid.Row="1" Grid.Column="1">
+                <ScrollViewer>
+                    <ContentPresenter 
+                            Content="{Binding EntityViewModel}"
+                            ContentTemplateSelector="{StaticResource ResourceKey=MainGridDataTemplateSelector}"/>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

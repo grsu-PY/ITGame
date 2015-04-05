@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using ITGame.DBManager.Data;
+using ITGame.Models.Equipment;
 using ITGame.Models.Сreature;
 
 namespace ITGame.DBManager.Converters
@@ -23,11 +24,24 @@ namespace ITGame.DBManager.Converters
             new NameValueItem<object>(){Name = "Orc", Value = HumanoidRaceType.Orc},
         };
 
+        private static readonly IEnumerable<NameValueItem<object>> _armorTypesList = new List<NameValueItem<object>>()
+        {
+            new NameValueItem<object>() {Name = "Choose Armor Type", Value = ArmorType.None},
+            new NameValueItem<object>() {Name = "Helmet", Value = ArmorType.Helmet},
+            new NameValueItem<object>() {Name = "Body", Value = ArmorType.Body},
+            new NameValueItem<object>() {Name = "Gloves", Value = ArmorType.Gloves},
+            new NameValueItem<object>() {Name = "Boots", Value = ArmorType.Boots}
+        };
+
         public static IEnumerable<NameValueItem<object>> GetCollection(Type enumType)
         {
             if (enumType == typeof (HumanoidRaceType))
             {
                 return _humanoidRacesList;
+            }
+            if (enumType == typeof(ArmorType))
+            {
+                return _armorTypesList;
             }
 
             return new List<NameValueItem<object>>();
