@@ -14,7 +14,6 @@ namespace ITGame.DBManager.ViewModels
 {
     public class HumanoidsViewModel : EntitiesViewModel<Models.Entities.Humanoid>
     {
-
         public HumanoidsViewModel(IEntityRepository repository)
             : base(repository)
         {
@@ -25,6 +24,5 @@ namespace ITGame.DBManager.ViewModels
         {
             get { return NameValueEnumCollections.GetCollection(typeof(HumanoidRaceType)); }
         }
-        
     }
 }

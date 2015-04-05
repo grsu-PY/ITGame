@@ -9,19 +9,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ITGame.Models.Entities;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public abstract class EntitiesViewModel<TEntity> : BaseViewModel, IEntitiesViewModel where TEntity : class, Identity, new()
     public abstract class EntitiesViewModel<TEntity> : BaseViewModel, IEntitiesViewModel where TEntity : class, Identity, IViewModelItem, new()
     {
+        #region Fields
         private readonly IEntityRepository _repository;
-        protected ObservableCollection<TEntity> _entities;
-        private IEntityProjector<TEntity> _entitiesContext;
+        private readonly IEntityProjector<TEntity> _entitiesContext;
 
-        protected ICommand _commandLoadEntities;
-        protected ICommand _commandSaveEntities;
+        private ObservableCollection<TEntity> _entities;
         private TEntity _selectedEntity;
+
+        private ICommand _commandLoadEntities;
+        private ICommand _commandSaveEntities;
+        private ICommand _commandDeleteSelectedEntities;
+        private ICommand _commandCreateEntity;
+
+        #endregion
 
         public EntitiesViewModel(IEntityRepository repository)
         {
@@ -37,6 +43,31 @@ namespace ITGame.DBManager.ViewModels
         {
             _commandLoadEntities = new RelayCommand(LoadEntities);
             _commandSaveEntities = new RelayCommand(SaveEntities);
+            _commandDeleteSelectedEntities = new RelayCommand(DeleteSelectedEntities);
+            _commandCreateEntity = new RelayCommand(CreateEntity);
+        }
+
+        private void CreateEntity(object obj)
+        {
+            var item = new TEntity() {Id = Guid.NewGuid()};
+            Entities.Add(item);
+            SelectedEntity = item;
+            EntitiesContext.Add(item);
+        }
+
+        private void DeleteSelectedEntities(object obj)
+        {
+            if (SelectedEntity != null)
+            {
+                EntitiesContext.Delete(SelectedEntity);
+                Entities.Remove(SelectedEntity);
+            }
+            var toDelete = Entities.Where(x => x.IsSelectedModelItem).ToList();
+            foreach (var entity in toDelete)
+            {
+                EntitiesContext.Delete(entity);
+                Entities.Remove(entity);
+            }
         }
 
         private void SaveEntities(object obj)
@@ -83,7 +114,7 @@ namespace ITGame.DBManager.ViewModels
 
         public virtual ICommand CommandDeleteSelectedEntities
         {
-            get { return new RelayCommand(o => { });}
+            get { return _commandDeleteSelectedEntities; }
         }
 
         public virtual ICommand CommandDeleteAllEntities
@@ -93,7 +124,7 @@ namespace ITGame.DBManager.ViewModels
 
         public virtual ICommand CommandCreateEntity
         {
-            get { return new RelayCommand(o => { }); }
+            get { return _commandCreateEntity; }
         }
 
         #endregion
