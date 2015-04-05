@@ -7,7 +7,7 @@ using ITGame.Models.Ñreature;
 namespace ITGame.Models.Entities
 {
     [DataContract]
-    public class Humanoid : Identity
+    public class Humanoid : Identity, IViewModelItem
     {
         public Humanoid()
         {
@@ -76,5 +76,12 @@ namespace ITGame.Models.Entities
 
         [IgnoreDataMember]
         public ICollection<Weapon> Weapons { get; set; }
+
+        #region IViewModelItem implementation
+
+        [IgnoreDataMember]
+        public bool IsSelectedModelItem { get; set; }
+
+        #endregion
     }
 }

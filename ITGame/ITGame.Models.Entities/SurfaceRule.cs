@@ -8,7 +8,7 @@ namespace ITGame.Models.Entities
 {
 
     [DataContract]
-    public class SurfaceRule : Identity
+    public class SurfaceRule : Identity, IViewModelItem
     {
         [DataMember]
         public SurfaceType CurrentSurfaceType { get; set; }
@@ -45,5 +45,12 @@ namespace ITGame.Models.Entities
 
         [DataMember]
         public string Name { get; set; }
+
+        #region IViewModelItem implementation
+
+        [IgnoreDataMember]
+        public bool IsSelectedModelItem { get; set; }
+
+        #endregion
     }
 }

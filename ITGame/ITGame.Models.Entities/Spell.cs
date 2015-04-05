@@ -7,7 +7,7 @@ using ITGame.Models.Magic;
 namespace ITGame.Models.Entities
 {
     [DataContract]
-    public class Spell : Identity
+    public class Spell : Identity, IViewModelItem
     {
         public Spell()
         {
@@ -46,5 +46,12 @@ namespace ITGame.Models.Entities
 
         [IgnoreDataMember]
         public ICollection<Humanoid> Humanoids { get; set; }
+
+        #region IViewModelItem implementation
+
+        [IgnoreDataMember]
+        public bool IsSelectedModelItem { get; set; }
+
+        #endregion
     }
 }

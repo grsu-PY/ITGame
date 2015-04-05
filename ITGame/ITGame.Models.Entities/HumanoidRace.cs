@@ -6,7 +6,7 @@ using ITGame.Models.Ñreature;
 namespace ITGame.Models.Entities
 {
     [DataContract]
-    public class HumanoidRace : Identity
+    public class HumanoidRace : Identity, IViewModelItem
     {
         [DataMember]
         public HumanoidRaceType HumanoidRaceType { get; set; }
@@ -28,5 +28,12 @@ namespace ITGame.Models.Entities
 
         [DataMember]
         public Guid Id { get; set; }
+
+        #region IViewModelItem implementation
+
+        [IgnoreDataMember]
+        public bool IsSelectedModelItem { get; set; }
+
+        #endregion
     }
 }

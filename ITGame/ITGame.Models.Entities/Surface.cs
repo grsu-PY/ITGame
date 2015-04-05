@@ -7,7 +7,7 @@ using ITGame.Models.Ñreature;
 namespace ITGame.Models.Entities
 {
     [DataContract]
-    public class Surface : Identity
+    public class Surface : Identity, IViewModelItem
     {
         [DataMember]
         public SurfaceType CurrentSurfaceType { get; set; }
@@ -26,5 +26,12 @@ namespace ITGame.Models.Entities
 
         [DataMember]
         public string Name { get; set; }
+
+        #region IViewModelItem implementation
+
+        [IgnoreDataMember]
+        public bool IsSelectedModelItem { get; set; }
+
+        #endregion
     }
 }
