@@ -6,34 +6,48 @@
         xmlns:selectors="clr-namespace:ITGame.DBManager.DataTemplateSelectors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="380" MinHeight="380" Width="800" MinWidth="800"
-        d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
+        Title="Entities Manager" Height="380" MinHeight="380" Width="800" MinWidth="800"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel}" Background="LightCyan"
         >
     <Window.Resources>
         <ResourceDictionary>
             <selectors:MainGridDataTemplateSelector x:Key="MainGridDataTemplateSelector"/>
+            <Style x:Key="CommonButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="85"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Margin" Value="5,0"/>
+                <Setter Property="Background" Value="DarkSeaGreen"/>
+            </Style>
+            <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource CommonButtonStyle}">
+                <Setter Property="Background" Value="IndianRed"></Setter>
+            </Style>
+            <Style x:Key="LoadButtonStyle" TargetType="Button" BasedOn="{StaticResource CommonButtonStyle}">
+                <Setter Property="Background" Value="CornflowerBlue"></Setter>
+            </Style>
+            <Style x:Key="SaveButtonStyle" TargetType="Button" BasedOn="{StaticResource CommonButtonStyle}">
+                <Setter Property="Background" Value="CornflowerBlue"/>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Margin="5">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto">
-            <MenuItem x:Name="menuItem" Header="File">
-                <MenuItem Header="Open" HorizontalAlignment="Left" Width="145"/>
-                <MenuItem x:Name="saveMenuItem" Header="Save" HorizontalAlignment="Left" Width="145" Command="{Binding EntityViewModel.CommandSaveEntities}"/>
-                <MenuItem x:Name="savetoMenuItem" Header="Save as..." HorizontalAlignment="Left" Width="145"/>
-                <MenuItem Header="Exit" HorizontalAlignment="Left" Width="145"/>
+        <Menu Grid.Row="0" Background="LightSeaGreen">
+            <MenuItem Header="File" Width="70" Height="30">
+                <MenuItem Header="Open" Width="145"/>
+                <MenuItem x:Name="saveMenuItem" Header="Save" Width="145" Command="{Binding EntityViewModel.CommandSaveEntities}"/>
+                <MenuItem x:Name="savetoMenuItem" Header="Save as..." Width="145"/>
+                <MenuItem Header="Exit" Width="145"/>
             </MenuItem>
-            <MenuItem Header="Mode">
-                <MenuItem x:Name="modifyMenuItem" Header="Modify" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True" IsChecked="True"/>
-                <MenuItem x:Name="readMenuItem" Header="Read" HorizontalAlignment="Left" Width="145" FontWeight="Normal" IsCheckable="True"/>
+            <MenuItem Header="Mode" Width="70" Height="30">
+                <MenuItem x:Name="modifyMenuItem" Header="Modify" Width="145" FontWeight="Normal" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="readMenuItem" Header="Read" Width="145" FontWeight="Normal" IsCheckable="True"/>
             </MenuItem>
         </Menu>
-        <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -42,40 +56,35 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="loadTableButton" Content="Load"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="75" ToolTip="Load table from existing file" Height="30"
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5" Orientation="Horizontal">
+                <Button x:Name="loadTableButton" Content="Load" Style="{StaticResource LoadButtonStyle}"
+                        ToolTip="Load table from existing file"
                         Command="{Binding EntityViewModel.CommandLoadEntities}" />
-                <Button x:Name="addRowButton" Content="Add row"
-                            HorizontalAlignment="Left" VerticalAlignment="Top" 
-                            Width="75" Height="30" ToolTip="Add row to table"
+                <Button x:Name="saveAllButton" Content="Save All" Style="{StaticResource SaveButtonStyle}"
+                        ToolTip="Remove all rows from table"
+                        Command="{Binding EntityViewModel.CommandSaveEntities}" />
+                <Button x:Name="addRowButton" Content="Add New Item" Style="{StaticResource CommonButtonStyle}"
+                        ToolTip="Add row to table"
                         Command="{Binding EntityViewModel.CommandCreateEntity}" />
-                <Button x:Name="removeRowButton" Content="Remove row"
-                            HorizontalAlignment="Left" VerticalAlignment="Top"
-                            Width="75" Height="30" ToolTip="Remove selected rows from table"
-                        Command="{Binding EntityViewModel.CommandDeleteEntity}" />
-                <Button x:Name="removeAllButton" Content="Remove all" 
-                            HorizontalAlignment="Left" VerticalAlignment="Top" 
-                            Width="75" ToolTip="Remove all rows from table" Height="30"
+                <Button x:Name="removeRowButton" Content="Remove" Style="{StaticResource DeleteButtonStyle}"
+                        ToolTip="Remove selected rows from table"
+                        Command="{Binding EntityViewModel.CommandDeleteSelectedEntities}" />
+                <Button x:Name="removeAllButton" Content="Remove All" Style="{StaticResource DeleteButtonStyle}"
+                        ToolTip="Remove all rows from table"
                         Command="{Binding EntityViewModel.CommandDeleteAllEntities}" />
             </StackPanel>
+            <Label Grid.Row="0" Grid.Column="0" Content="Entity Types:" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
             <ListBox x:Name="entityComboBox" Grid.Row="1" Grid.Column="0"
                           ItemsSource="{Binding EntityViewModelTypes}"
-                          SelectedIndex="1"
+                          SelectedIndex="0"
                           SelectedValue="{Binding SelectedEntityType}" 
                           DisplayMemberPath="Name" SelectedValuePath="Value"
-                          Margin="10"
-                          HorizontalAlignment="Left" VerticalAlignment="Top" 
+                          Margin="5"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                           />
-            <Grid Grid.Row="1" Grid.Column="1">
-                <ScrollViewer>
-                    <ContentPresenter 
-                            Content="{Binding EntityViewModel}"
-                            ContentTemplateSelector="{StaticResource ResourceKey=MainGridDataTemplateSelector}"/>
-                </ScrollViewer>
-            </Grid>
+            <ContentPresenter Grid.Row="1" Grid.Column="1"
+                        Content="{Binding EntityViewModel}"
+                        ContentTemplateSelector="{StaticResource ResourceKey=MainGridDataTemplateSelector}"/>
         </Grid>
     </Grid>
 </Window>

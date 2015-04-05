@@ -14,6 +14,7 @@ namespace ITGame.DBManager.ViewModels
     {
         private readonly static IList<NameValueItem<Type>> _entityViewModelTypes = new List<NameValueItem<Type>>()
         {
+            new NameValueItem<Type> {Name = "None", Value = typeof (EmptyViewModel)},
             new NameValueItem<Type> {Name = "Humanoids", Value = typeof (HumanoidsViewModel)},
             new NameValueItem<Type> {Name = "Armors", Value = typeof (ArmorsViewModel)},
         };
@@ -26,6 +27,7 @@ namespace ITGame.DBManager.ViewModels
         {
             _repository = repository;
             _entityViewModelBuilder = entityViewModelBuilder;
+            SelectedEntityType = _entityViewModelTypes[0].Value;
         }
 
         public IList<NameValueItem<Type>> EntityViewModelTypes

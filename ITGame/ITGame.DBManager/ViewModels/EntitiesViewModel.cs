@@ -13,6 +13,7 @@ using System.Windows.Input;
 namespace ITGame.DBManager.ViewModels
 {
     public abstract class EntitiesViewModel<TEntity> : BaseViewModel, IEntitiesViewModel where TEntity : class, Identity, new()
+    public abstract class EntitiesViewModel<TEntity> : BaseViewModel, IEntitiesViewModel where TEntity : class, Identity, IViewModelItem, new()
     {
         private readonly IEntityRepository _repository;
         protected ObservableCollection<TEntity> _entities;
@@ -20,6 +21,7 @@ namespace ITGame.DBManager.ViewModels
 
         protected ICommand _commandLoadEntities;
         protected ICommand _commandSaveEntities;
+        private TEntity _selectedEntity;
 
         public EntitiesViewModel(IEntityRepository repository)
         {
@@ -96,6 +98,17 @@ namespace ITGame.DBManager.ViewModels
 
         #endregion
 
+        #region Properties
+        public virtual TEntity SelectedEntity
+        {
+            get { return _selectedEntity; }
+            set
+            {
+                _selectedEntity = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public virtual ObservableCollection<TEntity> Entities
         {
             get { return _entities; }
@@ -114,5 +127,6 @@ namespace ITGame.DBManager.ViewModels
         {
             get { return _repository; }
         }
+        #endregion
     }
 }
