@@ -10,7 +10,7 @@
                   ItemsSource="{Binding Entities}" SelectedItem="{Binding SelectedEntity}" SelectionMode="Single"
                   ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                  CanUserResizeColumns="True" CanUserResizeRows="False"
+                  CanUserResizeColumns="True" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsSelectedModelItem}"/>
@@ -36,8 +36,8 @@
                 <DataGridTextColumn Header="Agility" Binding="{Binding Agility}"/>
                 <DataGridTextColumn Header="Wisdom" Binding="{Binding Wisdom}"/>
                 <DataGridTextColumn Header="Strength" Binding="{Binding Strength}"/>
-                <DataGridHyperlinkColumn Header="Character Id" ContentBinding="{Binding Character.Name}" TargetName="Grid"/>
-                <DataGridComboBoxColumn Header="Armor Ids List" ItemsSource="{Binding Armors}" DisplayMemberPath="Name"/>
+                <DataGridHyperlinkColumn Header="Character Id" ContentBinding="{Binding Character.Name}" TargetName="Grid" IsReadOnly="True"/>
+                <DataGridComboBoxColumn Header="Armor Ids List" ItemsSource="{Binding Armors}" DisplayMemberPath="Name" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
     </DataTemplate>
