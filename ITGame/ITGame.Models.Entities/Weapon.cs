@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
 
 namespace ITGame.Models.Entities
 {
     [DataContract]
+    [Table("Weapon")]
     public class Weapon : Identity, IViewModelItem
     {
         public Weapon()
@@ -28,6 +31,8 @@ namespace ITGame.Models.Entities
         public int MagicalAttack { get; set; }
 
         [DataMember]
+        [Required]
+        [StringLength(40)]
         public string Name { get; set; }
 
         [DataMember]
@@ -37,15 +42,16 @@ namespace ITGame.Models.Entities
         public bool Equipped { get; set; }
 
         [DataMember]
-        [ForeignKey(typeof(Humanoid), IsCollection = true)]
+        [Infrastructure.Data.ForeignKey(typeof(Humanoid), IsCollection = true)]
         public ICollection<Guid> HumanoidIds { get; set; }
 
         [IgnoreDataMember]
-        public ICollection<Humanoid> Humanoids { get; set; }
+        public virtual ICollection<Humanoid> Humanoids { get; set; }
 
         #region IViewModelItem implementation
 
         [IgnoreDataMember]
+        [ScaffoldColumn(false)]
         public bool IsSelectedModelItem { get; set; }
 
         #endregion

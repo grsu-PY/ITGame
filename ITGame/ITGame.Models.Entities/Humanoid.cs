@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
 using ITGame.Models.Ñreature;
@@ -7,6 +9,7 @@ using ITGame.Models.Ñreature;
 namespace ITGame.Models.Entities
 {
     [DataContract]
+    [Table("Humanoid")]
     public class Humanoid : Identity, IViewModelItem
     {
         public Humanoid()
@@ -23,11 +26,11 @@ namespace ITGame.Models.Entities
         [DataMember]
         public Guid Id { get; set; }
 
-        [DataMember, ForeignKey(typeof(Character))]
+        [DataMember, Infrastructure.Data.ForeignKey(typeof(Character))]
         public Guid CharacterId { get; set; }
 
         [IgnoreDataMember]
-        public Character Character { get; set; }
+        public virtual Character Character { get; set; }
 
         [DataMember]
         public HumanoidRaceType HumanoidRaceType { get; set; }
@@ -51,35 +54,38 @@ namespace ITGame.Models.Entities
         public int Constitution { get; set; }
 
         [DataMember]
+        [Required]
+        [StringLength(40)]
         public string Name { get; set; }
 
         [DataMember]
         public byte Level { get; set; }
 
         [DataMember]
-        [ForeignKey(typeof(Armor), IsCollection = true)]
+        [Infrastructure.Data.ForeignKey(typeof(Armor), IsCollection = true)]
         public ICollection<Guid> ArmorIds { get; set; }
 
         [IgnoreDataMember]
-        public ICollection<Armor> Armors { get; set; }
+        public virtual ICollection<Armor> Armors { get; set; }
 
         [DataMember]
-        [ForeignKey(typeof(Spell), IsCollection = true)]
+        [Infrastructure.Data.ForeignKey(typeof(Spell), IsCollection = true)]
         public ICollection<Guid> SpellIds { get; set; }
 
         [IgnoreDataMember]
-        public ICollection<Spell> Spells { get; set; }
+        public virtual ICollection<Spell> Spells { get; set; }
 
         [DataMember]
-        [ForeignKey(typeof(Weapon), IsCollection = true)]
+        [Infrastructure.Data.ForeignKey(typeof(Weapon), IsCollection = true)]
         public ICollection<Guid> WeaponIds { get; set; }
 
         [IgnoreDataMember]
-        public ICollection<Weapon> Weapons { get; set; }
+        public virtual ICollection<Weapon> Weapons { get; set; }
 
         #region IViewModelItem implementation
 
         [IgnoreDataMember]
+        [ScaffoldColumn(false)]
         public bool IsSelectedModelItem { get; set; }
 
         #endregion

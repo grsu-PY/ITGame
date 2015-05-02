@@ -16,6 +16,7 @@ namespace ITGame.DBConnector
         public EntityDBProjector(DbContext context, Type entityType)
         {
             _context = context;
+            _entityType = entityType;
             _context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
         public DbSet DbSet { get { return _context.Set(_entityType); } }

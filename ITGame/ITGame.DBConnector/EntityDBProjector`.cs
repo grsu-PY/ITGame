@@ -88,6 +88,38 @@ namespace ITGame.DBConnector
             }
         }
 
+        public T Load(object id)
+        {
+            try
+            {
+                T item = DbSet.Find(id);
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool TryLoad(object id, out T value)
+        {
+            T item = null;
+            try
+            {
+                item = DbSet.Find(id);
+                return item != null;
+            }
+            catch (Exception)
+            {
+                return item != null;
+            }
+            finally
+            {
+                value = item;
+            }
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();
@@ -101,13 +133,21 @@ namespace ITGame.DBConnector
         public void AddOrUpdate(T entity)
         {
             var entry = _context.Entry(entity);
+
             if (entry == null)
             {
                 DbSet.Add(entity);
             }
-            else
+            else switch (entry.State)
             {
-                entry.State = EntityState.Modified;
+                case EntityState.Added:
+                    break;
+                case EntityState.Detached:
+                    entry.State = EntityState.Added;
+                    break;
+                default:
+                    entry.State = EntityState.Modified;
+                    break;
             }
         }
 

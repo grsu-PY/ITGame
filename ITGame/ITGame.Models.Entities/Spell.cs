@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
 using ITGame.Models.Magic;
@@ -7,6 +9,7 @@ using ITGame.Models.Magic;
 namespace ITGame.Models.Entities
 {
     [DataContract]
+    [Table("Spell")]
     public class Spell : Identity, IViewModelItem
     {
         public Spell()
@@ -35,21 +38,24 @@ namespace ITGame.Models.Entities
         public int TotalDuration { get; set; }
 
         [DataMember]
+        [Required]
+        [StringLength(40)]
         public string Name { get; set; }
 
         [DataMember]
         public bool Equipped { get; set; }
 
         [DataMember]
-        [ForeignKey(typeof(Humanoid), IsCollection = true)]
+        [Infrastructure.Data.ForeignKey(typeof(Humanoid), IsCollection = true)]
         public ICollection<Guid> HumanoidIds { get; set; }
 
         [IgnoreDataMember]
-        public ICollection<Humanoid> Humanoids { get; set; }
+        public virtual ICollection<Humanoid> Humanoids { get; set; }
 
         #region IViewModelItem implementation
 
         [IgnoreDataMember]
+        [ScaffoldColumn(false)]
         public bool IsSelectedModelItem { get; set; }
 
         #endregion
