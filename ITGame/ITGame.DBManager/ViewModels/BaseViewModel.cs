@@ -11,7 +11,7 @@ using ITGame.DBManager.Navigations;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged, INavigatableViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly INavigation _navigation;
@@ -45,6 +45,8 @@ namespace ITGame.DBManager.ViewModels
             }
         }
 
+        public virtual void OnNavigated() { }
+        public virtual void OnBeforeNavigation() { }
     }
     public static class PropertyExtensions
     {

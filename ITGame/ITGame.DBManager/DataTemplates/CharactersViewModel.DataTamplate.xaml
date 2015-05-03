@@ -1,16 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                
                     xmlns:viewModels="clr-namespace:ITGame.DBManager.ViewModels"
-                    xmlns:converters="clr-namespace:ITGame.DBManager.Converters"
                     xmlns:userControls="clr-namespace:ITGame.DBManager.UserControls">
     <DataTemplate x:Key="CharactersViewModelDataTemplate" DataType="{x:Type viewModels:CharactersViewModel}">
         <DataTemplate.Resources>
-            <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
+            <ResourceDictionary Source="../Themes/Generic.xaml"/>
         </DataTemplate.Resources>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <userControls:EntitiesNaviagationPanel DataContext="{Binding}" />
         <DataGrid Grid.Row="1" x:Name="dataGrid" Margin="5" MinHeight="200"
@@ -39,6 +39,8 @@
                 <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
                 <DataGridComboBoxColumn Header="Humanoid Ids List" ItemsSource="{Binding Humanoids}" DisplayMemberPath="Name" IsReadOnly="True"/>
             </DataGrid.Columns>
-        </DataGrid></Grid>
+            </DataGrid>
+            <userControls:PagingPanel Grid.Row="2" DataContext="{Binding}"/>
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>

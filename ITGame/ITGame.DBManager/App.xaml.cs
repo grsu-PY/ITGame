@@ -16,11 +16,13 @@ namespace ITGame.DBManager
         {
             base.OnStartup(e);
 
-            IEntityRepository repository = new DBRepository();
+            IEntityRepository repositoryXML = new EntityRepository<EntityProjectorXml>();
+            IEntityRepository repositoryDb = new EntityRepository<EntityProjectorXml>();
+
             IEntityViewModelBuilder viewModelBuilder = new EntityViewModelBuilder();
             INavigation navigation = new Navigation(viewModelBuilder);
 
-            var viewmodel = new MainViewModel(navigation, repository);
+            var viewmodel = new MainViewModel(navigation, repositoryDb);
 
             var window = new MainWindow { DataContext = viewmodel };
 

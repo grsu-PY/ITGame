@@ -5,13 +5,61 @@ using ITGame.Infrastructure.Data;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class EntityViewModel<TEntity> : BaseViewModel, IEntitiesViewModel where TEntity : class, Identity, new()
+    public class EntityViewModel<TEntity> : BaseViewModel, IEntityViewModel where TEntity : class, Identity, new()
     {
+        private readonly IEntityRepository _repository;
+        private readonly IEntityProjector<TEntity> _entityContext;
+
+        private ICommand _commandSave;
+        private ICommand _commandCancel;
+        private ICommand _commandDelete;
+
         public TEntity Entity { get; set; }
 
-        public EntityViewModel(INavigation navigation, TEntity entity) : base(navigation)
+        public EntityViewModel(INavigation navigation, IEntityRepository repository, TEntity entity) : base(navigation)
         {
+            _repository = repository;
+            _entityContext = repository.GetInstance<TEntity>();
             Entity = entity;
+
+            InitializeCommands();
+        }
+
+        private void InitializeCommands()
+        {
+            _commandSave = new RelayCommand(Save, CanSave);
+            _commandCancel = new RelayCommand(Cancel, CanCancel);
+            _commandDelete = new RelayCommand(Delete, CanDelete);
+        }
+
+        protected virtual bool CanDelete(object obj)
+        {
+            return true;
+        }
+
+        protected virtual void Delete(object obj)
+        {
+            
+        }
+
+        protected virtual bool CanCancel(object obj)
+        {
+            return true;
+        }
+
+        protected virtual void Cancel(object obj)
+        {
+
+        }
+
+        protected virtual bool CanSave(object obj)
+        {
+            return true;
+        }
+
+        protected virtual void Save(object obj)
+        {
+
         }
 
         public object SelectedEntity
@@ -19,44 +67,29 @@ namespace ITGame.DBManager.ViewModels
             get { return Entity; }
         }
 
-        public ICommand CommandLoadEntities
+        public ICommand CommandSave
         {
-            get { return new RelayCommand(o => { }); }
+            get { return _commandSave; }
         }
 
-        public ICommand CommandSaveEntities
+        public ICommand CommandCancel
         {
-            get { return new RelayCommand(o => { }); }
+            get { return _commandCancel; }
         }
 
-        public ICommand CommandEditEntity
+        public ICommand CommandDelete
         {
-            get { return new RelayCommand(o => { }); }
+            get { return _commandDelete; }
         }
 
-        public ICommand CommandUpdateEntity
+        public IEntityRepository Repository
         {
-            get { return new RelayCommand(o => { }); }
+            get { return _repository; }
         }
 
-        public ICommand CommandDeleteEntity
+        public IEntityProjector<TEntity> EntityContext
         {
-            get { return new RelayCommand(o => { }); }
-        }
-
-        public ICommand CommandDeleteSelectedEntities
-        {
-            get { return new RelayCommand(o => { }); }
-        }
-
-        public ICommand CommandDeleteAllEntities
-        {
-            get { return new RelayCommand(o => { }); }
-        }
-
-        public ICommand CommandCreateEntity
-        {
-            get { return new RelayCommand(o => { }); }
+            get { return _entityContext; }
         }
     }
 }

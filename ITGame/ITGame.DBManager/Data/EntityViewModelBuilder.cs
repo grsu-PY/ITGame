@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ITGame.DBManager.Data
 {
-    public class EntityViewModelBuilder : ITGame.DBManager.Data.IEntityViewModelBuilder
+    public class EntityViewModelBuilder : IEntityViewModelBuilder
     {
         public static IDictionary<Type, object> objects = new Dictionary<Type, object>();
 
@@ -21,6 +18,26 @@ namespace ITGame.DBManager.Data
             }
 
             return instanse;
+        }
+
+        public object Resolve(Type type, bool cached, params object[] parameters)
+        {
+            object viewModel = null;
+            if (cached) viewModel = Resolve(type, parameters);
+            else
+            {
+                viewModel = Activator.CreateInstance(type, parameters);
+                if (objects.ContainsKey(type))
+                {
+                    objects[type] = viewModel;
+                }
+                else
+                {
+                    objects.Add(type, viewModel);
+                }
+            }
+
+            return viewModel;
         }
     }
 }

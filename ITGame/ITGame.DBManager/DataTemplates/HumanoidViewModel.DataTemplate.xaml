@@ -1,55 +1,62 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:ITGame.DBManager.ViewModels"
-                    xmlns:converters="clr-namespace:ITGame.DBManager.Converters">
+                    xmlns:userControls="clr-namespace:ITGame.DBManager.UserControls">
     <DataTemplate x:Key="HumanoidViewModelDataTemplate" DataType="{x:Type viewModels:HumanoidViewModel}">
         <DataTemplate.Resources>
-            <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
+            <ResourceDictionary Source="../Themes/Generic.xaml"/>
         </DataTemplate.Resources>
-        <Grid DataContext="{Binding Entity}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <userControls:EntityNavigationPanel DataContext="{Binding}"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Name"/>
-            <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding Name}"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Humanoid Race"/>
-            <ComboBox Grid.Row="1" Grid.Column="1"
-                      ItemsSource="{Binding HumanoidRaceType, Converter={StaticResource EnumToCollectionConverter}}"
-                      SelectedValue="{Binding HumanoidRaceType}" 
+                <Label Grid.Row="0" Grid.Column="0" Content="Name"/>
+                <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding Entity.Name}"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Humanoid Race"/>
+                <ComboBox Grid.Row="1" Grid.Column="1"
+                      ItemsSource="{Binding Entity.HumanoidRaceType, Converter={StaticResource EnumToCollectionConverter}}"
+                      SelectedValue="{Binding Entity.HumanoidRaceType}" 
                       DisplayMemberPath="Name" SelectedValuePath="Value"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Level"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Level}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="MP"/>
-            <TextBox Grid.Row="3" Grid.Column="1"  Text="{Binding MP}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="HP"/>
-            <TextBox Grid.Row="4" Grid.Column="1"  Text="{Binding HP}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="Constitution"/>
-            <TextBox Grid.Row="5" Grid.Column="1"  Text="{Binding Constitution}"/>
-            <Label Grid.Row="6" Grid.Column="0" Content="Agility"/>
-            <TextBox Grid.Row="6" Grid.Column="1"  Text="{Binding Agility}"/>
-            <Label Grid.Row="7" Grid.Column="0" Content="Wisdom"/>
-            <TextBox Grid.Row="7" Grid.Column="1"  Text="{Binding Wisdom}"/>
-            <Label Grid.Row="8" Grid.Column="0" Content="Strength"/>
-            <TextBox Grid.Row="8" Grid.Column="1"  Text="{Binding Strength}"/>
-            <Label Grid.Row="9" Grid.Column="0" Content="Character"/>
-<!--            <ComboBox Grid.Row="9" Grid.Column="1" ContentBinding="{Binding Character.Name}" TargetName="Grid" IsReadOnly="True"/>-->
-            <Label Grid.Row="10" Grid.Column="0" Content="Armor Ids List"/>
-            <ComboBox Grid.Row="10" Grid.Column="1" ItemsSource="{Binding Armors}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Level"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Entity.Level}"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="MP"/>
+                <TextBox Grid.Row="3" Grid.Column="1"  Text="{Binding Entity.MP}"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="HP"/>
+                <TextBox Grid.Row="4" Grid.Column="1"  Text="{Binding Entity.HP}"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="Constitution"/>
+                <TextBox Grid.Row="5" Grid.Column="1"  Text="{Binding Entity.Constitution}"/>
+                <Label Grid.Row="6" Grid.Column="0" Content="Agility"/>
+                <TextBox Grid.Row="6" Grid.Column="1"  Text="{Binding Entity.Agility}"/>
+                <Label Grid.Row="7" Grid.Column="0" Content="Wisdom"/>
+                <TextBox Grid.Row="7" Grid.Column="1"  Text="{Binding Entity.Wisdom}"/>
+                <Label Grid.Row="8" Grid.Column="0" Content="Strength"/>
+                <TextBox Grid.Row="8" Grid.Column="1"  Text="{Binding Entity.Strength}"/>
+                <Label Grid.Row="9" Grid.Column="0" Content="Character"/>
+                <ComboBox Grid.Row="9" Grid.Column="1" ItemsSource="{Binding Characters}" SelectedItem="{Binding SelectedCharacter}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                <Label Grid.Row="10" Grid.Column="0" Content="Armor Ids List"/>
+                <ComboBox Grid.Row="10" Grid.Column="1" ItemsSource="{Binding Entity.Armors}" DisplayMemberPath="Name" IsReadOnly="True"/>
+            </Grid>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

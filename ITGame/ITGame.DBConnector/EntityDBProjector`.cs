@@ -49,10 +49,9 @@ namespace ITGame.DBConnector
             {
                 DbSet.Remove(entity);
             }
-            catch (Exception)
+            catch
             {
-
-                throw;
+                // ignored
             }
         }
 

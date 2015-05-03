@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using ITGame.DBManager.Commands;
 using ITGame.DBManager.Navigations;
 using ITGame.Infrastructure.Data;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class EmptyViewModel : IEntitiesViewModel
+    public class EmptyViewModel : IEntitiesViewModel, INavigatableViewModel
     {
         public EmptyViewModel(INavigation navigation, IEntityRepository repository)
         {
@@ -60,6 +55,16 @@ namespace ITGame.DBManager.ViewModels
         public ICommand CommandCreateEntity
         {
             get { return new RelayCommand(o => { }); }
+        }
+
+        public void OnNavigated()
+        {
+            
+        }
+
+        public void OnBeforeNavigation()
+        {
+            
         }
     }
 }

@@ -59,6 +59,7 @@ namespace ITGame.Models.Entities
         public string Name { get; set; }
 
         [DataMember]
+        [Range(1, byte.MaxValue)]
         public byte Level { get; set; }
 
         [DataMember]

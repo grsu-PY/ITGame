@@ -2,10 +2,27 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:ITGame.DBManager.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="700" d:DataContext="{d:DesignInstance viewModels:IEntityViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Themes/Generic.xaml"/>
+    </UserControl.Resources>
     <Grid>
-            
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <Button x:Name="SaveAllButton" Content="Save" Style="{StaticResource SaveButtonStyle}"
+                        ToolTip="Save item"
+                        Command="{Binding CommandSave}" 
+                        CommandParameter="{Binding SelectedEntity}"/>
+            <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource CommonButtonStyle}"
+                        ToolTip="Cancel"
+                        Command="{Binding CommandCancel}" 
+                        CommandParameter="{Binding SelectedEntity}" />
+            <Button x:Name="RemoveButton" Content="Remove" Style="{StaticResource DeleteButtonStyle}"
+                        ToolTip="Remove item"
+                        Command="{Binding CommandDelete}" 
+                        CommandParameter="{Binding SelectedEntity}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

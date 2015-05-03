@@ -69,8 +69,11 @@
     <Compile Include="Data\EntityViewModelBuilder.cs" />
     <Compile Include="Data\IEntityViewModelBuilder.cs" />
     <Compile Include="Data\NameValueItem.cs" />
+    <Compile Include="Navigations\INavigatableViewModel.cs" />
     <Compile Include="Navigations\INavigation.cs" />
+    <Compile Include="Navigations\IPagedViewModel.cs" />
     <Compile Include="Navigations\Navigation.cs" />
+    <Compile Include="Navigations\PageInfo.cs" />
     <Compile Include="Navigations\ViewChangedEventArgs.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UserControls\EntitiesNaviagationPanel.xaml.cs">
@@ -78,6 +81,9 @@
     </Compile>
     <Compile Include="UserControls\EntityNavigationPanel.xaml.cs">
       <DependentUpon>EntityNavigationPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PagingPanel.xaml.cs">
+      <DependentUpon>PagingPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ArmorsViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -88,6 +94,7 @@
     <Compile Include="ViewModels\HumanoidsViewModel.cs" />
     <Compile Include="ViewModels\HumanoidViewModel.cs" />
     <Compile Include="ViewModels\IEntitiesViewModel.cs" />
+    <Compile Include="ViewModels\IEntityViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="DataTemplates\ArmorsViewModel.DataTemplate.xaml">
       <SubType>Designer</SubType>
@@ -117,11 +124,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\EntitiesNaviagationPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\EntityNavigationPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PagingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

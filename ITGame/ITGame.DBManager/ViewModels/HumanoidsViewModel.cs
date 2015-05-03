@@ -1,12 +1,6 @@
 ﻿using ITGame.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using ITGame.DBManager.Commands;
 using ITGame.DBManager.Converters;
 using ITGame.DBManager.Data;
 using ITGame.DBManager.Navigations;
@@ -16,22 +10,21 @@ namespace ITGame.DBManager.ViewModels
 {
     public class HumanoidsViewModel : EntitiesViewModel<Models.Entities.Humanoid>
     {
-        private ICommand _commandEditEntity;
-
         public HumanoidsViewModel(INavigation navigation, IEntityRepository repository)
             : base(navigation, repository)
         {
-            InitializeCommands();
+        }
+        
+        protected override void EditEntity(object obj)
+        {
+            Navigation.SwitchToViewNotCached(typeof(HumanoidViewModel), Repository, obj ?? new Models.Entities.Humanoid());
         }
 
-        private void InitializeCommands()
+        protected override void CreateEntity(object obj)
         {
-            _commandEditEntity = new RelayCommand(EditEntity);
-        }
-
-        private void EditEntity(object obj)
-        {
-            Navigation.SwitchToView(typeof(HumanoidViewModel), obj ?? new Models.Entities.Humanoid());
+            Navigation.SwitchToViewNotCached(typeof (HumanoidViewModel), 
+                Repository,
+                new Models.Entities.Humanoid());
         }
 
         public IEnumerable<NameValueItem<object>> HumanoidRacesList
@@ -39,9 +32,11 @@ namespace ITGame.DBManager.ViewModels
             get { return NameValueEnumCollections.GetCollection(typeof(HumanoidRaceType)); }
         }
 
-        public override ICommand CommandEditEntity
+        public override void OnNavigated()
         {
-            get { return _commandEditEntity; }
+            base.OnNavigated();
+
+            LoadEntities(PageInfo);
         }
     }
 }

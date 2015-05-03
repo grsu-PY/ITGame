@@ -1,17 +1,15 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using ITGame.DBManager.Annotations;
 using ITGame.DBManager.Data;
-using ITGame.DBManager.ViewModels;
 
 namespace ITGame.DBManager.Navigations
 {
     public class Navigation : INavigation, INotifyPropertyChanged
     {
         public event EventHandler<ViewChangedEventArgs> ViewChanged; 
-        private  object _currentEntityViewModel;
+        private  INavigatableViewModel _currentEntityViewModel;
         private  Type _selectedEntityViewType;
         private readonly IEntityViewModelBuilder _entityViewModelBuilder;
 
@@ -23,17 +21,17 @@ namespace ITGame.DBManager.Navigations
         public Type SelectedEntityViewType
         {
             get { return _selectedEntityViewType; }
-            set
+            private set
             {
                 _selectedEntityViewType = value;
                 OnPropertyChanged();
             }
         }
 
-        public object CurrentEntityViewModel
+        public INavigatableViewModel CurrentEntityViewModel
         {
             get { return _currentEntityViewModel; }
-            set
+            private set
             {
                 _currentEntityViewModel = value;
                 OnPropertyChanged();
@@ -42,9 +40,40 @@ namespace ITGame.DBManager.Navigations
         
         public void SwitchToView(Type viewType, params object[] parameters)
         {
+            OnBeforeNavigation();
 
-            CurrentEntityViewModel = _entityViewModelBuilder.Resolve(viewType, CreateParameters(parameters));
+            CurrentEntityViewModel =
+                _entityViewModelBuilder.Resolve(viewType, CreateParameters(parameters)) as INavigatableViewModel;
             SelectedEntityViewType = viewType;
+
+            OnNavigated();
+        }
+
+        public void SwitchToViewNotCached(Type viewType, params object[] parameters)
+        {
+            OnBeforeNavigation();
+
+            CurrentEntityViewModel =
+                _entityViewModelBuilder.Resolve(viewType, false, CreateParameters(parameters)) as INavigatableViewModel;
+            SelectedEntityViewType = viewType;
+
+            OnNavigated();
+        }
+
+        private void OnNavigated()
+        {
+            if (CurrentEntityViewModel != null)
+            {
+                CurrentEntityViewModel.OnNavigated();
+            }
+        }
+
+        private void OnBeforeNavigation()
+        {
+            if (CurrentEntityViewModel != null)
+            {
+                CurrentEntityViewModel.OnBeforeNavigation();
+            }
         }
 
         private object[] CreateParameters(object[] parameters)
