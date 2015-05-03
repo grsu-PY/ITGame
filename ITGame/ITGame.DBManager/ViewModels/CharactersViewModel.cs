@@ -20,5 +20,12 @@ namespace ITGame.DBManager.ViewModels
         {
             get { return NameValueEnumCollections.GetCollection(typeof(RoleType)); }
         }
+
+        public override void OnNavigated()
+        {
+            base.OnNavigated();
+
+            LoadEntities(PageInfo);
+        }
     }
 }

@@ -10,5 +10,12 @@ namespace ITGame.DBManager.ViewModels
         {
             
         }
+
+        public override void OnNavigated()
+        {
+            base.OnNavigated();
+
+            LoadEntities(PageInfo);
+        }
     }
 }

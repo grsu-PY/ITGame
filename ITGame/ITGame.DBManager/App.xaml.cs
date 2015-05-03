@@ -17,7 +17,7 @@ namespace ITGame.DBManager
             base.OnStartup(e);
 
             IEntityRepository repositoryXML = new EntityRepository<EntityProjectorXml>();
-            IEntityRepository repositoryDb = new EntityRepository<EntityProjectorXml>();
+            IEntityRepository repositoryDb = new DBRepository();
 
             IEntityViewModelBuilder viewModelBuilder = new EntityViewModelBuilder();
             INavigation navigation = new Navigation(viewModelBuilder);
