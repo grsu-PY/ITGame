@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using ITGame.DBManager.Commands;
 using ITGame.DBManager.Navigations;
 using ITGame.Infrastructure.Data;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class EmptyViewModel : IEntitiesViewModel
+    public class EntityViewModel<TEntity> : BaseViewModel, IEntitiesViewModel where TEntity : class, Identity, new()
     {
-        public EmptyViewModel(INavigation navigation, IEntityRepository repository)
+        public TEntity Entity { get; set; }
+
+        public EntityViewModel(INavigation navigation, TEntity entity) : base(navigation)
         {
-            
+            Entity = entity;
         }
 
         public object SelectedEntity
         {
-            get { return null; }
+            get { return Entity; }
         }
 
         public ICommand CommandLoadEntities

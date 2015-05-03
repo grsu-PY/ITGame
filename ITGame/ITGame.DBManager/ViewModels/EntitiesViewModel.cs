@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ITGame.DBManager.Navigations;
 using ITGame.Models.Entities;
 
 namespace ITGame.DBManager.ViewModels
@@ -29,7 +30,7 @@ namespace ITGame.DBManager.ViewModels
 
         #endregion
 
-        public EntitiesViewModel(IEntityRepository repository)
+        public EntitiesViewModel(INavigation navigation, IEntityRepository repository) : base(navigation)
         {
             _repository = repository;
             _entities = new ObservableCollection<TEntity>();
@@ -46,7 +47,7 @@ namespace ITGame.DBManager.ViewModels
             _commandDeleteSelectedEntities = new RelayCommand(DeleteSelectedEntities);
             _commandCreateEntity = new RelayCommand(CreateEntity);
         }
-
+        
         private void CreateEntity(object obj)
         {
             var item = new TEntity() {Id = Guid.NewGuid()};
@@ -87,6 +88,12 @@ namespace ITGame.DBManager.ViewModels
         {
             Entities = new ObservableCollection<TEntity>(EntitiesContext.GetAll());
         }
+
+        object IEntitiesViewModel.SelectedEntity
+        {
+            get { return SelectedEntity; }
+        }
+
         public virtual ICommand CommandLoadEntities
         {
             get { return _commandLoadEntities; }

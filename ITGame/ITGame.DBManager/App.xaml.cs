@@ -2,6 +2,8 @@
 using ITGame.DBManager.ViewModels;
 using ITGame.Infrastructure.Data;
 using System.Windows;
+using ITGame.DBConnector;
+using ITGame.DBManager.Navigations;
 
 namespace ITGame.DBManager
 {
@@ -14,7 +16,11 @@ namespace ITGame.DBManager
         {
             base.OnStartup(e);
 
-            var viewmodel = new MainViewModel(new EntityRepository<EntityProjectorXml>(), new EntityViewModelBuilder());
+            IEntityRepository repository = new DBRepository();
+            IEntityViewModelBuilder viewModelBuilder = new EntityViewModelBuilder();
+            INavigation navigation = new Navigation(viewModelBuilder);
+
+            var viewmodel = new MainViewModel(navigation, repository);
 
             var window = new MainWindow { DataContext = viewmodel };
 

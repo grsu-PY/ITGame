@@ -7,12 +7,24 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ITGame.DBManager.Navigations;
 
 namespace ITGame.DBManager.ViewModels
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly INavigation _navigation;
+
+        public BaseViewModel(INavigation navigation)
+        {
+            _navigation = navigation;
+        }
+
+        public INavigation Navigation
+        {
+            get { return _navigation; }
+        }
 
         protected virtual void RaisePropertyChanged([CallerMemberName]string propertyName = null)
         {
@@ -32,6 +44,7 @@ namespace ITGame.DBManager.ViewModels
                 handler(this, property.CreateChangeEventArgs());
             }
         }
+
     }
     public static class PropertyExtensions
     {

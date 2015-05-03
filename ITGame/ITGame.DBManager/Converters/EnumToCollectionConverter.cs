@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using ITGame.DBManager.Data;
+using ITGame.Models.Administration;
 using ITGame.Models.Equipment;
 using ITGame.Models.Сreature;
 
@@ -33,15 +34,27 @@ namespace ITGame.DBManager.Converters
             new NameValueItem<object>() {Name = "Boots", Value = ArmorType.Boots}
         };
 
+        private static readonly IEnumerable<NameValueItem<object>> _characterTypesList = new List<NameValueItem<object>>()
+        {
+            new NameValueItem<object>() {Name = "Choose Role", Value = RoleType.None},
+            new NameValueItem<object>() {Name = "User", Value = RoleType.User},
+            new NameValueItem<object>() {Name = "Editor", Value = RoleType.Editor},
+            new NameValueItem<object>() {Name = "Admin", Value = RoleType.Admin}
+        };
+
         public static IEnumerable<NameValueItem<object>> GetCollection(Type enumType)
         {
             if (enumType == typeof (HumanoidRaceType))
             {
                 return _humanoidRacesList;
             }
-            if (enumType == typeof(ArmorType))
+            if (enumType == typeof (ArmorType))
             {
                 return _armorTypesList;
+            }
+            if (enumType == typeof (RoleType))
+            {
+                return _characterTypesList;
             }
 
             return new List<NameValueItem<object>>();
