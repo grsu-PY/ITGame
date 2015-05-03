@@ -18,6 +18,10 @@ namespace ITGame.Models.Entities.Mapping
                 .ForMember(humanoid => humanoid.ArmorIds,
                     expression => expression.MapFrom(humanoid => humanoid.Armors.Select(x => x.Id).ToList()));
 
+            Mapper.CreateMap<Models.Administration.Character, Models.Entities.Character>()
+                .ForMember(character => character.HumanoidIds,
+                    expression => expression.MapFrom(character => character.Humanoids.Select(x => x.Id).ToList()));
+
             Mapper.CreateMap<Models.Equipment.Weapon, Models.Entities.Weapon>();
             Mapper.CreateMap<Models.Equipment.Armor, Models.Entities.Armor>();
             Mapper.CreateMap<Models.Magic.Spell, Models.Entities.Spell>();

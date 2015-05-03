@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\Character.cs" />
+    <Compile Include="Administration\RoleType.cs" />
+    <Compile Include="Creature\HumanoidRace.cs" />
     <Compile Include="Damage.cs" />
     <Compile Include="Environment\Surface.cs" />
     <Compile Include="Environment\SurfaceRule.cs" />
@@ -75,6 +78,7 @@
       <Name>ITGame.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
