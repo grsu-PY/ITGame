@@ -21,7 +21,7 @@ namespace ITGame.WebApp.DataManager.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("ITGameDBContextConnectionString", throwIfV1Schema: false)
+            : base("ITGameDBAccountsContextConnectionString", throwIfV1Schema: false)
         {
         }
 
