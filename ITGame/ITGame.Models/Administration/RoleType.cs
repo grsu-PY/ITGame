@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITGame.Models.Administration
 {
-    [Flags]
+    
     public enum RoleType : byte
     {
         None = 0,

@@ -159,6 +159,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CharactersController.cs" />
+    <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -226,6 +228,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Characters\Create.cshtml" />
+    <Content Include="Views\Characters\Delete.cshtml" />
+    <Content Include="Views\Characters\Details.cshtml" />
+    <Content Include="Views\Characters\Edit.cshtml" />
+    <Content Include="Views\Characters\Index.cshtml" />
+    <Content Include="Views\Shared\_EditDetailsDelete.cshtml" />
+    <Content Include="Views\Database\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -236,6 +245,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ITGame.DBConnector\ITGame.DBConnector.csproj">
+      <Project>{e0df110d-a412-4abf-b0c3-ad4053251b70}</Project>
+      <Name>ITGame.DBConnector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITGame.Infrastructure\ITGame.Infrastructure.csproj">
+      <Project>{E00E53F4-9C56-4F22-AAD1-C306C51D436F}</Project>
+      <Name>ITGame.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITGame.Models.Entities\ITGame.Models.Entities.csproj">
+      <Project>{349c059e-b480-4a36-bb7d-d275852b8e2e}</Project>
+      <Name>ITGame.Models.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
