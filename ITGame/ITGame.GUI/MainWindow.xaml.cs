@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Data;
 using Microsoft.Win32;
 using ITGame.DBConnector;
+using ITGame.Models.Administration;
 using ITGame.Models.Сreature;
 
 namespace ITGame.GUI
@@ -39,11 +40,11 @@ namespace ITGame.GUI
         {
             ////////////////////////////////////////////////////////////////////////////////////
             ///Все типы имеют полное имя, чтоб было видно из какого пространства имен они взяты.
-            ///DBConnector.ITGameDBModels.Armor для работы с базой
+            ///ITGame.Models.Entities.Armor для работы с базой
             ///ITGame.Models.Equipment.Armor для работы в приложении
             ///И так для всех типов, которые должны хранится в базе. Или почти для всех.. хз ;)
             ////////////////////////////////////////////////////////////////////////////////////
-            var armor = new DBConnector.ITGameDBModels.Armor
+            var armor = new ITGame.Models.Entities.Armor
             {
                 ArmorType = ITGame.Models.Equipment.ArmorType.Body,
                 Equipped = true,
@@ -56,22 +57,22 @@ namespace ITGame.GUI
 
             Guid charId;
             bool wasNull = false;
-            var characterDB = _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().GetAll().FirstOrDefault();
+            var characterDB = _dbrepository.GetInstance<ITGame.Models.Entities.Character>().GetAll().FirstOrDefault();
             if (characterDB == null)
             {
                 wasNull = true;
                 var _charId = Guid.NewGuid();
-                characterDB = new DBConnector.ITGameDBModels.Character
+                characterDB = new ITGame.Models.Entities.Character
                 {
                     Id = _charId,
                     Name = "aliaksei  " + _charId.ToString().Substring(0, 10),//из-за ограничения в 40 char в базе для стринги, обрезаю строку
                     Password = "password",
-                    Role = 1
+                    Role = RoleType.User
                 };
             }
             charId = characterDB.Id;
 
-            var humanoid = new DBConnector.ITGameDBModels.Humanoid
+            var humanoid = new ITGame.Models.Entities.Humanoid
             {
                 Id = Guid.NewGuid(),
                 CharacterId = charId,
@@ -88,47 +89,47 @@ namespace ITGame.GUI
             armor.Humanoids.Add(humanoid);
             if (wasNull)
             {
-                _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().Add(characterDB);
+                _dbrepository.GetInstance<ITGame.Models.Entities.Character>().Add(characterDB);
             }
             else
             {
-                _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().Update(characterDB);
+                _dbrepository.GetInstance<ITGame.Models.Entities.Character>().Update(characterDB);
             }
-            _dbrepository.GetInstance<DBConnector.ITGameDBModels.Character>().SaveChanges();
+            _dbrepository.GetInstance<ITGame.Models.Entities.Character>().SaveChanges();
 
             #region Add Fixed Races
             /* //Run only one time
-            var Races = new List<DBConnector.ITGameDBModels.HumanoidRace>
+            var Races = new List<ITGame.Models.Entities.HumanoidRace>
             {
-                new DBConnector.ITGameDBModels.HumanoidRace
+                new ITGame.Models.Entities.HumanoidRace
                 {
                     HumanoidRaceType=HumanoidRaceType.Human,
                     Name="Human"
                 },
-                new DBConnector.ITGameDBModels.HumanoidRace
+                new ITGame.Models.Entities.HumanoidRace
                 {
                     HumanoidRaceType=HumanoidRaceType.Elf,
                     Name="Elf"
                 },
-                new DBConnector.ITGameDBModels.HumanoidRace
+                new ITGame.Models.Entities.HumanoidRace
                 {
                     HumanoidRaceType=HumanoidRaceType.Dwarf,
                     Name="Dwarf"
                 },
-                new DBConnector.ITGameDBModels.HumanoidRace
+                new ITGame.Models.Entities.HumanoidRace
                 {
                     HumanoidRaceType=HumanoidRaceType.Orc,
                     Name="Orc"
                 },
-                new DBConnector.ITGameDBModels.HumanoidRace
+                new ITGame.Models.Entities.HumanoidRace
                 {
                     HumanoidRaceType=HumanoidRaceType.None,
                     Name="None"
                 },
             };
 
-            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().DbSet.AddRange(Races);
-            DBRepository.GetInstance<DBConnector.ITGameDBModels.HumanoidRace>().SaveChanges();
+            DBRepository.GetInstance<ITGame.Models.Entities.HumanoidRace>().DbSet.AddRange(Races);
+            DBRepository.GetInstance<ITGame.Models.Entities.HumanoidRace>().SaveChanges();
             */
             #endregion
         }
