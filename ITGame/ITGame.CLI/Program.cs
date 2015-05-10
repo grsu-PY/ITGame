@@ -31,7 +31,7 @@ namespace ITGame.CLI
         {
             //WorkWithDb();
 
-            _dbRepository = new DBRepository();
+            _dbRepository = new DbRepository();
             _repository = new EntityRepository<EntityProjector>();
             _repositoryXML = new EntityRepository<EntityProjectorXml>();
 

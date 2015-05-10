@@ -183,19 +183,19 @@ namespace ITGame.DBConnector
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            await Task.Factory.StartNew(() => Delete(entity));
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await Task.Factory.StartNew(() => Delete(id));
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            await Task.Factory.StartNew(() => Update(entity));
         }
 
         public async Task<T> LoadAsync(Guid id)
@@ -208,9 +208,9 @@ namespace ITGame.DBConnector
             return await DbSet.ToListAsync();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync(Func<T, bool> where)
+        public async Task<IEnumerable<T>> GetAllAsync(Func<T, bool> where)
         {
-            throw new NotImplementedException();
+            return await Task.Factory.StartNew(() => DbSet.ToListAsync().Result.Where(where));
         }
     }
 }

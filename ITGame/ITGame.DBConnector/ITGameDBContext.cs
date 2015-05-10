@@ -1,10 +1,7 @@
-namespace ITGame.DBConnector.ITGameDBModels
-{
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
+using System.Data.Entity;
 
+namespace ITGame.DBConnector
+{
     public partial class ITGameDBContext : DbContext
     {
         public ITGameDBContext()

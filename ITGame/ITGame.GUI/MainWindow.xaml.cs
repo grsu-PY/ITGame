@@ -25,7 +25,7 @@ namespace ITGame.GUI
         static MainWindow()
         {
             _repository = new EntityRepository<EntityProjectorXml>();
-            _dbrepository = new DBRepository();
+            _dbrepository = new DbRepository();
         }
         public MainWindow()
         {

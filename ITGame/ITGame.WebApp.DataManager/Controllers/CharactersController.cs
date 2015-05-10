@@ -8,7 +8,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ITGame.DBConnector;
-using ITGame.DBConnector.ITGameDBModels;
 using ITGame.Infrastructure.Data;
 using ITGame.Models.Entities;
 using Character = ITGame.Models.Entities.Character;
@@ -22,7 +21,7 @@ namespace ITGame.WebApp.DataManager.Controllers
 
         public CharactersController()
         {
-            _repository = new DBRepository();
+            _repository = new DbRepository();
             _dbContext = _repository.GetInstance<Character>();
         }
         public CharactersController(IEntityRepository repository)
