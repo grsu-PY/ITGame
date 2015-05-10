@@ -47,7 +47,14 @@ namespace ITGame.DBConnector
 
         public IEntityProjector<TEntity> GetInstance<TEntity>() where TEntity : class, Identity, new()
         {
-            return new EntityDBProjector<TEntity>(Context);
+            return new EntityDbProjector<TEntity>(Context);
+        }
+
+        public TCustomProjector GetInstance<TEntity, TCustomProjector>()
+            where TEntity : class, Identity, new() 
+            where TCustomProjector : IEntityProjector<TEntity>
+        {
+            throw new NotImplementedException();
         }
 
         public T RunInTransaction<T>(Func<T> func)
@@ -100,31 +107,5 @@ namespace ITGame.DBConnector
         }
 
 
-    }
-
-    interface IEntityDbRepository : IEntityRepository, IDisposable
-    {
-        /// <summary>
-        /// Function is executing within the transaction of the current DbContext. No need to execute SaveChanges
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="func"></param>
-        /// <returns></returns>
-        T RunInTransaction<T>(Func<T> func);
-
-        /// <summary>
-        /// Action is executing within the transaction of the current DbContext. No need to execute SaveChanges
-        /// </summary>
-        /// <param name="action"></param>
-        void RunInTransaction(Action action);
-
-        /// <summary>
-        /// Get current DbContext
-        /// </summary>
-        DbContext Context { get; }
-
-        void SaveChanges();
-        Task<int> SaveChangesAsync();
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

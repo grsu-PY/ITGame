@@ -56,10 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBRepository.cs" />
+    <Compile Include="DbRepository.cs" />
     <Compile Include="EntityDBProjector.cs" />
-    <Compile Include="EntityDBProjector`.cs" />
+    <Compile Include="EntityDbProjector`.cs" />
+    <Compile Include="HumanoidsDbProjector.cs" />
+    <Compile Include="IEntityDbRepository.cs" />
+    <Compile Include="IITGameDbRepository.cs" />
     <Compile Include="ITGameDBContext.cs" />
+    <Compile Include="ITGameDbRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

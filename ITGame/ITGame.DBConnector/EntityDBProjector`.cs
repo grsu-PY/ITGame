@@ -10,10 +10,17 @@ using System.Threading.Tasks;
 
 namespace ITGame.DBConnector
 {
-    public class EntityDBProjector<T> : IEntityProjector<T> where T : class, new()
+    public interface IEntityDbProjector<T> : IEntityProjector<T> where T : class, new()
+    {
+        DbSet<T> DbSet { get; }
+        bool TryLoad(object id, out T value);
+        T Load(object id);
+    }
+
+    public class EntityDbProjector<T> : IEntityDbProjector<T> where T : class, new()
     {
         private readonly DbContext _context;
-        public EntityDBProjector(DbContext context)
+        public EntityDbProjector(DbContext context)
         {
             _context = context;
             _context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
