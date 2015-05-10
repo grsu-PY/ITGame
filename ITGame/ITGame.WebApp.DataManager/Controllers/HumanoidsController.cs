@@ -10,120 +10,124 @@ using System.Web.Mvc;
 using ITGame.DBConnector;
 using ITGame.Infrastructure.Data;
 using ITGame.Models.Entities;
-using Character = ITGame.Models.Entities.Character;
 
 namespace ITGame.WebApp.DataManager.Controllers
 {
-    public class CharactersController : Controller
+    public class HumanoidsController : Controller
     {
-        private readonly IEntityDbRepository _repository;
-        private readonly IEntityProjector<Character> _dbContext;
+        private readonly IITGameDbRepository _repository;
+        private readonly HumanoidsDbProjector _dbHumanoidsContext;
+        private readonly IEntityProjector<Character> _dbCharactersContext;
 
-        public CharactersController(IEntityDbRepository repository)
+        public HumanoidsController(IITGameDbRepository repository)
         {
             _repository = repository;
-            _dbContext = _repository.GetInstance<Character>();
+            _dbHumanoidsContext = _repository.GetHumanoidsProjector();
+            _dbCharactersContext = _repository.GetInstance<Character>();
         }
 
-        // GET: Characters
+        // GET: Humanoids
         public async Task<ActionResult> Index()
         {
-            return View(await _dbContext.GetAllAsync());
+            return View(await _dbHumanoidsContext.GetHumanoidsWithCharacterAsync());
         }
 
-        // GET: Characters/Details/5
+        // GET: Humanoids/Details/5
         public async Task<ActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = await _dbContext.LoadAsync(id.Value);
-            if (character == null)
+            Humanoid humanoid = await _dbHumanoidsContext.LoadAsync(id.Value);
+            if (humanoid == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+            return View(humanoid);
         }
 
-        // GET: Characters/Create
+        // GET: Humanoids/Create
         public ActionResult Create()
         {
+            ViewBag.CharacterId = new SelectList(_dbCharactersContext.GetAll(), "Id", "Name");
             return View();
         }
 
-        // POST: Characters/Create
+        // POST: Humanoids/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Password,Name,Role")] Character character)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CharacterId,HumanoidRaceType,HP,MP,Strength,Agility,Wisdom,Constitution,Name,Level")] Humanoid humanoid)
         {
             if (ModelState.IsValid)
             {
-                character.Id = Guid.NewGuid();
-                _dbContext.Add(character);
-                await _dbContext.SaveChangesAsync();
+                humanoid.Id = Guid.NewGuid();
+                _dbHumanoidsContext.Add(humanoid);
+                await _dbHumanoidsContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(character);
+            ViewBag.CharacterId = new SelectList(_dbCharactersContext.GetAll(), "Id", "Name", humanoid.CharacterId);
+            return View(humanoid);
         }
 
-        // GET: Characters/Edit/5
+        // GET: Humanoids/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = await _dbContext.LoadAsync(id.Value);
-            if (character == null)
+            Humanoid humanoid = await _dbHumanoidsContext.LoadAsync(id.Value);
+            if (humanoid == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+            ViewBag.CharacterId = new SelectList(_dbCharactersContext.GetAll(), "Id", "Name", humanoid.CharacterId);
+            return View(humanoid);
         }
 
-        // POST: Characters/Edit/5
+        // POST: Humanoids/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Password,Name,Role")] Character character)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CharacterId,HumanoidRaceType,HP,MP,Strength,Agility,Wisdom,Constitution,Name,Level")] Humanoid humanoid)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Update(character);
-                await _dbContext.SaveChangesAsync();
+                _dbHumanoidsContext.Update(humanoid);
+                await _dbHumanoidsContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(character);
+            ViewBag.CharacterId = new SelectList(_dbCharactersContext.GetAll(), "Id", "Name", humanoid.CharacterId);
+            return View(humanoid);
         }
 
-        // GET: Characters/Delete/5
+        // GET: Humanoids/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = await _dbContext.LoadAsync(id.Value);
-            if (character == null)
+            Humanoid humanoid = await _dbHumanoidsContext.LoadAsync(id.Value);
+            if (humanoid == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+            return View(humanoid);
         }
 
-        // POST: Characters/Delete/5
+        // POST: Humanoids/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            Character character = await _dbContext.LoadAsync(id);
-            _dbContext.Delete(character);
-            await _dbContext.SaveChangesAsync();
+            await _dbHumanoidsContext.DeleteAsync(id);
+            await _dbHumanoidsContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 

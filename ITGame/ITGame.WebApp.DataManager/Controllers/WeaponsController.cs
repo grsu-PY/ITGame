@@ -10,119 +10,118 @@ using System.Web.Mvc;
 using ITGame.DBConnector;
 using ITGame.Infrastructure.Data;
 using ITGame.Models.Entities;
-using Character = ITGame.Models.Entities.Character;
 
 namespace ITGame.WebApp.DataManager.Controllers
 {
-    public class CharactersController : Controller
+    public class WeaponsController : Controller
     {
         private readonly IEntityDbRepository _repository;
-        private readonly IEntityProjector<Character> _dbContext;
+        private readonly IEntityProjector<Weapon> _dbContext;
 
-        public CharactersController(IEntityDbRepository repository)
+        public WeaponsController(IEntityDbRepository repository)
         {
             _repository = repository;
-            _dbContext = _repository.GetInstance<Character>();
+            _dbContext = _repository.GetInstance<Weapon>();
         }
 
-        // GET: Characters
+        // GET: Weapons
         public async Task<ActionResult> Index()
         {
             return View(await _dbContext.GetAllAsync());
         }
 
-        // GET: Characters/Details/5
+        // GET: Weapons/Details/5
         public async Task<ActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = await _dbContext.LoadAsync(id.Value);
-            if (character == null)
+            Weapon weapon = await _dbContext.LoadAsync(id.Value);
+            if (weapon == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+            return View(weapon);
         }
 
-        // GET: Characters/Create
+        // GET: Weapons/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Characters/Create
+        // POST: Weapons/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Password,Name,Role")] Character character)
+        public async Task<ActionResult> Create([Bind(Include = "Id,WeaponType,PhysicalAttack,MagicalAttack,Name,Weight,Equipped")] Weapon weapon)
         {
             if (ModelState.IsValid)
             {
-                character.Id = Guid.NewGuid();
-                _dbContext.Add(character);
+                weapon.Id = Guid.NewGuid();
+                _dbContext.Add(weapon);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(character);
+            return View(weapon);
         }
 
-        // GET: Characters/Edit/5
+        // GET: Weapons/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = await _dbContext.LoadAsync(id.Value);
-            if (character == null)
+            Weapon weapon = await _dbContext.LoadAsync(id.Value);
+            if (weapon == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+            return View(weapon);
         }
 
-        // POST: Characters/Edit/5
+        // POST: Weapons/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Password,Name,Role")] Character character)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,WeaponType,PhysicalAttack,MagicalAttack,Name,Weight,Equipped")] Weapon weapon)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Update(character);
+                _dbContext.Update(weapon);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(character);
+            return View(weapon);
         }
 
-        // GET: Characters/Delete/5
+        // GET: Weapons/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = await _dbContext.LoadAsync(id.Value);
-            if (character == null)
+            Weapon weapon = await _dbContext.LoadAsync(id.Value);
+            if (weapon == null)
             {
                 return HttpNotFound();
             }
-            return View(character);
+            return View(weapon);
         }
 
-        // POST: Characters/Delete/5
+        // POST: Weapons/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            Character character = await _dbContext.LoadAsync(id);
-            _dbContext.Delete(character);
+            Weapon weapon = await _dbContext.LoadAsync(id);
+            _dbContext.Delete(weapon);
             await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }

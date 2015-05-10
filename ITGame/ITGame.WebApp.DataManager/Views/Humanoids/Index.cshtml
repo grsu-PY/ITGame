@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ITGame.Models.Entities.Humanoid>
+
+@{
+    ViewBag.Title = "Humanoids list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Humanoids list</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @("Owner " + Html.DisplayNameFor(model => model.Character.Name))
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HumanoidRaceType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Strength)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Agility)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Wisdom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Constitution)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Level)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink(item.Character.Name,"Details","Characters", new {Id=item.CharacterId},null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HumanoidRaceType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Strength)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Agility)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Wisdom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Constitution)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level)
+        </td>
+        <td>
+            @Html.Partial("_EditDetailsDelete", item.Id)
+        </td>
+    </tr>
+}
+
+</table>

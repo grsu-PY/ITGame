@@ -187,10 +187,13 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArmorsController.cs" />
     <Compile Include="Controllers\CharactersController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HumanoidsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\WeaponsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -263,6 +266,21 @@
     <Content Include="Views\Characters\Index.cshtml" />
     <Content Include="Views\Shared\_EditDetailsDelete.cshtml" />
     <Content Include="Views\Database\Index.cshtml" />
+    <Content Include="Views\Weapons\Create.cshtml" />
+    <Content Include="Views\Weapons\Delete.cshtml" />
+    <Content Include="Views\Weapons\Details.cshtml" />
+    <Content Include="Views\Weapons\Edit.cshtml" />
+    <Content Include="Views\Weapons\Index.cshtml" />
+    <Content Include="Views\Armors\Create.cshtml" />
+    <Content Include="Views\Armors\Delete.cshtml" />
+    <Content Include="Views\Armors\Details.cshtml" />
+    <Content Include="Views\Armors\Edit.cshtml" />
+    <Content Include="Views\Armors\Index.cshtml" />
+    <Content Include="Views\Humanoids\Create.cshtml" />
+    <Content Include="Views\Humanoids\Delete.cshtml" />
+    <Content Include="Views\Humanoids\Details.cshtml" />
+    <Content Include="Views\Humanoids\Edit.cshtml" />
+    <Content Include="Views\Humanoids\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,67 @@
+﻿@model ITGame.Models.Entities.Armor
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Armor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArmorType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArmorType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhysicalDef)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhysicalDef)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MagicalDef)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MagicalDef)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Equipped)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Equipped)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

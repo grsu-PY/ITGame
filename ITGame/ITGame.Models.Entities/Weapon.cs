@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
+using ITGame.Models.Equipment;
 
 namespace ITGame.Models.Entities
 {
@@ -22,7 +23,7 @@ namespace ITGame.Models.Entities
         public Guid Id { get; set; }
 
         [DataMember]
-        public byte WeaponType { get; set; }
+        public WeaponType WeaponType { get; set; }
 
         [DataMember]
         public int PhysicalAttack { get; set; }

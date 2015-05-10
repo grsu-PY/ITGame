@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Database tables";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div>
@@ -10,17 +10,17 @@
     </div>
     <div>
         <p>Humanoids</p>
-        <a href="@Url.Action("Index", "Characters")">Humanoids</a>
-        <hr />
-    </div>
-    <div>
-        <p>Armors</p>
-        <a href="@Url.Action("Index", "Characters")">Armors</a>
+        <a href="@Url.Action("Index", "Humanoids")">Humanoids</a>
         <hr />
     </div>
     <div>
         <p>Weapons</p>
-        <a href="@Url.Action("Index", "Characters")">Weapons</a>
+        <a href="@Url.Action("Index", "Weapons")">Weapons</a>
+        <hr />
+    </div>
+    <div>
+        <p>Armors</p>
+        <a href="@Url.Action("Index", "Armors")">Armors</a>
         <hr />
     </div>
     <div>

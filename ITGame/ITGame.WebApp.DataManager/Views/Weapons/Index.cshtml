@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ITGame.Models.Entities.Weapon>
+
+@{
+    ViewBag.Title = "Weapons list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Weapons list</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WeaponType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhysicalAttack)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MagicalAttack)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Equipped)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WeaponType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhysicalAttack)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MagicalAttack)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Equipped)
+        </td>
+        <td>
+            @Html.Partial("_EditDetailsDelete", item.Id)
+        </td>
+    </tr>
+}
+
+</table>
