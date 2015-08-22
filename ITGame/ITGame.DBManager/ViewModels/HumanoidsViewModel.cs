@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ITGame.DBManager.Converters;
 using ITGame.DBManager.Data;
 using ITGame.DBManager.Navigations;
-using ITGame.Models.Сreature;
+using ITGame.Models.Creature;
 
 namespace ITGame.DBManager.ViewModels
 {

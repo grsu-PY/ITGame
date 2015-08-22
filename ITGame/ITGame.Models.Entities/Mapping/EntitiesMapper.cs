@@ -8,7 +8,7 @@ namespace ITGame.Models.Entities.Mapping
     {
         private static bool RegisterMappings()
         {
-            Mapper.CreateMap<Models.Сreature.Humanoid, Models.Entities.Humanoid>()
+            Mapper.CreateMap<Creature.Humanoid, Models.Entities.Humanoid>()
                 .ForMember(humanoid => humanoid.HumanoidRaceType,
                     expression => expression.MapFrom(humanoid => humanoid.HumanoidRace))
                 .ForMember(humanoid => humanoid.WeaponIds,

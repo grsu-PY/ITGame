@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using ITGame.DBManager.Data;
 using ITGame.Models.Administration;
+using ITGame.Models.Creature;
 using ITGame.Models.Equipment;
-using ITGame.Models.Сreature;
 
 namespace ITGame.DBManager.Converters
 {

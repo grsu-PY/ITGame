@@ -1,6 +1,6 @@
-﻿using ITGame.Models.Сreature;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ITGame.Models.Creature;
 
 namespace ITGame.Models.Environment
 {
@@ -37,14 +37,14 @@ namespace ITGame.Models.Environment
             }
         }
 
-        public static void RegisterInfluenceFor<T>(IEnumerable<T> creatures) where T : Сreature.Creature
+        public static void RegisterInfluenceFor<T>(IEnumerable<T> creatures) where T : Creature.Creature
         {
             foreach (var creature in creatures)
             {
                 creature.SubscribeForSurface(ref OnSurfaceChanged);
             }
         }
-        public static void RegisterInfluenceFor<T>(T creature) where T : Сreature.Creature
+        public static void RegisterInfluenceFor<T>(T creature) where T : Creature.Creature
         {
             creature.SubscribeForSurface(ref OnSurfaceChanged);            
         }

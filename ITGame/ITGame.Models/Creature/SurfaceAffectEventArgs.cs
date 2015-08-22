@@ -1,7 +1,7 @@
-﻿using ITGame.Models.Environment;
-using System;
+﻿using System;
+using ITGame.Models.Environment;
 
-namespace ITGame.Models.Сreature
+namespace ITGame.Models.Creature
 {
     public class SurfaceAffectEventArgs : EventArgs
     {

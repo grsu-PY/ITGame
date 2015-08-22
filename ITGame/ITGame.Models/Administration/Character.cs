@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ITGame.Infrastructure.Data;
-using ITGame.Models.Сreature;
+using ITGame.Models.Creature;
 
 namespace ITGame.Models.Administration
 {

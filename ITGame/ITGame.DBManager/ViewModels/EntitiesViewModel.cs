@@ -236,7 +236,7 @@ namespace ITGame.DBManager.ViewModels
 
         protected virtual bool CanNextPage(object obj)
         {
-            return PageInfo.Page < PageInfo.PagesCount;
+            return Entities.Count >= PageInfo.ItemsCount;
         }
 
         protected virtual void NextPage(object obj)

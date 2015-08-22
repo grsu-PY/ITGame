@@ -1,0 +1,75 @@
+﻿@model ITGame.Models.Entities.Spell
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Spell</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SpellType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpellType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SchoolSpell)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SchoolSpell)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MagicalPower)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MagicalPower)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ManaCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ManaCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalDuration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalDuration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Equipped)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Equipped)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

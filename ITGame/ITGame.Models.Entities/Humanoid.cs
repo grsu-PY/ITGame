@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
-using ITGame.Models.Ñreature;
+using ITGame.Models.Creature;
 
 namespace ITGame.Models.Entities
 {

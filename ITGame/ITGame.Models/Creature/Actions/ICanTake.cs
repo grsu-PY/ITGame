@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ITGame.Models.Сreature.Actions
+namespace ITGame.Models.Creature.Actions
 {
     public interface ICanTake : IAction
     {

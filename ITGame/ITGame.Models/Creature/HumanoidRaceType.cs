@@ -1,4 +1,4 @@
-﻿namespace ITGame.Models.Сreature
+﻿namespace ITGame.Models.Creature
 {
     public enum HumanoidRaceType : byte
     {

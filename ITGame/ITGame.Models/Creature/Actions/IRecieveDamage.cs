@@ -1,6 +1,6 @@
 ﻿using ITGame.Models.Magic;
 
-namespace ITGame.Models.Сreature.Actions
+namespace ITGame.Models.Creature.Actions
 {
     public interface IRecieveDamage : IAction
     {

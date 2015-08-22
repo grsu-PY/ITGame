@@ -4,10 +4,11 @@
         <div class="dropdown">
             <button class="dropdown-toggle btn btn-primary" data-toggle="dropdown">Actions &nabla;</button>
             <ul class="dropdown-menu">
-                <li>@Html.ActionLink("Edit", "Edit", new { id = Model })</li>
-                <li>@Html.ActionLink("Details", "Details", new { id = Model })</li>
+                @* ReSharper disable Mvc.ActionNotResolved *@
+                <li>@Html.ActionLink("Edit", "Edit", new {id = Model})</li>
+                <li>@Html.ActionLink("Details", "Details", new {id = Model})</li>
                 <li class="divider"></li>
-                <li>@Html.ActionLink("Delete", "Delete", new { id = Model })</li>
+                <li>@Html.ActionLink("Delete", "Delete", new {id = Model})</li>
             </ul>
         </div>
     </li>

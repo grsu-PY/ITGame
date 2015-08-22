@@ -8,122 +8,114 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ITGame.DBConnector;
-using ITGame.Infrastructure.Data;
 using ITGame.Models.Entities;
-using Armor = ITGame.Models.Entities.Armor;
+using ITGame.Models.Entities.Mapping;
 
 namespace ITGame.WebApp.DataManager.Controllers
 {
-    public class ArmorsController : Controller
+    public class SpellsController : Controller
     {
-        private readonly IEntityDbRepository _repository;
-        private readonly IEntityProjector<Armor> _dbContext;
+        private ITGameDBContext db = new ITGameDBContext();
 
-        public ArmorsController(IEntityDbRepository repository)
-        {
-            _repository = repository;
-            _dbContext = _repository.GetInstance<Armor>();
-        }
-
-        // GET: Armors
+        // GET: Spells
         public async Task<ActionResult> Index()
         {
-            return View(await _dbContext.GetAllAsync());
+            return View(await db.Spell.ToListAsync());
         }
 
-        // GET: Armors/Details/5
+        // GET: Spells/Details/5
         public async Task<ActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Armor armor = await _dbContext.LoadAsync(id.Value);
-            if (armor == null)
+            Spell spell = await db.Spell.FindAsync(id);
+            if (spell == null)
             {
                 return HttpNotFound();
             }
-            return View(armor);
+            return View(spell);
         }
 
-        // GET: Armors/Create
+        // GET: Spells/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Armors/Create
+        // POST: Spells/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ArmorType,PhysicalDef,MagicalDef,Name,Weight,Equipped")] Armor armor)
+        public async Task<ActionResult> Create([Bind(Include = "Id,SpellType,SchoolSpell,MagicalPower,ManaCost,TotalDuration,Name,Equipped")] Spell spell)
         {
             if (ModelState.IsValid)
             {
-                armor.Id = Guid.NewGuid();
-                _dbContext.Add(armor);
-                await _dbContext.SaveChangesAsync();
+                spell.Id = Guid.NewGuid();
+                db.Spell.Add(spell);
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(armor);
+            return View(spell);
         }
 
-        // GET: Armors/Edit/5
+        // GET: Spells/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Armor armor = await _dbContext.LoadAsync(id.Value);
-            if (armor == null)
+            Spell spell = await db.Spell.FindAsync(id);
+            if (spell == null)
             {
                 return HttpNotFound();
             }
-            return View(armor);
+            return View(spell);
         }
 
-        // POST: Armors/Edit/5
+        // POST: Spells/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ArmorType,PhysicalDef,MagicalDef,Name,Weight,Equipped")] Armor armor)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,SpellType,SchoolSpell,MagicalPower,ManaCost,TotalDuration,Name,Equipped")] Spell spell)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Update(armor);
-                await _dbContext.SaveChangesAsync();
+                db.Entry(spell).State = EntityState.Modified;
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(armor);
+            return View(spell);
         }
 
-        // GET: Armors/Delete/5
+        // GET: Spells/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Armor armor = await _dbContext.LoadAsync(id.Value);
-            if (armor == null)
+            Spell spell = await db.Spell.FindAsync(id);
+            if (spell == null)
             {
                 return HttpNotFound();
             }
-            return View(armor);
+            return View(spell);
         }
 
-        // POST: Armors/Delete/5
+        // POST: Spells/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            Armor armor = await _dbContext.LoadAsync(id);
-            _dbContext.Delete(armor);
-            await _dbContext.SaveChangesAsync();
+            Spell spell = await db.Spell.FindAsync(id);
+            db.Spell.Remove(spell);
+            await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -131,7 +123,7 @@ namespace ITGame.WebApp.DataManager.Controllers
         {
             if (disposing)
             {
-                _repository.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

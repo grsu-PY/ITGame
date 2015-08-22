@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
+using ITGame.Models.Creature;
 using ITGame.Models.Environment;
-using ITGame.Models.Ñreature;
 
 namespace ITGame.Models.Entities
 {

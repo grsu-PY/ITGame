@@ -1,11 +1,11 @@
-﻿using ITGame.Models.Environment;
-using ITGame.Models.Magic;
-using ITGame.Models.Сreature.Actions;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
+using ITGame.Models.Creature.Actions;
+using ITGame.Models.Environment;
+using ITGame.Models.Magic;
 
-namespace ITGame.Models.Сreature
+namespace ITGame.Models.Creature
 {
     [DataContract]
     public abstract class Creature : IRecieveDamage, ICanAttack, IMoveable, Identity

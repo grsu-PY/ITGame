@@ -22,7 +22,7 @@ namespace ITGame.DBManager
             IEntityViewModelBuilder viewModelBuilder = new EntityViewModelBuilder();
             INavigation navigation = new Navigation(viewModelBuilder);
 
-            var viewmodel = new MainViewModel(navigation, repositoryDb);
+            var viewmodel = new MainViewModel(navigation, repositoryXML);
 
             var window = new MainWindow { DataContext = viewmodel };
 

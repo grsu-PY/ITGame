@@ -1,4 +1,4 @@
-﻿namespace ITGame.Models.Сreature.Actions
+﻿namespace ITGame.Models.Creature.Actions
 {
     public interface ICanEquip : IAction
     {

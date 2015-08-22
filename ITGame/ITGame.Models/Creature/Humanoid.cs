@@ -1,15 +1,15 @@
-﻿using ITGame.Models.Environment;
-using ITGame.Models.Equipment;
-using ITGame.Models.Items;
-using ITGame.Models.Magic;
-using ITGame.Models.Сreature.Actions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using ITGame.Infrastructure.Data;
+using ITGame.Models.Creature.Actions;
+using ITGame.Models.Environment;
+using ITGame.Models.Equipment;
+using ITGame.Models.Items;
+using ITGame.Models.Magic;
 
-namespace ITGame.Models.Сreature
+namespace ITGame.Models.Creature
 {
     [DataContract]
     public class Humanoid : Creature, ICanEquip, ICanTake

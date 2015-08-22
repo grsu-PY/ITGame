@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ITGame.Infrastructure.Data;
-using ITGame.Models.Сreature;
 
 namespace ITGame.Models.Creature
 {

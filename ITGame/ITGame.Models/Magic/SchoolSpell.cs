@@ -1,7 +1,6 @@
 ﻿
 namespace ITGame.Models.Magic
 {
-    [System.Flags]
     public enum SchoolSpell : byte
     {
         None = (byte)0,
