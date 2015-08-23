@@ -138,6 +138,7 @@ namespace ITGame.DBManager.ViewModels
                 EntitiesContext.Delete(entity);
                 Entities.Remove(entity);
             }
+            LoadEntities(PageInfo);
         }
 
         protected virtual void SaveEntities(object obj)

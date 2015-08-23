@@ -19,7 +19,7 @@ namespace ITGame.DBManager.Navigations
 
         public Navigation(IUnityContainer unityContainer)
         {
-            _unityContainer = unityContainer;
+            _unityContainer = unityContainer.CreateChildContainer();
         }
 
         public Type SelectedEntityViewType
@@ -46,17 +46,17 @@ namespace ITGame.DBManager.Navigations
         {
             OnBeforeNavigation();
 
-            CurrentEntityViewModel = _unityContainer.Resolve(viewType, CachedViewName) as INavigatableViewModel;
+            CurrentEntityViewModel = GetNavigatableViewModel(viewType, null, true);
             SelectedEntityViewType = viewType;
 
             OnNavigated();
         }
-
+        
         public void SwitchToView(Type viewType, object parameters)
         {
             OnBeforeNavigation();
 
-            CurrentEntityViewModel = _unityContainer.ResolveExt(viewType, CachedViewName, parameters) as INavigatableViewModel;
+            CurrentEntityViewModel = GetNavigatableViewModel(viewType, parameters, true);
             SelectedEntityViewType = viewType;
 
             OnNavigated();
@@ -66,8 +66,7 @@ namespace ITGame.DBManager.Navigations
         {
             OnBeforeNavigation();
 
-            CurrentEntityViewModel = _unityContainer.Resolve(viewType) as INavigatableViewModel;
-            _unityContainer.RegisterInstance(viewType, CachedViewName, CurrentEntityViewModel, new ContainerControlledLifetimeManager());
+            CurrentEntityViewModel = GetNavigatableViewModel(viewType, null, false);
             SelectedEntityViewType = viewType;
 
             OnNavigated();
@@ -77,8 +76,7 @@ namespace ITGame.DBManager.Navigations
         {
             OnBeforeNavigation();
 
-            CurrentEntityViewModel = _unityContainer.ResolveExt(viewType, parameters) as INavigatableViewModel;
-            _unityContainer.RegisterInstance(viewType, CachedViewName, CurrentEntityViewModel, new ContainerControlledLifetimeManager());
+            CurrentEntityViewModel = GetNavigatableViewModel(viewType, parameters, false);
             SelectedEntityViewType = viewType;
 
             OnNavigated();
@@ -98,6 +96,28 @@ namespace ITGame.DBManager.Navigations
             {
                 CurrentEntityViewModel.OnBeforeNavigation();
             }
+        }
+
+        private INavigatableViewModel GetNavigatableViewModel(Type viewType, object parameters, bool cached)
+        {
+            INavigatableViewModel viewModel;
+
+            if (cached && _unityContainer.IsRegistered(viewType, CachedViewName))
+            {
+                viewModel =
+                    (INavigatableViewModel)(parameters == null
+                        ? _unityContainer.Resolve(viewType, CachedViewName)
+                        : _unityContainer.ResolveExt(viewType, CachedViewName, parameters));
+            }
+            else
+            {
+                viewModel = (INavigatableViewModel)(parameters == null
+                    ? _unityContainer.Resolve(viewType)
+                    : _unityContainer.ResolveExt(viewType, parameters));
+                _unityContainer.RegisterInstance(viewType, CachedViewName, viewModel, new ContainerControlledLifetimeManager());
+            }
+
+            return viewModel;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

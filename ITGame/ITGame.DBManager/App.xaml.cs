@@ -23,6 +23,7 @@ namespace ITGame.DBManager
 
             _unityContainer = ConfigureUnityContainer();
             _logger = _unityContainer.Resolve<ILogger>();
+            _logger.LogStart();
 
 
             var viewmodel = _unityContainer.Resolve<MainViewModel>();
