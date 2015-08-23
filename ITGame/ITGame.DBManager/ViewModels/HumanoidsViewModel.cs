@@ -17,14 +17,14 @@ namespace ITGame.DBManager.ViewModels
         
         protected override void EditEntity(object obj)
         {
-            Navigation.SwitchToViewNotCached(typeof(HumanoidViewModel), Repository, obj ?? new Models.Entities.Humanoid());
+            Navigation.SwitchToViewNotCached(typeof (HumanoidViewModel),
+                new {entity = obj ?? new Models.Entities.Humanoid()});
         }
 
         protected override void CreateEntity(object obj)
         {
             Navigation.SwitchToViewNotCached(typeof (HumanoidViewModel), 
-                Repository,
-                new Models.Entities.Humanoid());
+                new {entity = new Models.Entities.Humanoid()});
         }
 
         public IEnumerable<NameValueItem<object>> HumanoidRacesList

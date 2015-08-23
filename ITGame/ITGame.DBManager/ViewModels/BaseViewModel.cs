@@ -48,6 +48,7 @@ namespace ITGame.DBManager.ViewModels
         public virtual void OnNavigated() { }
         public virtual void OnBeforeNavigation() { }
     }
+
     public static class PropertyExtensions
     {
         public static PropertyChangedEventArgs CreateChangeEventArgs<T>(this Expression<Func<T>> property)

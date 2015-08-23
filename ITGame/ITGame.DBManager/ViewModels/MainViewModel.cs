@@ -9,6 +9,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ITGame.DBManager.Navigations;
+using ITGame.Infrastructure.Logging;
+using Microsoft.Practices.Unity;
 
 namespace ITGame.DBManager.ViewModels
 {
@@ -23,10 +25,12 @@ namespace ITGame.DBManager.ViewModels
         };
 
         private Type _selectedEntityType;
+        private readonly ILogger _logger;
         private readonly IEntityRepository _repository;
 
-        public MainViewModel(INavigation navigation, IEntityRepository repository) : base(navigation)
+        public MainViewModel(ILogger logger, INavigation navigation, IEntityRepository repository) : base(navigation)
         {
+            _logger = logger;
             _repository = repository;
             SelectedEntityType = _entityViewModelTypes[0].Value;
         }
@@ -43,7 +47,7 @@ namespace ITGame.DBManager.ViewModels
             {
                 _selectedEntityType = value;
 
-                Navigation.SwitchToView(_selectedEntityType, _repository);
+                Navigation.SwitchToView(_selectedEntityType);
                 RaisePropertyChanged();
             }
         }

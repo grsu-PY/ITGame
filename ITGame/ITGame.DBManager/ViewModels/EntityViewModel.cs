@@ -2,6 +2,8 @@
 using ITGame.DBManager.Commands;
 using ITGame.DBManager.Navigations;
 using ITGame.Infrastructure.Data;
+using ITGame.Infrastructure.Logging;
+using Microsoft.Practices.Unity;
 
 namespace ITGame.DBManager.ViewModels
 {
@@ -15,6 +17,9 @@ namespace ITGame.DBManager.ViewModels
         private ICommand _commandDelete;
 
         public TEntity Entity { get; set; }
+
+        [Dependency]
+        public ILogger Logger { get; set; }
 
         public EntityViewModel(INavigation navigation, IEntityRepository repository, TEntity entity) : base(navigation)
         {
@@ -39,7 +44,7 @@ namespace ITGame.DBManager.ViewModels
 
         protected virtual void Delete(object obj)
         {
-            
+            Logger.Log("Delete");
         }
 
         protected virtual bool CanCancel(object obj)
@@ -59,7 +64,7 @@ namespace ITGame.DBManager.ViewModels
 
         protected virtual void Save(object obj)
         {
-
+            Logger.Log("Save");
         }
 
         public object SelectedEntity
