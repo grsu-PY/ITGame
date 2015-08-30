@@ -74,7 +74,7 @@ namespace ITGame.DBManager.ViewModels
         private void LoadCharacters()
         {
             Characters = new ObservableCollection<Character>(Repository.GetInstance<Character>().GetAll());
-            SelectedCharacter = Entity.Character;
+            SelectedCharacter = Characters.FirstOrDefault(c => c.Id == Entity.CharacterId);
         }
     }
 }

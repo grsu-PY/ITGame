@@ -40,7 +40,7 @@ namespace ITGame.DBManager
             var unityContainer = new UnityContainer();
             unityContainer
                 .RegisterInstance(logger)
-                .RegisterType<IEntityRepository, EntityRepository<EntityProjectorXml>>()
+                .RegisterType<IEntityRepository, ITGameDbRepository>(new ContainerControlledLifetimeManager())
                 .RegisterType<INavigation, Navigation>(new ContainerControlledLifetimeManager());
 
             return unityContainer;
