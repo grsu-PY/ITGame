@@ -14,7 +14,7 @@ using ITGame.Models.Entities;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public abstract class EntitiesViewModel<TEntity> : BaseViewModel, IEntitiesViewModel, IPagedViewModel where TEntity : class, Identity, IViewModelItem, new()
+    public abstract class EntitiesViewModel<TEntity> : NavigatableViewModel, IEntitiesViewModel, IPagedViewModel where TEntity : class, Identity, IViewModelItem, new()
     {
         #region Fields
         private readonly IEntityRepository _repository;

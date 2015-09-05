@@ -29,17 +29,18 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Name"/>
-                <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding Entity.Name}"/>
+                <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Humanoid Race"/>
                 <ComboBox Grid.Row="1" Grid.Column="1"
-                      ItemsSource="{Binding Entity.HumanoidRaceType, Converter={StaticResource EnumToCollectionConverter}}"
-                      SelectedValue="{Binding Entity.HumanoidRaceType}" 
+                      ItemsSource="{Binding HumanoidRaceType, Converter={StaticResource EnumToCollectionConverter}}"
+                      SelectedValue="{Binding HumanoidRaceType, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" 
                       DisplayMemberPath="Name" SelectedValuePath="Value"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="Level"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Entity.Level}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Level, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="MP"/>
                 <TextBox Grid.Row="3" Grid.Column="1"  Text="{Binding Entity.MP}"/>
                 <Label Grid.Row="4" Grid.Column="0" Content="HP"/>
@@ -56,6 +57,8 @@
                 <ComboBox Grid.Row="9" Grid.Column="1" ItemsSource="{Binding Characters}" SelectedItem="{Binding SelectedCharacter}" DisplayMemberPath="Name" IsReadOnly="True"/>
                 <Label Grid.Row="10" Grid.Column="0" Content="Armor Ids List"/>
                 <ComboBox Grid.Row="10" Grid.Column="1" ItemsSource="{Binding Entity.Armors}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                <Label Grid.Row="11" Grid.Column="0" Content="FileName"/>
+                <TextBox Grid.Row="11" Grid.Column="1"  Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
             </Grid>
         </Grid>
     </DataTemplate>

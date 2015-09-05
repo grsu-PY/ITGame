@@ -14,7 +14,7 @@ using Microsoft.Practices.Unity;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : NavigatableViewModel
     {
         private readonly static IList<NameValueItem<Type>> _entityViewModelTypes = new List<NameValueItem<Type>>()
         {

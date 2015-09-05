@@ -11,20 +11,9 @@ using ITGame.DBManager.Navigations;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged, INavigatableViewModel
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private readonly INavigation _navigation;
-
-        public BaseViewModel(INavigation navigation)
-        {
-            _navigation = navigation;
-        }
-
-        public INavigation Navigation
-        {
-            get { return _navigation; }
-        }
 
         protected virtual void RaisePropertyChanged([CallerMemberName]string propertyName = null)
         {
@@ -44,19 +33,20 @@ namespace ITGame.DBManager.ViewModels
                 handler(this, property.CreateChangeEventArgs());
             }
         }
-
-        public virtual void OnNavigated() { }
-        public virtual void OnBeforeNavigation() { }
     }
 
     public static class PropertyExtensions
     {
         public static PropertyChangedEventArgs CreateChangeEventArgs<T>(this Expression<Func<T>> property)
         {
+            return new PropertyChangedEventArgs(ExpressionMemberName(property));
+        }
+
+        public static string ExpressionMemberName<T>(this Expression<Func<T>> property)
+        {
             var expression = property.Body as MemberExpression;
             MemberInfo member = expression.Member;
-
-            return new PropertyChangedEventArgs(member.Name);
+            return member.Name;
         }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 
 namespace ITGame.DBManager.ViewModels
 {
-    public class EntityViewModel<TEntity> : BaseViewModel, IEntityViewModel where TEntity : class, Identity, new()
+    public class EntityViewModel<TEntity> : NavigatableViewModel, IEntityViewModel where TEntity : class, Identity, new()
     {
         private readonly IEntityRepository _repository;
         private readonly IEntityProjector<TEntity> _entityContext;
@@ -59,12 +59,13 @@ namespace ITGame.DBManager.ViewModels
 
         protected virtual bool CanSave(object obj)
         {
-            return true;
+            return !HasErrors;
         }
 
         protected virtual void Save(object obj)
         {
             Logger.Log("Save");
+
         }
 
         public object SelectedEntity
